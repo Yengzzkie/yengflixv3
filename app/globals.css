@@ -3,23 +3,26 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-  --primary: #f5e8be;
-  --primary-light: #fcf8ea;
-  --primary-dark: #eed892;
+  --background: #141414;
+  --primary: #fbfbfb;
+  --primary-light: #535353;
+  --primary-dark: #262626;
   --primary-content: #9c7d18;
-  --secondary: #bef5cc;
-  --secondary-light: #eafcef;
-  --secondary-dark: #92eea9;
+  --secondary: #ed3a51;
+  --secondary-light: #f1697a;
+  --secondary-dark: #e0142f;
   --secondary-content: #189c3a;
 
 }
 
 body {
-  color: var(--primary-content);
-  background: var(--background);
+  color: var(--primary);
+  background: var(--primary-dark);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+nav * {
+  color: var(--primary)
 }
 
 .hamburger {
@@ -27,30 +30,19 @@ body {
   border: 2px solid red;
 }
 
-/* Set the page size for printing */
-@media print {
-  @page {
-    size: 4in 6in; /* Set the size of the page to 4 inches by 6 inches */
-    margin: 0; /* Remove any default margins */
-  }
+.text-shadow {
+  color: var(--primary-dark);
+  text-shadow: 0 0 10px var(--primary);
+}
 
-  /* Make sure only the necessary content is visible during printing */
-  body * {
-    visibility: hidden;
-  }
-  .print-content, .print-content * {
-    visibility: visible;
-  }
+.card-shadow {
+  box-shadow: 0 0 8px #535353;
 
-  .print-content {
-    width: 4in;
-    height: 6in;
-    padding: 10px;
-    font-size: 12px;
-    line-height: 1.4;
+  &:hover {
+    box-shadow: 0 0 8px var(--pr);
   }
+}
 
-  .print-button, .return-button {
-    display: none;
-  }
+.translateXY {
+  transform: translate(-50%, -50%);
 }
