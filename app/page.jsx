@@ -58,10 +58,10 @@ const HomePage = () => {
       <Carousel data={tvData} media_type={"TV Shows"} />
 
       {/* RECOMMENDED SECTION */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 px-16 grid-flow-row">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 px-4 lg:px-16 grid-flow-row">
         <div>
           <h1>Recommended</h1>
-          {/* <ExpandableCards data={browseMovies} /> */}
+          <ExpandableCards data={browseMovies} />
         </div>
         <div>
         <h1>Recommended</h1>
