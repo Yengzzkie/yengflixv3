@@ -51,8 +51,6 @@ nav * {
 
 /* EMBLA CAROUSEL STYLES */
 .embla {
-  /* max-width: 100%; */
-  /* margin: 50px auto; */
   --slide-height: 20rem;
   --slide-spacing: 20px;
   --slide-size: 20%;

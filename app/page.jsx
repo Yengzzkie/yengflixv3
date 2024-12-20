@@ -1,6 +1,6 @@
 "use client";
 import { ToastContainer } from "react-toastify";
-import Carousel from "./components/Carousel";
+import RecommendedCarousel from "./components/RecommendedCarousel";
 import ExpandableCards from "./components/ExpandableCard";
 import { useEffect, useState } from "react";
 import { fetchData } from "./lib/fetchData";
@@ -11,13 +11,13 @@ import {
   useBrowseMovies,
   useBrowseTv,
 } from "./stores/useDataStore";
-import EmblaCarousel from "./components/Carousel2";
+import EmblaCarousel from "./components/TopCarousel";
 
 const HomePage = () => {
   const { movieData, setMovieData } = useMovieData();
   const { tvData, setTvData } = useTvData();
-  const { browseMovies, setBrowseMovies } = useBrowseMovies();
-  const { browseTv, setBrowseTv } = useBrowseTv();
+  const { allMovies, setAllMovies } = useBrowseMovies();
+  const { allTv, setAllTv } = useBrowseTv();
   const { moviePage } = useMoviePage();
   const [loading, setLoading] = useState(true);
 
@@ -41,14 +41,14 @@ const HomePage = () => {
     const allMovies = await fetchData(
       `https://api.themoviedb.org/3/discover/movie?include_adult=true&include_video=false&language=en-US&page=${moviePage}&sort_by=popularity.desc`
     );
-    setBrowseMovies(allMovies.slice(0, 10));
+    setAllMovies(allMovies);
   }
 
   async function fetchAllTv() {
     const allTv = await fetchData(
       `https://api.themoviedb.org/3/discover/tv?include_adult=false&include_null_first_air_dates=false&language=en-US&page=${moviePage}&sort_by=popularity.desc`
     );
-    setBrowseTv(allTv.slice(0, 10));
+    setAllTv(allTv);
   }
 
   useEffect(() => {
@@ -64,7 +64,7 @@ const HomePage = () => {
     };
 
     fetchDataAll();
-  }, [moviePage, setBrowseTv]);
+  }, [moviePage, setAllTv]);
 
   return (
     <>
@@ -83,16 +83,17 @@ const HomePage = () => {
           {/* TOP 10 TV */}
           <EmblaCarousel slides={tvData} options={OPTIONS} media_type={"TV Shows"} />
           {/* <Carousel data={tvData} media_type={"TV Shows"} /> */}
-
+          <RecommendedCarousel slides={allMovies} options={OPTIONS} media_type={"Movies"} />
+          <RecommendedCarousel slides={allTv} options={OPTIONS} media_type={"TV Shows"} />
           {/* RECOMMENDED SECTION */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 px-4 lg:px-16 grid-flow-row">
             <div>
               <h1>Recommended</h1>
-              <ExpandableCards data={browseMovies} />
+              <ExpandableCards data={allMovies} />
             </div>
             <div>
               <h1>Recommended</h1>
-              <ExpandableCards data={browseTv} />
+              <ExpandableCards data={allTv} />
             </div>
           </div>
         </>
