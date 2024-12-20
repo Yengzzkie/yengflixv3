@@ -179,7 +179,7 @@ function NavList() {
         className="font-medium"
       >
         <ListItem className="flex items-center gap-2 py-2 pr-4">
-          <Link href="/browse-movies">Browse Movies</Link>
+          <Link href="/browse-movies">Search Title</Link>
         </ListItem>
       </Typography>
     </List>
@@ -206,7 +206,7 @@ export default function Navigation() {
           className="mr-4 cursor-pointer py-1.5 lg:ml-2"
         >
           <span className="text-xl text-[var(--secondary-dark)]">YENGFLIX</span>
-          <span className="text-sm text-yellow-500">V3</span>
+          <span className="text-xs font-thin text-yellow-500">V3</span>
         </Typography>
         <div className="hidden lg:block">
           <NavList />

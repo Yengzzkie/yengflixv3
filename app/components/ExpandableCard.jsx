@@ -103,8 +103,7 @@ export default function ExpandableCard({ data }) {
 
                   <motion.a
                     layoutId={`button-${active.title}-${id}`}
-                    href={active.ctaLink}
-                    target="_blank"
+                    href={`/watch/${active.id}?media_type=${active.media_type}`}
                     className="px-4 py-3 text-sm rounded-full font-bold bg-green-500 text-white"
                   >
                     Play
