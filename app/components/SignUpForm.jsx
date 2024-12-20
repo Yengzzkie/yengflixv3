@@ -14,7 +14,7 @@ export default function SignupForm() {
     console.log("Form submitted");
   };
   return (
-    <div className="max-w-xl w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input bg-white dark:bg-black">
+    <div className="max-w-xl w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input bg-[#000000ab] lg:bg-black">
       <h2 className="text-center font-bold text-xl text-neutral-800 dark:text-neutral-200">
         <span className="text-[var(--secondary-dark)] text-3xl tracking-tighter">YENGFLIX</span>
         <span className="text-yellow-500 text-xs font-thin">V3</span>

@@ -18,16 +18,16 @@ const EmblaCarousel = (props) => {
               <h1 className="absolute -left-8 lg:left-7 top-[65%] -translate-y-1/2 text-[75px] lg:text-[200px] text-shadow tracking-[-20px] lg:tracking-[-55px] leading-tight col-start-1 z-20">
                 {index + 1}
               </h1>
-              {/* <Link href={`/watch/${slide.id}?media_type=${media_type}`}> */}
+              <Link className="card-shadow rounded-lg col-start-3 lg:col-start-4 col-end-[-1] z-30 w-full lg:w-48 cursor-pointer" href={`/watch/${slide.id}?media_type=${media_type}`}>
                 <Image
-                  className="card-shadow rounded-lg col-start-3 lg:col-start-4 col-end-[-1] z-30 w-full lg:w-48 cursor-pointer"
+                  className="card-shadow rounded-lg "
                   src={`${IMG_PATH}${slide.poster_path}`}
                   alt={`${slide.title}`}
                   layout="responsive"
                   width={300}
                   height={300}
                 />
-              {/* </Link> */}
+              </Link>
             </div>
           ))}
         </div>

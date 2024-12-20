@@ -77,14 +77,14 @@ const HomePage = () => {
       ) : (
         <>
           {/* TOP 10 MOVIES */}
-          <EmblaCarousel slides={movieData} options={OPTIONS} media_type={"Movies"} />
+          <EmblaCarousel slides={movieData} options={OPTIONS} media_type={"movie"} />
           {/* <Carousel data={movieData} media_type={"Movies"} /> */}
 
           {/* TOP 10 TV */}
-          <EmblaCarousel slides={tvData} options={OPTIONS} media_type={"TV Shows"} />
+          <EmblaCarousel slides={tvData} options={OPTIONS} media_type={"tv"} />
           {/* <Carousel data={tvData} media_type={"TV Shows"} /> */}
-          <RecommendedCarousel slides={allMovies} options={OPTIONS} media_type={"Movies"} />
-          <RecommendedCarousel slides={allTv} options={OPTIONS} media_type={"TV Shows"} />
+          <RecommendedCarousel slides={allMovies} options={OPTIONS} media_type={"movie"} />
+          <RecommendedCarousel slides={allTv} options={OPTIONS} media_type={"tv"} />
           {/* RECOMMENDED SECTION */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 px-4 lg:px-16 grid-flow-row">
             <div>
