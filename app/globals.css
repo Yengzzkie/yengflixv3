@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 
 :root {
   --background: #141414;
@@ -18,7 +19,7 @@
 body {
   color: var(--primary);
   background: var(--primary-dark);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Roboto', Arial, Helvetica, sans-serif;
 }
 
 nav * {
@@ -31,12 +32,13 @@ nav * {
 }
 
 .text-shadow {
-  color: var(--primary-dark);
-  text-shadow: 0 0 10px var(--primary);
+  color: var(--background);
+  filter: drop-shadow( 0 0 2px white);
+  text-shadow: 0px 0px 2px var(--primary);
 }
 
 .card-shadow {
-  box-shadow: 0 0 8px #535353;
+  box-shadow: -8px 8px 3px black;
 
   &:hover {
     box-shadow: 0 0 8px var(--pr);
@@ -46,3 +48,27 @@ nav * {
 .translateXY {
   transform: translate(-50%, -50%);
 }
+
+/* EMBLA CAROUSEL STYLES */
+.embla {
+  /* max-width: 100%; */
+  /* margin: 50px auto; */
+  --slide-height: 20rem;
+  --slide-spacing: 20px;
+  --slide-size: 20%;
+}
+.embla__viewport {
+  overflow: hidden;
+}
+.embla__container {
+  display: flex;
+  touch-action: pan-y pinch-zoom;
+  margin-left: calc(var(--slide-spacing) * -1);
+}
+.embla__slide {
+  transform: translate3d(0, 0, 0);
+  flex: 0 0 var(--slide-size);
+  min-width: 0;
+  padding: .5rem 0;
+}
+

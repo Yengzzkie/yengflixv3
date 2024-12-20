@@ -205,7 +205,7 @@ export default function Navigation() {
           variant="h6"
           className="mr-4 cursor-pointer py-1.5 lg:ml-2"
         >
-          <span className="text-xl text-[var(--secondary-dark)]">YENGFLIX</span>
+          <span className="text-xl text-[var(--secondary-dark)] tracking-tighter">YENGFLIX</span>
           <span className="text-xs font-thin text-yellow-500">V3</span>
         </Typography>
         <div className="hidden lg:block">

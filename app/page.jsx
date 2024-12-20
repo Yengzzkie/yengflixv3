@@ -9,14 +9,19 @@ import {
   useTvData,
   useMoviePage,
   useBrowseMovies,
+  useBrowseTv,
 } from "./stores/useDataStore";
+import EmblaCarousel from "./components/Carousel2";
 
 const HomePage = () => {
   const { movieData, setMovieData } = useMovieData();
   const { tvData, setTvData } = useTvData();
   const { browseMovies, setBrowseMovies } = useBrowseMovies();
+  const { browseTv, setBrowseTv } = useBrowseTv();
   const { moviePage } = useMoviePage();
   const [loading, setLoading] = useState(true);
+
+  const OPTIONS = { align: 'start', dragFree: true, loop: true }
 
   async function fetchMovieData() {
     const movies = await fetchData(
@@ -36,14 +41,21 @@ const HomePage = () => {
     const allMovies = await fetchData(
       `https://api.themoviedb.org/3/discover/movie?include_adult=true&include_video=false&language=en-US&page=${moviePage}&sort_by=popularity.desc`
     );
-    setBrowseMovies(allMovies);
+    setBrowseMovies(allMovies.slice(0, 10));
+  }
+
+  async function fetchAllTv() {
+    const allTv = await fetchData(
+      `https://api.themoviedb.org/3/discover/tv?include_adult=false&include_null_first_air_dates=false&language=en-US&page=${moviePage}&sort_by=popularity.desc`
+    );
+    setBrowseTv(allTv.slice(0, 10));
   }
 
   useEffect(() => {
     const fetchDataAll = async () => {
       setLoading(true);
       try {
-        await Promise.all([fetchMovieData(), fetchTvData(), fetchAllMovies()]);
+        await Promise.all([fetchMovieData(), fetchTvData(), fetchAllTv(), fetchAllMovies()]);
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
@@ -52,7 +64,7 @@ const HomePage = () => {
     };
 
     fetchDataAll();
-  }, [setMovieData, setTvData, setBrowseMovies]);
+  }, [moviePage, setBrowseTv]);
 
   return (
     <>
@@ -65,10 +77,12 @@ const HomePage = () => {
       ) : (
         <>
           {/* TOP 10 MOVIES */}
-          <Carousel data={movieData} media_type={"Movies"} />
+          <EmblaCarousel slides={movieData} options={OPTIONS} media_type={"Movies"} />
+          {/* <Carousel data={movieData} media_type={"Movies"} /> */}
 
           {/* TOP 10 TV */}
-          <Carousel data={tvData} media_type={"TV Shows"} />
+          <EmblaCarousel slides={tvData} options={OPTIONS} media_type={"TV Shows"} />
+          {/* <Carousel data={tvData} media_type={"TV Shows"} /> */}
 
           {/* RECOMMENDED SECTION */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 px-4 lg:px-16 grid-flow-row">
@@ -78,7 +92,7 @@ const HomePage = () => {
             </div>
             <div>
               <h1>Recommended</h1>
-              <ExpandableCards data={browseMovies} />
+              <ExpandableCards data={browseTv} />
             </div>
           </div>
         </>

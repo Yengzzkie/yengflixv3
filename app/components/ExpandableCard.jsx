@@ -72,7 +72,7 @@ export default function ExpandableCard({ data }) {
             >
               <motion.div layoutId={`image-${active.title}-${id}`}>
                 <img
-                  priority
+                  // priority
                   width={200}
                   height={200}
                   src={`${IMG_PATH}${active.backdrop_path}`}
@@ -103,7 +103,7 @@ export default function ExpandableCard({ data }) {
 
                   <motion.a
                     layoutId={`button-${active.title}-${id}`}
-                    href={`/watch/${active.id}?media_type=${active.media_type}`}
+                    href={`/watch/${active.id}?media_type=movie`}
                     className="px-4 py-3 text-sm rounded-full font-bold bg-green-500 text-white"
                   >
                     Play

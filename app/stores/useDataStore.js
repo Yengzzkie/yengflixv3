@@ -18,6 +18,12 @@ export const useBrowseMovies = create((set) => ({
     setBrowseMovies: (data) => set({ browseMovies: data })
 }))
 
+// state for browsing all TV shows
+export const useBrowseTv = create((set) => ({
+    browseTv: [],
+    setBrowseTv: (data) => set({ browseTv: data })
+}))
+
 // state for page navigation when browsing movies
 export const useMoviePage = create((set) => ({
     moviePage: 1,
