@@ -153,12 +153,12 @@ export default function ExpandableCard({ data }) {
                 >
                   {data.title}
                 </motion.h3>
-                <motion.p
+                <motion.div
                   layoutId={`description-${data.overview}-${data.id}`}
                   className="text-center md:text-left"
                 >
                   <RatingStar rating={data.vote_average} votes={data.vote_count} />
-                </motion.p>
+                </motion.div>
               </div>
             </div>
             <motion.button

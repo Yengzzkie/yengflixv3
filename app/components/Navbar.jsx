@@ -19,12 +19,13 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import {
-  Bars4Icon,
-  GlobeAmericasIcon,
+  VideoCameraIcon,
+  TvIcon,
+  BookmarkIcon,
+  ChatBubbleLeftRightIcon,
   NewspaperIcon,
-  PhoneIcon,
+  Cog6ToothIcon,
   RectangleGroupIcon,
-  SquaresPlusIcon,
   SunIcon,
   TagIcon,
   UserGroupIcon,
@@ -33,34 +34,34 @@ import Link from "next/link";
 
 const navListMenuItems = [
   {
-    title: "Products",
+    title: "Browse Movies",
     description: "Find the perfect solution for your needs.",
-    icon: SquaresPlusIcon,
+    icon: VideoCameraIcon,
   },
   {
-    title: "About Us",
+    title: "Browse TV Shows",
+    description: "Find the perfect solution for your needs.",
+    icon: TvIcon,
+  },
+  {
+    title: "My List",
+    description: "Learn how we can help you achieve your goals.",
+    icon: BookmarkIcon,
+  },
+  {
+    title: "Users",
     description: "Meet and learn about our dedication",
     icon: UserGroupIcon,
   },
   {
-    title: "Blog",
-    description: "Find the perfect solution for your needs.",
-    icon: Bars4Icon,
-  },
-  {
-    title: "Services",
-    description: "Learn how we can help you achieve your goals.",
-    icon: SunIcon,
-  },
-  {
-    title: "Support",
+    title: "Forum",
     description: "Reach out to us for assistance or inquiries",
-    icon: GlobeAmericasIcon,
+    icon: ChatBubbleLeftRightIcon,
   },
   {
-    title: "Contact",
+    title: "Account Settings",
     description: "Find the perfect solution for your needs.",
-    icon: PhoneIcon,
+    icon: Cog6ToothIcon,
   },
   {
     title: "News",
@@ -85,25 +86,24 @@ function NavListMenu() {
   const renderItems = navListMenuItems.map(
     ({ icon, title, description }, key) => (
       <a href="#" key={key}>
-        <MenuItem className="flex items-center gap-3 rounded-l p-6">
+        <MenuItem className="flex items-center gap-3 rounded-l p-6 hover:bg-[var(--primary-dark)]">
           <div className="flex items-center justify-center rounded-lg p-2">
             {" "}
             {React.createElement(icon, {
               strokeWidth: 2,
-              className: "h-6 text-gray-900 w-6",
+              className: "h-6 text-gray-200 w-6",
             })}
           </div>
           <div>
             <Typography
               variant="h6"
-              color="blue-gray"
-              className="flex items-center text-sm font-bold text-[var(--primary)] lg:text-[var(--primary-dark)]"
+              className="flex items-center text-sm font-bold text-[var(--primary)]"
             >
               {title}
             </Typography>
             <Typography
               variant="paragraph"
-              className="text-xs !font-medium text-blue-gray-500 text-[var(--primary-light)]"
+              className="text-xs !font-medium text-blue-gray-500 text-[#a7a7a7]"
             >
               {description}
             </Typography>
@@ -145,7 +145,7 @@ function NavListMenu() {
             </ListItem>
           </Typography>
         </MenuHandler>
-        <MenuList className="hidden max-w-screen-xl rounded-xl lg:block">
+        <MenuList className="hidden border shadow-lg bg-[var(--background)] text-[var(--primary)] max-w-screen-xl rounded-xl lg:block">
           <ul className="grid grid-cols-3 gap-y-2 outline-none outline-0">
             {renderItems}
           </ul>
