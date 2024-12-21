@@ -128,14 +128,14 @@ export default function ExpandableCard({ data }) {
         ) : null}
       </AnimatePresence>
       <ul className="max-w-2xl mx-auto w-full gap-4">
-        {data.map((data, index) => (
+        {data.map((data) => (
           <motion.div
             layoutId={`card-${data.title}-${id}`}
             key={`card-${data.title}-${data.id}`}
             onClick={() => setActive(data)}
-            className="p-4 flex flex-row justify-between items-center hover:bg-neutral-50 dark:hover:bg-neutral-800 rounded-xl cursor-pointer"
+            className="p-1 flex flex-row justify-between items-center hover:bg-neutral-50 dark:hover:bg-neutral-800 rounded-xl cursor-pointer"
           >
-            <div className="flex gap-4 md:flex-row">
+            <div className="flex gap-4 mb-2 md:flex-row">
               <motion.div layoutId={`image-${data.title}-${id}`}>
                 <img
                   width={100}
@@ -162,7 +162,7 @@ export default function ExpandableCard({ data }) {
             </div>
             <motion.button
               layoutId={`button-${data.title}-${data.id}`}
-              className="px-4 py-2 text-sm rounded-full font-bold bg-gray-100 hover:bg-green-500 hover:text-white text-black mt-0"
+              className="px-3 py-2 text-sm rounded-full font-bold bg-gray-100 hover:bg-green-500 hover:text-white text-black mt-0"
             >
               Watch
             </motion.button>

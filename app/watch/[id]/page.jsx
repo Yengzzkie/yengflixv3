@@ -11,7 +11,7 @@ const VideoPlayer = ({ params }) => {
 
   return <div>
 
-    <iframe src={mediaType === "movie" ? movieSrc : tvSrc} className="w-screen h-[50vh] lg:h-screen" allowFullScreen={true} referrerPolicy="origin"></iframe>
+    <iframe src={mediaType === "Movies" ? movieSrc : tvSrc} className="w-screen h-[50vh] lg:h-screen" allowFullScreen={true} referrerPolicy="origin"></iframe>
     <p>ID: {id}</p>
     {mediaType}
   </div>;
