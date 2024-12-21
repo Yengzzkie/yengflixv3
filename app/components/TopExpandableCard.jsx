@@ -2,132 +2,211 @@ import React, { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useOutsideClick } from "../lib/useOutsideHook";
 import RatingStar from "./Rating";
+import { PlayIcon, BookmarkIcon } from "@heroicons/react/24/solid";
+import axios from "axios";
 
-export default function TopExpandableCard({ open, setOpen, selectedSlide, media_type }) {
-    const IMG_PATH = "https://image.tmdb.org/t/p/original/";
-    const ref = useRef(null);
-  
-    useEffect(() => {
-      function onKeyDown(event) {
-        if (event.key === "Escape") {
-          setOpen(false); // Close on Escape key
+export default function TopExpandableCard({
+  open,
+  setOpen,
+  selectedSlide,
+  media_type,
+}) {
+  const IMG_PATH = "https://image.tmdb.org/t/p/original/";
+  const ref = useRef(null);
+  const [credits, setCredits] = useState({});
+  const API_KEY = process.env.API_KEY
+
+  async function getMovieCredits() {
+    try {
+      const response = await axios.get(
+        `https://api.themoviedb.org/3/movie/1061699/credits?language=en-US`,
+        {
+          headers: {
+            accept: "application/json",
+            Authorization: `Bearer ${API_KEY}`,
+          },
         }
+      );
+      setCredits(response.data);
+      console.log(response.data);
+    } catch (error) {
+      console.error("Failed to fetch movie credits:", error);
+    }
+  }
+
+  useEffect(() => {
+      getMovieCredits();
+  }, [selectedSlide]);
+
+  useEffect(() => {
+    function onKeyDown(event) {
+      if (event.key === "Escape") {
+        setOpen(false);
       }
-  
-      if (open) {
-        document.body.style.overflow = "hidden";
-      } else {
-        document.body.style.overflow = "auto";
-      }
-  
-      window.addEventListener("keydown", onKeyDown);
-      return () => window.removeEventListener("keydown", onKeyDown);
-    }, [open, setOpen]);
-  
-    useOutsideClick(ref, () => setOpen(false)); // Close on outside click
-  
-    return (
-      <AnimatePresence>
-        {open && selectedSlide && (
+    }
+
+    if (open) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [open, setOpen]);
+
+  useOutsideClick(ref, () => setOpen(false));
+
+  return (
+    <AnimatePresence>
+      {open && selectedSlide && (
+        <motion.div
+          key="modal"
+          className="fixed inset-0 z-[100] flex items-center justify-center"
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.8 }}
+          transition={{ duration: 0.3 }}
+        >
+          {/* Background Overlay */}
           <motion.div
-            key="modal"
-            className="fixed inset-0 z-[100] flex items-center justify-center"
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.8 }}
-            transition={{ duration: 0.3 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 0.5 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/30"
+            onClick={() => setOpen(false)}
+          />
+
+          {/* Modal Content */}
+          <motion.div
+            layoutId={`card-${selectedSlide.title}`}
+            ref={ref}
+            className="w-full max-w-[500px] h-full md:h-fit md:max-h-[90%] flex flex-col bg-white dark:bg-neutral-900 sm:rounded-3xl overflow-hidden z-[101]"
           >
-            {/* Background Overlay */}
-            <motion.div
+            <motion.button
+              key={`button-${selectedSlide.title}`}
+              layout
               initial={{ opacity: 0 }}
-              animate={{ opacity: 0.5 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-black/30"
+              animate={{ opacity: 1 }}
+              exit={{
+                opacity: 0,
+                transition: { duration: 0.05 },
+              }}
+              className="flex absolute top-2 right-2 lg:hidden items-center justify-center bg-white rounded-full h-6 w-6"
               onClick={() => setOpen(false)}
-            />
-  
-            {/* Modal Content */}
-            <motion.div
-              layoutId={`card-${selectedSlide.title}`}
-              ref={ref}
-              className="w-full max-w-[500px] h-full md:h-fit md:max-h-[90%] flex flex-col bg-white dark:bg-neutral-900 sm:rounded-3xl overflow-hidden z-[101]"
             >
-              <motion.button
-                key={`button-${selectedSlide.title}`}
-                layout
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{
-                  opacity: 0,
-                  transition: { duration: 0.05 },
-                }}
-                className="flex absolute top-2 right-2 lg:hidden items-center justify-center bg-white rounded-full h-6 w-6"
-                onClick={() => setOpen(false)}
-              >
-                <CloseIcon />
-              </motion.button>
-              <motion.div layoutId={`image-${selectedSlide.title}`}>
-                <img
-                  width={200}
-                  height={200}
-                  src={`${IMG_PATH}${selectedSlide.backdrop_path}`}
-                  alt={selectedSlide.title}
-                  className="w-full h-80 lg:h-80 sm:rounded-tr-lg sm:rounded-tl-lg object-cover object-top"
-                />
-              </motion.div>
-  
-              <div>
-                <div className="flex justify-between items-start p-4">
-                  <div>
-                    <motion.h3
-                      layoutId={`title-${selectedSlide.title}`}
-                      className="font-bold text-neutral-700 dark:text-neutral-200"
-                    >
-                      {selectedSlide.title}
-                    </motion.h3>
-  
-                    <RatingStar
-                      rating={selectedSlide.vote_average}
-                      votes={selectedSlide.vote_count}
-                    />
-  
-                    <motion.p
-                      layoutId={`description-${selectedSlide.description}`}
-                      className="text-neutral-500 font-extralight mr-4 mt-2"
-                    >
-                      {selectedSlide.overview}
-                    </motion.p>
+              <CloseIcon />
+            </motion.button>
+            <motion.div layoutId={`image-${selectedSlide.title}`}>
+              <img
+                width={200}
+                height={200}
+                src={`${IMG_PATH}${selectedSlide.backdrop_path}`}
+                alt={selectedSlide.title}
+                className="w-full h-80 lg:h-80 sm:rounded-tr-lg sm:rounded-tl-lg object-cover object-top"
+              />
+            </motion.div>
+
+            <div>
+              <div className="flex justify-between items-start p-4">
+                <div className="w-full">
+                  {/* LOGO */}
+                  <div className="flex items-center">
+                    <span className="font-extrabold text-[var(--secondary-dark)] text-2xl">
+                      Y
+                    </span>{" "}
+                    <span className="font-semibold text-xs text-gray-400 leading-4 tracking-[3px] ml-1">
+                      FILM
+                    </span>
                   </div>
-  
+                  {/* TITLE */}
+                  <motion.h3
+                    layoutId={`title-${selectedSlide.title}`}
+                    className="font-bold text-neutral-700 dark:text-neutral-200 text-2xl"
+                  >
+                    {selectedSlide.title}
+                  </motion.h3>
+
+                  {/* RATING STAR */}
+                  <RatingStar
+                    rating={selectedSlide.vote_average}
+                    votes={selectedSlide.vote_count}
+                  />
+
+                  {/* META DATA */}
+                  <div className="my-1 flex items-center py-1">
+                    <span className="text-xs mr-3">
+                      {selectedSlide.release_date}
+                    </span>
+                    <span className="bg-gray-700 text-gray-300 text-xs p-[3px] rounded-sm mr-3">
+                      {selectedSlide.adult ? "18+" : "PG-13"}
+                    </span>
+                    <span className="bg-gray-700 text-gray-300 text-xs p-[3px] rounded-sm mr-3">
+                      1080p
+                    </span>
+                    <span className="border border-gray-500 text-gray-300 text-xs p-[2px] rounded-sm mr-3">
+                      {media_type}
+                    </span>
+                  </div>
+
+                  {/* PLAY BUTTON */}
                   <motion.a
-                    layoutId={`button-${selectedSlide.title}`}
+                    // layoutId={`button-${selectedSlide.title}`}
                     href={`/watch/${selectedSlide.id}?media_type=${media_type}`}
-                    className="px-4 py-3 text-sm rounded-full font-bold bg-green-500 text-white"
+                    className="flex justify-center items-center px-4 py-2 my-3 text-sm rounded-[3px] font-bold bg-white hover:bg-[var(--secondary-dark)] hover:text-white text-[var(--primary-dark)] w-full text-center"
                   >
-                    Play
+                    <PlayIcon className="w-4 mr-1" /> Play
                   </motion.a>
-                </div>
-                <div className="pt-4 relative px-4">
-                  <motion.div
-                    layout
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    className="text-neutral-600 text-xs md:text-sm lg:text-base h-40 md:h-fit pb-10 flex flex-col items-start gap-4 overflow-auto dark:text-neutral-400 [mask:linear-gradient(to_bottom,white,white,transparent)] [scrollbar-width:none] [-ms-overflow-style:none] [-webkit-overflow-scrolling:touch]"
+
+                  {/* BOOKMARK ICON */}
+                  <motion.a
+                    // layoutId={`button-${selectedSlide.title}`}
+                    href={`/watch/${selectedSlide.id}?media_type=${media_type}`}
+                    className="flex justify-center items-center px-4 py-2 my-3 text-sm rounded-[3px] font-bold bg-[var(--primary-dark)] hover:bg-[var(--secondary-dark)] text-[var(--primary)] w-full text-center"
                   >
-                    {typeof selectedSlide.content === "function"
-                      ? selectedSlide.content()
-                      : selectedSlide.content}
-                  </motion.div>
+                    <BookmarkIcon className="w-4 mr-1" /> Add To List
+                  </motion.a>
+
+                  {/* OVERVIEW */}
+                  <motion.p
+                    layoutId={`description-${selectedSlide.description}`}
+                    className="text-neutral-300 font-extralight mr-4 mt-2 text-sm"
+                  >
+                    {selectedSlide.overview === ""
+                      ? "No description"
+                      : selectedSlide.overview}
+                  </motion.p>
+                  <motion.p
+                    layoutId={`description-${selectedSlide.description}`}
+                    className="text-neutral-400 font-extralight mr-4 mt-2 text-xs truncate"
+                  >
+                    Starring:{" "}
+                    {credits.cast.map((cast) => (
+                      <span>{cast.name},</span>
+                    ))}
+                  </motion.p>
                 </div>
               </div>
-            </motion.div>
+              <div className="pt-4 relative px-4">
+                <motion.div
+                  layout
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="text-neutral-600 text-xs md:text-sm lg:text-base h-40 md:h-fit pb-10 flex flex-col items-start gap-4 overflow-auto dark:text-neutral-400 [mask:linear-gradient(to_bottom,white,white,transparent)] [scrollbar-width:none] [-ms-overflow-style:none] [-webkit-overflow-scrolling:touch]"
+                >
+                  {typeof selectedSlide.content === "function"
+                    ? selectedSlide.content()
+                    : selectedSlide.content}
+                </motion.div>
+              </div>
+            </div>
           </motion.div>
-        )}
-      </AnimatePresence>
-    );
-  }
-  
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+}
 
 export const CloseIcon = () => {
   return (
