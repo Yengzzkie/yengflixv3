@@ -14,29 +14,29 @@ export default function TopExpandableCard({
   const IMG_PATH = "https://image.tmdb.org/t/p/original/";
   const ref = useRef(null);
   const [credits, setCredits] = useState({});
-  const NEXT_PUBLIC_API_KEY = process.env.NEX_PUBLIC_API_KEY
+  // const NEXT_PUBLIC_API_KEY = process.env.NEX_PUBLIC_API_KEY
 
-  async function getMovieCredits() {
-    try {
-      const response = await axios.get(
-        `https://api.themoviedb.org/3/movie/1061699/credits?language=en-US`,
-        {
-          headers: {
-            accept: "application/json",
-            Authorization: `Bearer ${NEXT_PUBLIC_API_KEY}`,
-          },
-        }
-      );
-      setCredits(response.data);
-      console.log(response.data);
-    } catch (error) {
-      console.error("Failed to fetch movie credits:", error);
-    }
-  }
+  // async function getMovieCredits() {
+  //   try {
+  //     const response = await axios.get(
+  //       `https://api.themoviedb.org/3/movie/1061699/credits?language=en-US`,
+  //       {
+  //         headers: {
+  //           accept: "application/json",
+  //           Authorization: `Bearer ${NEXT_PUBLIC_API_KEY}`,
+  //         },
+  //       }
+  //     );
+  //     setCredits(response.data);
+  //     console.log(response.data);
+  //   } catch (error) {
+  //     console.error("Failed to fetch movie credits:", error);
+  //   }
+  // }
 
-  useEffect(() => {
-      getMovieCredits();
-  }, [selectedSlide]);
+  // useEffect(() => {
+  //     getMovieCredits();
+  // }, [selectedSlide]);
 
   useEffect(() => {
     function onKeyDown(event) {
@@ -176,7 +176,7 @@ export default function TopExpandableCard({
                       ? "No description"
                       : selectedSlide.overview}
                   </motion.p>
-                  <motion.p
+                  {/* <motion.p
                     layoutId={`description-${selectedSlide.description}`}
                     className="text-neutral-400 font-extralight mr-4 mt-2 text-xs truncate"
                   >
@@ -184,7 +184,7 @@ export default function TopExpandableCard({
                     {credits.cast.map((cast) => (
                       <span>{cast.name},</span>
                     ))}
-                  </motion.p>
+                  </motion.p> */}
                 </div>
               </div>
               <div className="pt-4 relative px-4">
