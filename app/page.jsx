@@ -20,6 +20,7 @@ const HomePage = () => {
   const { allTv, setAllTv } = useBrowseTv();
   const { moviePage } = useMoviePage();
   const [loading, setLoading] = useState(true);
+  const API_KEY = process.env.NEXT_PUBLIC_API_KEY
 
   const OPTIONS = { align: 'start', dragFree: true, loop: true }
 

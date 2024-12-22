@@ -14,7 +14,7 @@ export default function TopExpandableCard({
   const IMG_PATH = "https://image.tmdb.org/t/p/original/";
   const ref = useRef(null);
   const [credits, setCredits] = useState({});
-  const API_KEY = process.env.API_KEY
+  const NEXT_PUBLIC_API_KEY = process.env.NEX_PUBLIC_API_KEY
 
   async function getMovieCredits() {
     try {
@@ -23,7 +23,7 @@ export default function TopExpandableCard({
         {
           headers: {
             accept: "application/json",
-            Authorization: `Bearer ${API_KEY}`,
+            Authorization: `Bearer ${NEXT_PUBLIC_API_KEY}`,
           },
         }
       );
