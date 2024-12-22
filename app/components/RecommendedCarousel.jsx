@@ -26,7 +26,7 @@ const RecommendedCarousel = (props) => {
       </div>
       <div className="embla__viewport" ref={emblaRef}>
         <div className="embla__container">
-          {slides.slice(0, 10).map((slide) => (
+          {slides.map((slide) => (
             <div onClick={() => handleSlideClick(slide)} className="embla__slide max-w-fit mx-2" key={slide.id}>
               {/* <Link href={`/watch/${slide.id}?media_type=${media_type}`}> */}
                 <Image
