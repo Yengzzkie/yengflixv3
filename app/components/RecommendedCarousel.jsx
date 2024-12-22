@@ -28,16 +28,13 @@ const RecommendedCarousel = (props) => {
         <div className="embla__container">
           {slides.map((slide) => (
             <div onClick={() => handleSlideClick(slide)} className="embla__slide max-w-fit mx-2" key={slide.id}>
-              {/* <Link href={`/watch/${slide.id}?media_type=${media_type}`}> */}
-                <Image
-                  className="card-shadow rounded-md lg:w-44 cursor-pointer"
-                  src={`${IMG_PATH}${slide.poster_path}`}
-                  alt={`${slide.title}`}
-                  layout="intrinsic"
-                  width={300}
-                  height={300}
-                />
-              {/* </Link> */}
+              <Image
+                className="card-shadow rounded-md lg:w-44 cursor-pointer"
+                src={`${IMG_PATH}${slide.poster_path}`}
+                alt={`${slide.title}`}
+                width={300}
+                height={300}
+              />
             </div>
           ))}
         </div>

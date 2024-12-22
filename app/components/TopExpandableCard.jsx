@@ -13,13 +13,14 @@ export default function TopExpandableCard({
 }) {
   const IMG_PATH = "https://image.tmdb.org/t/p/original/";
   const ref = useRef(null);
-  const [credits, setCredits] = useState({});
-  // const NEXT_PUBLIC_API_KEY = process.env.NEX_PUBLIC_API_KEY
+  // const [credits, setCredits] = useState({});
+  const NEXT_PUBLIC_API_KEY = process.env.NEXT_PUBLIC_API_KEY
+  const isMovie = media_type === 'Movies'
 
   // async function getMovieCredits() {
   //   try {
   //     const response = await axios.get(
-  //       `https://api.themoviedb.org/3/movie/1061699/credits?language=en-US`,
+  //       `https://api.themoviedb.org/3/movie/${id}/credits?language=en-US`,
   //       {
   //         headers: {
   //           accept: "application/json",
@@ -35,8 +36,8 @@ export default function TopExpandableCard({
   // }
 
   // useEffect(() => {
-  //     getMovieCredits();
-  // }, [selectedSlide]);
+  //   getMovieCredits();
+  // }, []);
 
   useEffect(() => {
     function onKeyDown(event) {
@@ -124,7 +125,7 @@ export default function TopExpandableCard({
                     layoutId={`title-${selectedSlide.title}`}
                     className="font-bold text-neutral-700 dark:text-neutral-200 text-2xl"
                   >
-                    {selectedSlide.title}
+                    {isMovie ? selectedSlide.title : selectedSlide.name}
                   </motion.h3>
 
                   {/* RATING STAR */}
@@ -136,7 +137,7 @@ export default function TopExpandableCard({
                   {/* META DATA */}
                   <div className="my-1 flex items-center py-1">
                     <span className="text-xs mr-3">
-                      {selectedSlide.release_date}
+                      {isMovie ? selectedSlide.release_date : selectedSlide.first_air_date}
                     </span>
                     <span className="bg-gray-700 text-gray-300 text-xs p-[3px] rounded-sm mr-3">
                       {selectedSlide.adult ? "18+" : "PG-13"}
@@ -151,7 +152,6 @@ export default function TopExpandableCard({
 
                   {/* PLAY BUTTON */}
                   <motion.a
-                    // layoutId={`button-${selectedSlide.title}`}
                     href={`/watch/${selectedSlide.id}?media_type=${media_type}`}
                     className="flex justify-center items-center px-4 py-2 my-3 text-sm rounded-[3px] font-bold bg-white hover:bg-[var(--secondary-dark)] hover:text-white text-[var(--primary-dark)] w-full text-center"
                   >
@@ -160,7 +160,6 @@ export default function TopExpandableCard({
 
                   {/* BOOKMARK ICON */}
                   <motion.a
-                    // layoutId={`button-${selectedSlide.title}`}
                     href={`/watch/${selectedSlide.id}?media_type=${media_type}`}
                     className="flex justify-center items-center px-4 py-2 my-3 text-sm rounded-[3px] font-bold bg-[var(--primary-dark)] hover:bg-[var(--secondary-dark)] text-[var(--primary)] w-full text-center"
                   >
@@ -182,7 +181,7 @@ export default function TopExpandableCard({
                   >
                     Starring:{" "}
                     {credits.cast.map((cast) => (
-                      <span>{cast.name},</span>
+                      <span key={cast.name}>{cast.name},</span>
                     ))}
                   </motion.p> */}
                 </div>
