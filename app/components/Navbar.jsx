@@ -4,7 +4,6 @@ import {
   Navbar,
   Collapse,
   Typography,
-  Button,
   IconButton,
   List,
   ListItem,
@@ -197,7 +196,7 @@ export default function Navigation() {
   }, []);
 
   return (
-    <Navbar className="mx-auto max-w-screen rounded-none border-none px-4 py-4 bg-[var(--primary-dark)]">
+    <Navbar className="mx-auto max-w-screen rounded-none border-none px-4 py-4 bg-[#1b1b1b]">
       <div className="flex items-center justify-between text-blue-gray-900">
         <Typography
           as="a"
@@ -213,7 +212,8 @@ export default function Navigation() {
         <div className="hidden lg:block">
           <NavList />
         </div>
-        <div className="hidden gap-2 lg:flex">
+        <div className="hidden gap-2 lg:flex items-center">
+          <span className="mr-2">Hello, user!</span>
           <Logout />
         </div>
         <IconButton

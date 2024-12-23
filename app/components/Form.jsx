@@ -41,8 +41,12 @@ const Form = () => {
         <span className="text-yellow-500 text-xs font-thin">V3</span>
       </h2>
       <p className="text-neutral-600 text-sm max-w-sm mt-2 dark:text-neutral-300">
-        Sign up to Yengflix if you can because we don&apos;t have a signup flow
-        yet
+        Sign up to Yengflix then give me your credit card info so I can bill you everytime
+        you use this app.
+      </p>
+      <br />
+      <p>
+        Just kidding, this is 100% FREE!
       </p>
       <form className="my-8" onSubmit={handleSubmit}>
         <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mb-4">

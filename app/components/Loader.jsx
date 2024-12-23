@@ -35,11 +35,11 @@ const BarLoader = () => {
       animate="animate"
       className="flex gap-1"
     >
-      <motion.div variants={variants} className="h-5 w-2 bg-green-500" />
-      <motion.div variants={variants} className="h-5 w-2 bg-green-500" />
-      <motion.div variants={variants} className="h-5 w-2 bg-green-500" />
-      <motion.div variants={variants} className="h-5 w-2 bg-green-500" />
-      <motion.div variants={variants} className="h-5 w-2 bg-green-500" />
+      <motion.div variants={variants} className="h-5 w-2 bg-red-500" />
+      <motion.div variants={variants} className="h-5 w-2 bg-red-500" />
+      <motion.div variants={variants} className="h-5 w-2 bg-red-500" />
+      <motion.div variants={variants} className="h-5 w-2 bg-red-500" />
+      <motion.div variants={variants} className="h-5 w-2 bg-red-500" />
     </motion.div>
   );
 };

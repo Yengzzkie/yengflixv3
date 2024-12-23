@@ -27,7 +27,7 @@ const handler = NextAuth({
         }
 
         const isMatch = await compare(
-          credentials?.password || "",
+          credentials?.password,
           user.password
         );
 
@@ -35,6 +35,8 @@ const handler = NextAuth({
           console.log("Incorrect password");
           return null;
         }
+
+        console.log(credentials)
         
         return { id: user.id, name: user.name, email: user.email };
       },
