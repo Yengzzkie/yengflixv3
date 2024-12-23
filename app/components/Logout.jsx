@@ -1,9 +1,8 @@
 import { signOut } from "next-auth/react";
 import { Button } from "@material-tailwind/react";
-import { redirect } from "next/navigation";
 import { useRouter } from "next/navigation";
 
-const Logout = async () => {
+const Logout = () => {
   const router = useRouter();
 
   async function handleLogout() {
