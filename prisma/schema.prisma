@@ -10,8 +10,9 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
+  url      = env("NEXT_PUBLIC_DIRECT_URL")
+  // directUrl = env("NEXT_PUBLIC_DATABASE_URL")
+  // url      = "postgresql://macbookpro:Yengzzkie18@localhost:5432/mydb?schema=public"
 }
 
 model Admin {
@@ -22,39 +23,13 @@ model Admin {
   updatedAt DateTime @default(now())
 }
 
-model Order {
-  id                String   @id @default(uuid())
-  customerName      String
-  mobile            String
-  pickupDate        String
-  pickupTime        String
-  downpayment       Float?   @default(0.0)
-  balance           Float?
-  totalBill         Float?
-  isPaid            Boolean  @default(false)
-  additionalComment String?
-  createdAt         DateTime @default(now())
-  status            Status   @default(AWAITING_PICKUP)
-  item              Item[]
-}
-
-enum Status {
-  AWAITING_PICKUP
-  CLOSED
-}
-
-model Item {
+model User {
   id        String   @id @default(uuid())
-  itemName  String
-  price     Float
-  size      Size     @default(REGULAR)
+  name      String
+  email     String   @unique
+  password  String
+  avatar    String?
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
-  orderId   String?
-  order     Order?   @relation(fields: [orderId], references: [id])
-}
-
-enum Size {
-  REGULAR
-  LARGE
+  list      String[]
 }

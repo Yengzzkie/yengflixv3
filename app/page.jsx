@@ -81,14 +81,14 @@ const HomePage = () => {
         <>
           {/* TOP 10 MOVIES */}
           <EmblaCarousel slides={movieData} options={OPTIONS} media_type={"Movies"} />
-          {/* <Carousel data={movieData} media_type={"Movies"} /> */}
 
           {/* TOP 10 TV */}
           <EmblaCarousel slides={tvData} options={OPTIONS} media_type={"TV Shows"} />
-          {/* <Carousel data={tvData} media_type={"TV Shows"} /> */}
+
+
+          {/* RECOMMENDED SECTION */}
           <RecommendedCarousel slides={allMovies} options={OPTIONS} media_type={"Movies"} />
           <RecommendedCarousel slides={allTv} options={OPTIONS} media_type={"TV Shows"} />
-          {/* RECOMMENDED SECTION */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 px-4 lg:px-16 grid-flow-row">
             <div>
               <h1>Recommended</h1>

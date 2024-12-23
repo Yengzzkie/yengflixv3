@@ -1,20 +1,19 @@
-'use client'
-import { useSearchParams } from "next/navigation";
-import { use } from "react";
+import Video from "@/app/components/Video";
+import { redirect } from "next/navigation";
+import { getServerSession } from "next-auth";
 
-const VideoPlayer = ({ params }) => {
-  const idParams = use(params);
-  const id = idParams.id
-  const mediaType = useSearchParams().get('media_type');
-  const movieSrc = `https://vidsrc.xyz/embed/movie/${id}`
-  const tvSrc = `https://vidsrc.xyz/embed/tv/${id}`
+const VideoPlayer = async ({ params }) => {
+  const session = await getServerSession()
 
-  return <div>
+  if (!session) {
+    redirect("/login")
+  }
 
-    <iframe src={mediaType === "Movies" ? movieSrc : tvSrc} className="w-screen h-[50vh] lg:h-screen" allowFullScreen={true} referrerPolicy="origin"></iframe>
-    <p>ID: {id}</p>
-    {mediaType}
-  </div>;
+  return (
+    <>
+      <Video params={params} />
+    </>
+  );
 };
 
 export default VideoPlayer;

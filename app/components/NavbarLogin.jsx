@@ -186,7 +186,7 @@ function NavList() {
   );
 }
 
-export default function Navigation() {
+export default function NavigationLogin() {
   const [openNav, setOpenNav] = React.useState(false);
 
   React.useEffect(() => {
@@ -214,7 +214,26 @@ export default function Navigation() {
           <NavList />
         </div>
         <div className="hidden gap-2 lg:flex">
-          <Logout />
+        <Link href="/login">
+            <Button
+              className="bg-[var(--secondary-dark)]"
+              variant="text"
+              size="sm"
+              color="blue-gray"
+            >
+              Log in
+            </Button>
+          </Link>
+
+          <Link href="/signup">
+            <Button
+              className="bg-[var(--secondary-dark)]"
+              variant="gradient"
+              size="sm"
+            >
+              Sign Up
+            </Button>
+          </Link>
         </div>
         <IconButton
           variant="text"
@@ -231,7 +250,26 @@ export default function Navigation() {
       <Collapse open={openNav}>
         <NavList />
         <div className="flex w-full flex-nowrap items-center gap-2 lg:hidden">
-          <Logout />
+          <Link href="/login">
+            <Button
+              className="bg-[var(--secondary-dark)]"
+              variant="text"
+              size="sm"
+              color="blue-gray"
+            >
+              Log in
+            </Button>
+          </Link>
+
+          <Link href="/signup">
+            <Button
+              className="bg-[var(--secondary-dark)]"
+              variant="gradient"
+              size="sm"
+            >
+              Sign Up
+            </Button>
+          </Link>
         </div>
       </Collapse>
     </Navbar>
