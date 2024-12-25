@@ -20,7 +20,7 @@ const Form = () => {
     const response = await axios.post("/api/register", formData);
 
     if (response) {
-      redirect("/login")
+      redirect("/registration-success")
     }
   };
 
