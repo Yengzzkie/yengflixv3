@@ -82,7 +82,7 @@ export default function TopExpandableCard({
           <motion.div
             layoutId={`card-${selectedSlide.title}`}
             ref={ref}
-            className="w-full max-w-[500px] h-full md:h-fit md:max-h-[90%] flex flex-col bg-white dark:bg-neutral-900 sm:rounded-3xl overflow-hidden z-[101]"
+            className="w-full max-w-[500px] h-full md:h-fit md:max-h-[90%] flex flex-col bg-neutral-900 sm:rounded-3xl overflow-hidden z-[101]"
           >
             <motion.button
               key={`button-${selectedSlide.title}`}
@@ -123,7 +123,7 @@ export default function TopExpandableCard({
                   {/* TITLE */}
                   <motion.h3
                     layoutId={`title-${selectedSlide.title}`}
-                    className="font-bold text-neutral-700 dark:text-neutral-200 text-2xl"
+                    className="font-bold text-neutral-200 text-2xl"
                   >
                     {isMovie ? selectedSlide.title : selectedSlide.name}
                   </motion.h3>
@@ -192,7 +192,7 @@ export default function TopExpandableCard({
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  className="text-neutral-600 text-xs md:text-sm lg:text-base h-40 md:h-fit pb-10 flex flex-col items-start gap-4 overflow-auto dark:text-neutral-400 [mask:linear-gradient(to_bottom,white,white,transparent)] [scrollbar-width:none] [-ms-overflow-style:none] [-webkit-overflow-scrolling:touch]"
+                  className="text-xs md:text-sm lg:text-base h-40 md:h-fit pb-10 flex flex-col items-start gap-4 overflow-auto text-neutral-400 [mask:linear-gradient(to_bottom,white,white,transparent)] [scrollbar-width:none] [-ms-overflow-style:none] [-webkit-overflow-scrolling:touch]"
                 >
                   {typeof selectedSlide.content === "function"
                     ? selectedSlide.content()

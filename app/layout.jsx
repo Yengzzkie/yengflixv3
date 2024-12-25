@@ -1,7 +1,8 @@
 import "./globals.css";
 import Navigation from "./components/Navbar";
 import NavigationLogin from "./components/NavbarLogin";
-import { getServerSession } from "next-auth";
+// import { getServerSession } from "next-auth";
+import { auth } from "./auth";
 
 export const metadata = {
   title: "Yengflix V3",
@@ -10,12 +11,12 @@ export const metadata = {
 };
 
 export default async function RootLayout({ children }) {
-  const session = await getServerSession();
+  const session = await auth();
 
   return (
     <html lang="en">
       <body className="bg-[var(--background)]">
-        {session ? <Navigation /> : <NavigationLogin />}
+        {session ? <Navigation session={session} /> : <NavigationLogin />}
         <main>{children}</main>
       </body>
     </html>

@@ -1,16 +1,6 @@
 "use client";
 import React from "react";
-import {
-  Navbar,
-  Collapse,
-  Typography,
-  Button,
-  IconButton,
-} from "@material-tailwind/react";
-import {
-  Bars3Icon,
-  XMarkIcon,
-} from "@heroicons/react/24/outline";
+import { Navbar, Typography, Button } from "@material-tailwind/react";
 import Link from "next/link";
 
 export default function NavigationLogin() {
@@ -37,42 +27,7 @@ export default function NavigationLogin() {
           </span>
           <span className="text-xs font-thin text-yellow-500">V3</span>
         </Typography>
-        <div className="hidden gap-2 lg:flex">
-        <Link href="/login">
-            <Button
-              className="bg-[var(--secondary-dark)]"
-              variant="text"
-              size="sm"
-              color="blue-gray"
-            >
-              Log in
-            </Button>
-          </Link>
-
-          <Link href="/signup">
-            <Button
-              className="bg-[var(--secondary-dark)]"
-              variant="gradient"
-              size="sm"
-            >
-              Sign Up
-            </Button>
-          </Link>
-        </div>
-        <IconButton
-          variant="text"
-          className="lg:hidden w-12"
-          onClick={() => setOpenNav(!openNav)}
-        >
-          {openNav ? (
-            <XMarkIcon className="h-6 w-6" strokeWidth={2} />
-          ) : (
-            <Bars3Icon className="h-6 w-6" strokeWidth={2} />
-          )}
-        </IconButton>
-      </div>
-      <Collapse open={openNav}>
-        <div className="flex w-full flex-nowrap items-center gap-2 lg:hidden">
+        <div className="gap-2 lg:flex">
           <Link href="/login">
             <Button
               className="bg-[var(--secondary-dark)]"
@@ -83,18 +38,8 @@ export default function NavigationLogin() {
               Log in
             </Button>
           </Link>
-
-          <Link href="/signup">
-            <Button
-              className="bg-[var(--secondary-dark)]"
-              variant="gradient"
-              size="sm"
-            >
-              Sign Up
-            </Button>
-          </Link>
         </div>
-      </Collapse>
+      </div>
     </Navbar>
   );
 }

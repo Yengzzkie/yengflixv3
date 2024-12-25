@@ -1,13 +1,14 @@
 "use client";
 import React, { useState } from "react";
 import { signIn } from "next-auth/react"
+// import { signIn } from "../auth";
 import { Label } from "../components/ui/label";
 import { Input } from "../components/ui/input";
 import { cn } from "../lib/utils";
 import { IconBrandFacebook, IconBrandGoogle } from "@tabler/icons-react";
-import { redirect } from "next/navigation";
 import Loader from "./Loader";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function LoginForm() {
   const router = useRouter()
@@ -48,7 +49,7 @@ export default function LoginForm() {
 
   return (
     <div className="max-w-xl w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input lg:bg-black">
-      <h2 className="text-center font-bold text-xl text-neutral-800 dark:text-neutral-200">
+      <h2 className="text-center font-bold text-xl text-neutral-800">
         <span className="text-[var(--secondary-dark)] text-3xl tracking-tighter">YENGFLIX</span>
         <span className="text-yellow-500 text-xs font-thin">V3</span>
       </h2>
@@ -72,6 +73,7 @@ export default function LoginForm() {
           {loading ? <Loader /> : "Login"}
           <BottomGradient />
         </button>
+        <p className="mt-4">Don't have an account? <Link href="/signup" className="font-semibold hover:text-[var(--secondary-dark)]">Sign up!</Link></p>
         <p className="text-red-500 italic mt-2">{error}</p>
 
         <div className="bg-gradient-to-r from-transparent via-neutral-300 dark:via-neutral-700 to-transparent my-8 h-[1px] w-full" />
@@ -81,8 +83,8 @@ export default function LoginForm() {
             className=" relative group/btn flex space-x-2 items-center justify-start px-4 w-full text-black rounded-md h-10 font-medium shadow-input bg-gray-50 dark:bg-zinc-900 dark:shadow-[0px_0px_1px_1px_var(--neutral-800)]"
             type="submit"
           >
-            <IconBrandFacebook className="h-4 w-4 text-neutral-800 dark:text-neutral-300" />
-            <span className="text-neutral-700 dark:text-neutral-300 text-sm">
+            <IconBrandFacebook className="h-4 w-4 text-neutral-200" />
+            <span className="text-neutral-200 text-sm">
               Facebook
             </span>
             <BottomGradient />
@@ -91,8 +93,8 @@ export default function LoginForm() {
             className=" relative group/btn flex space-x-2 items-center justify-start px-4 w-full text-black rounded-md h-10 font-medium shadow-input bg-gray-50 dark:bg-zinc-900 dark:shadow-[0px_0px_1px_1px_var(--neutral-800)]"
             type="submit"
           >
-            <IconBrandGoogle className="h-4 w-4 text-neutral-800 dark:text-neutral-300" />
-            <span className="text-neutral-700 dark:text-neutral-300 text-sm">
+            <IconBrandGoogle className="h-4 w-4 text-neutral-200" />
+            <span className="text-neutral-200 text-sm">
               Google
             </span>
             <BottomGradient />

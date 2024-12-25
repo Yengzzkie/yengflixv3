@@ -1,9 +1,9 @@
 import Video from "@/app/components/Video";
 import { redirect } from "next/navigation";
-import { getServerSession } from "next-auth";
+import { auth } from "@/app/auth";
 
 const VideoPlayer = async ({ params }) => {
-  const session = await getServerSession()
+  const session = await auth()
 
   if (!session) {
     redirect("/login")
