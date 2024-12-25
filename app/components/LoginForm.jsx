@@ -1,10 +1,9 @@
 "use client";
 import React, { useState } from "react";
 import { signIn } from "next-auth/react"
-// import { signIn } from "../auth";
 import { Label } from "../components/ui/label";
 import { Input } from "../components/ui/input";
-import { cn } from "../lib/utils";
+import { cn } from "../utils/utils";
 import { IconBrandFacebook, IconBrandGoogle } from "@tabler/icons-react";
 import Loader from "./Loader";
 import { useRouter } from "next/navigation";

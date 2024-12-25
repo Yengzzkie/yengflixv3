@@ -3,7 +3,7 @@ import { ToastContainer } from "react-toastify";
 import RecommendedCarousel from "./components/RecommendedCarousel";
 import ExpandableCards from "./components/ExpandableCard";
 import { useEffect, useState } from "react";
-import { fetchData } from "./lib/fetchData";
+import { fetchData } from "./utils/fetchData";
 import {
   useMovieData,
   useTvData,

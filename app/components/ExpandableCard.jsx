@@ -2,7 +2,7 @@
 // import Image from "next/image";
 import React, { useEffect, useId, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { useOutsideClick } from "../lib/useOutsideHook";
+import { useOutsideClick } from "../utils/useOutsideHook";
 import RatingStar from "./Rating";
 
 export default function ExpandableCard({ data }) {

@@ -1,6 +1,8 @@
 import prisma from "@/db/prismaClient";
 import { hash } from "bcryptjs";
 import { NextResponse } from "next/server";
+import { sendVerificationMail } from "@/app/utils/sendMail";
+import { generateVerificationToken } from "@/app/utils/generateVerificationToken";
 
 export async function POST(request) {
   try {
@@ -26,6 +28,10 @@ export async function POST(request) {
         password: hashedPassword,
       },
     });
+
+    const token = await generateVerificationToken(user)
+    
+    sendVerificationMail(user, token)
 
     return NextResponse.json(
       {

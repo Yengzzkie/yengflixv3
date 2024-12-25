@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { Label } from "../components/ui/label";
 import { Input } from "../components/ui/input";
-import { cn } from "../lib/utils";
+import { cn } from "../utils/utils";
 import { IconBrandFacebook, IconBrandGoogle } from "@tabler/icons-react";
 import { redirect } from "next/navigation";
 import axios from "axios";

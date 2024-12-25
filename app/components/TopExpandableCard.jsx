@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { useOutsideClick } from "../lib/useOutsideHook";
+import { useOutsideClick } from "../utils/useOutsideHook";
 import RatingStar from "./Rating";
 import { PlayIcon, BookmarkIcon } from "@heroicons/react/24/solid";
 import axios from "axios";
