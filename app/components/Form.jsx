@@ -30,7 +30,6 @@ const Form = () => {
       ...prevFormData,
       [name]: value,
     }));
-    console.log(formData);
   }
   return (
     <div className="min-h-fit max-w-xl w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input bg-[#000000ab] lg:bg-black">

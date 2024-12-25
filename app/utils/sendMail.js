@@ -3,14 +3,14 @@ import nodemailer from "nodemailer";
 const transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
   auth: {
-    user: "gatchalian.manuel@gmail.com",
-    pass: "bdvvfcylhbmqtryg",
+    user: process.env.GMAIL_USERNAME,
+    pass: process.env.GMAIL_PASS,
   },
 });
 
 export async function sendVerificationMail(userData, token) {
   const { name, email } = userData;
-  console.log(name, email)
+  console.log(name, email);
 
   const verificationUrl = `http://localhost:3000/verify-email/${token}`;
 
@@ -21,18 +21,18 @@ export async function sendVerificationMail(userData, token) {
       subject: `Verify your email`,
       text: `${verificationUrl}`,
       html: `
-            <div style="color: #F7F7F7; background-color: #1693b6; font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border-radius: 10px;">
-              <h2 style="text-align: center; color: #fff; text-shadow: -5px 5px 3px #0e7490">Welcome to Pass-A-Buy!</h2>
-              <p>Hello <strong>${name}</strong>,</p>
-              <p>Thank you for registering with us! Please verify your email by clicking the button below:</p>
-              <div style="text-align: center; margin: 20px;">
-                <a href="${verificationUrl}" style="background-color: #4CAF50; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Verify Email</a>
-              </div>
-              <p style="font-style: italic;">If you did not create an account with us, you can safely ignore this email.</p>
-              <p>Best regards,<br>Yengflix</p>
-              <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;">
-              <p style="font-size: 12px; color: #2E2E2E; text-align: center;">&copy; ${new Date().getFullYear()} Pass-A-Buy. All rights reserved.</p>
-            </div>
+        <div style="color: #fbfbfb; background-color: #262626; font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border-radius: 10px;">
+          <h2 style="text-align: center; color: #e0142f; text-shadow: -3px 3px 2px rgba(0, 0, 0, 0.7);">Welcome to Yengflix!</h2>
+          <p style="color: #fbfbfb;">Hello <strong>${name}</strong>,</p>
+          <p style="color: #fbfbfb;">Thank you for registering with us! Please verify your email by clicking the button below:</p>
+          <div style="text-align: center; margin: 20px;">
+            <a href="${verificationUrl}" style="background-color: #e0142f; color: #fbfbfb; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: bold;">Verify Email</a>
+          </div>
+          <p style="color: #fbfbfb; font-style: italic;">If you did not create an account with us, you can safely ignore this email.</p>
+          <p style="color: #fbfbfb;">Best regards,<br>Yengflix</p>
+          <hr style="border: none; border-top: 1px solid #fbfbfb; margin: 20px 0;">
+          <p style="font-size: 12px; color: #fbfbfb; text-align: center;">&copy; ${new Date().getFullYear()} Yengflix. All rights reserved.</p>
+        </div>
           `,
     };
 

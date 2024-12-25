@@ -9,8 +9,8 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("NEXT_PUBLIC_DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("NEXT_PUBLIC_DATABASE_URL")
   directUrl = env("NEXT_PUBLIC_DIRECT_URL")
   // url      = "postgresql://macbookpro:Yengzzkie18@localhost:5432/mydb?schema=public"
 }
@@ -24,12 +24,13 @@ model Admin {
 }
 
 model User {
-  id        String   @id @default(uuid())
-  name      String
-  email     String   @unique
-  password  String
-  avatar    String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
-  list      Json[]
+  id         String   @id @default(uuid())
+  name       String
+  email      String   @unique
+  password   String
+  avatar     String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @default(now())
+  list       Json[]
+  isVerified Boolean  @default(false)
 }

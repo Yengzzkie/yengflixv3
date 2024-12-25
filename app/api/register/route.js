@@ -31,11 +31,11 @@ export async function POST(request) {
 
     const token = await generateVerificationToken(user)
     
-    sendVerificationMail(user, token)
+    await sendVerificationMail(user, token)
 
     return NextResponse.json(
       {
-        message: "User created successfully",
+        message: "User created successfully. Please check your email for verification instructions.",
         user: {
           id: user.id,
           email: user.email,
