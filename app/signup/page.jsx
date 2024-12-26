@@ -10,7 +10,7 @@ const page = async () => {
   }
 
   return (
-    <div className="signup-background min-h-[90vh] relative bg-[url('https://i.ibb.co/vXqDmnh/background.jpg')] lg:py-10">
+    <div className="signup-background min-h-[90vh] relative bg-[url('/signupbg.jpg')] lg:py-10">
       <SignupForm />
     </div>
   );
