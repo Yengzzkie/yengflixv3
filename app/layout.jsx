@@ -1,7 +1,6 @@
 import "./globals.css";
 import Navigation from "./components/Navbar";
 import NavigationLogin from "./components/NavbarLogin";
-// import { getServerSession } from "next-auth";
 import { auth } from "./auth";
 
 export const metadata = {
