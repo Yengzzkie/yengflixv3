@@ -4,7 +4,6 @@ import { Label } from "../components/ui/label";
 import { Input } from "../components/ui/input";
 import { cn } from "../utils/utils";
 import { IconBrandFacebook, IconBrandGoogle } from "@tabler/icons-react";
-import { redirect } from "next/navigation";
 import { useRouter } from "next/navigation";
 import Loader from "./Loader";
 import axios from "axios";
@@ -27,8 +26,16 @@ const STRENGTH_CONFIG = {
     4: "bg-amber-700",
     5: "bg-emerald-500",
   },
+  text_color: {
+    0: "bg-border",
+    1: "text-red-500",
+    2: "text-orange-500",
+    3: "text-amber-500",
+    4: "text-amber-700",
+    5: "text-emerald-500",
+  },
   texts: {
-    0: "Enter a password",
+    0: "",
     1: "Weak password",
     2: "Medium password!",
     3: "Strong password!!",
@@ -124,7 +131,7 @@ const Form = () => {
   }
 
   return (
-    <div className="min-h-fit max-w-xl w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input bg-[#000000ab] lg:bg-black">
+    <div className="min-h-fit max-w-xl w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input bg-[#000000dd] lg:bg-black">
       <h2 className="text-center font-bold text-xl text-neutral-800 dark:text-neutral-200">
         <span className="text-[var(--secondary-dark)] text-3xl tracking-tighter">
           YENGFLIX
@@ -222,7 +229,9 @@ const Form = () => {
             className="mb-2 text-sm font-medium flex justify-between"
           >
             <span>Must contain:</span>
-            <span>
+            <span className={`${
+                STRENGTH_CONFIG.text_color[calculateStrength.score]
+              } transition-all duration-500`}>
               {STRENGTH_CONFIG.texts[Math.min(calculateStrength.score, 4)]}
             </span>
           </p>
