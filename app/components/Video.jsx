@@ -2,38 +2,73 @@
 import { useSearchParams } from "next/navigation";
 import { use, useEffect, useState } from "react";
 import { fetchData } from "../utils/fetchData";
-import { PlusIcon, HandThumbUpIcon, ShareIcon } from "@heroicons/react/24/outline";
+import {
+  PlusIcon,
+  HandThumbUpIcon,
+  ShareIcon,
+} from "@heroicons/react/24/outline";
+import axios from "axios";
+import TopExpandableCard from "./TopExpandableCard";
 
 const Video = ({ params }) => {
   const idParams = use(params);
   const id = idParams.id;
   const mediaType = useSearchParams().get("media_type");
-  const title = useSearchParams().get("title");
   const [similarMovies, setSimilarMovies] = useState([]);
   const [details, setDetails] = useState({});
+  const [selectedSlide, setSelectedSlide] = useState(null);
+  const [open, setOpen] = useState(false);
   const movieSrc = `https://vidsrc.xyz/embed/movie/${id}`;
   const tvSrc = `https://vidsrc.xyz/embed/tv/${id}`;
   const IMG_PATH = "https://image.tmdb.org/t/p/original/";
+  const NEXT_PUBLIC_API_KEY = process.env.NEXT_PUBLIC_API_KEY;
 
   async function fetchSimilarMovies() {
-    const response = await fetchData(`https://api.themoviedb.org/3/movie/${id}/recommendations?language=en-US&page=1`)
-    setSimilarMovies(response)
+    const response = await fetchData(
+      `https://api.themoviedb.org/3/movie/${id}/recommendations?language=en-US&page=1`
+    );
+    setSimilarMovies(response);
   }
 
   async function fetchDetails() {
-    const response = await fetchData(`https://api.themoviedb.org/3/movie/${id}?language=en-US`)
-    console.log(response)
-    setDetails(response)
+    try {
+      const response = await axios.get(
+        `https://api.themoviedb.org/3/movie/${id}?language=en-US`,
+        {
+          headers: {
+            accept: "application/json",
+            Authorization: `Bearer ${NEXT_PUBLIC_API_KEY}`,
+          },
+        }
+      );
+      // im using axios to fetch the details because for some reason the fetchData hook is returning undefined
+      setDetails(response?.data);
+    } catch (error) {
+      console.error({ error });
+    }
   }
 
   useEffect(() => {
-    fetchDetails();
-    fetchSimilarMovies();
-    console.log(details)
-  }, [details])
+    const fetchDataAll = async () => {
+      try {
+        await Promise.all([fetchSimilarMovies(), fetchDetails()]);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchDataAll();
+  }, []);
+
+  const handleSlideClick = (slide) => {
+    setSelectedSlide(slide);
+    setOpen(true);
+    console.log(slide)
+  };
 
   return (
     <div>
+      <TopExpandableCard open={open} setOpen={setOpen} selectedSlide={selectedSlide} media_type={mediaType} />
       <iframe
         src={mediaType === "Movies" ? movieSrc : tvSrc}
         className="w-screen h-[50vh] lg:h-screen"
@@ -41,33 +76,47 @@ const Video = ({ params }) => {
         referrerPolicy="origin"
       ></iframe>
 
-      <h1 className="font-bold text-neutral-200 text-2xl px-6 py-2">{title}</h1>
-
-      <p className="px-6 py-2 text-sm text-[var(--primary)]">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Expedita voluptates accusantium magni quaerat omnis quam fuga praesentium. A iusto distinctio beatae nisi totam! Commodi, odit debitis! Consequuntur, quisquam itaque? Odit.</p>
+      <h1 className="font-bold text-neutral-200 text-2xl px-3 lg:px-6 py-2">
+        {details.title}
+      </h1>
+      <p className="px-3 lg:px-6 py-2 text-sm text-[var(--primary)]">
+        {details.overview}
+      </p>
 
       <div className="flex justify-evenly p-6">
         <div className="flex flex-col items-center">
-          <PlusIcon className="w-6 mb-2" />
+          <PlusIcon className="w-6 mb-2 cursor-pointer hover:text-[var(--secondary-dark)]" />
           <p className="text-xs">My List</p>
         </div>
         <div className="flex flex-col items-center">
-          <HandThumbUpIcon className="w-6 mb-2" />
+          <HandThumbUpIcon className="w-6 mb-2 cursor-pointer hover:text-[var(--secondary-dark)]" />
           <p className="text-xs">Rate</p>
         </div>
         <div className="flex flex-col items-center">
-          <ShareIcon className="w-6 mb-2" />
+          <ShareIcon className="w-6 mb-2 cursor-pointer hover:text-[var(--secondary-dark)]" />
           <p className="text-xs">Share</p>
         </div>
       </div>
 
       <hr />
-      <h1 className="font-roboto text-lg lg:text-4xl font-bold border-t-4 py-2 px-2 lg:px-4 mx-6 border-red-500 w-fit">More like this</h1>
-      <div className="grid grid-cols-5 lg:grid-cols-8 gap-3 lg:gap-5 px-6">
-        {similarMovies.map((movie) => (
-          <div key={movie.id}>
-            <img className="card-shadow rounded-md" src={`${IMG_PATH}${movie.poster_path}`} alt={movie.title} />
-          </div>
-        ))}
+      <h1 className="font-roboto text-lg lg:text-4xl font-bold border-t-4 py-2 px-2 lg:px-4 mx-6 border-red-500 w-fit">
+        More like this
+      </h1>
+      <div className="grid grid-cols-5 lg:grid-cols-8 gap-3 lg:gap-5 px-3 lg:px-6">
+        {similarMovies.length === 0 ? (
+          <p className="text-[var(--primary-light)] italic w-full">No Similar movies for this title</p>
+        ) : (
+          similarMovies.map((movie) => (
+            <div key={movie.id} className="cursor-pointer" onClick={() => handleSlideClick(movie)}>
+              <img
+                className="card-shadow rounded-md"
+                loading="lazy"
+                src={`${IMG_PATH}${movie.poster_path}`}
+                alt={movie.title}
+              />
+            </div>
+          ))
+        )}
       </div>
     </div>
   );

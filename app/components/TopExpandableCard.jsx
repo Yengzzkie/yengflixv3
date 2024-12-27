@@ -3,7 +3,6 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useOutsideClick } from "../utils/useOutsideHook";
 import RatingStar from "./Rating";
 import { PlayIcon, BookmarkIcon } from "@heroicons/react/24/solid";
-import axios from "axios";
 
 export default function TopExpandableCard({
   open,

@@ -17,7 +17,7 @@ const fetchData = async (URL) => {
     // console.log(response.data.results)
     return response.data.results;
   } catch (error) {
-    console.error(error);
+    console.error({ error });
   }
 };
 
