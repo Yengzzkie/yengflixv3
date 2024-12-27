@@ -72,7 +72,7 @@ export default function LoginForm() {
           {loading ? <Loader /> : "Login"}
           <BottomGradient />
         </button>
-        <p className="mt-4">Don't have an account? <Link href="/signup" className="font-semibold hover:text-[var(--secondary-dark)]">Sign up!</Link></p>
+        <p className="mt-4">Don't have an account? <Link href="/signup" className="font-semibold text-[var(--secondary-dark)] hover:text-[var(--secondary-light)]">Sign up!</Link></p>
         <p className="text-red-500 italic mt-2">{error}</p>
 
         <div className="bg-gradient-to-r from-transparent via-neutral-700 to-transparent my-8 h-[1px] w-full" />

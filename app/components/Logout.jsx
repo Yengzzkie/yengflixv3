@@ -1,5 +1,4 @@
 import { signOut } from "next-auth/react";
-// import { signOut } from "../auth";
 import { Button } from "@material-tailwind/react";
 import { useRouter } from "next/navigation";
 
@@ -11,7 +10,6 @@ const Logout = () => {
 
     router.push('/login')
     router.refresh();
-    // redirect("/login")
   }
 
   return (

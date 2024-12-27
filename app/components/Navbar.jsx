@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import {
   Navbar,
   Collapse,
@@ -308,7 +308,7 @@ export default function Navigation({ session }) {
       {/* Collapsible Navigation for Mobile */}
       <Collapse open={openNav}>
         <NavList />
-        <div className="flex w-full flex-nowrap items-center gap-2 pl-2 lg:hidden">
+        <div className="flex w-full flex-nowrap items-center gap-2 lg:hidden">
           <Logout />
         </div>
       </Collapse>
