@@ -102,7 +102,7 @@ const Video = ({ params }) => {
       <h1 className="font-roboto text-lg lg:text-4xl font-bold border-t-4 py-2 px-2 lg:px-4 mx-6 border-red-500 w-fit">
         More like this
       </h1>
-      <div className="grid grid-cols-5 lg:grid-cols-8 gap-3 lg:gap-5 px-3 lg:px-6">
+      <div className="grid grid-cols-4 lg:grid-cols-8 gap-3 lg:gap-5 px-3 lg:px-6">
         {similarMovies.length === 0 ? (
           <p className="text-[var(--primary-light)] italic w-full">No Similar movies for this title</p>
         ) : (
