@@ -26,7 +26,6 @@ export default function LoginForm() {
         password: formData.password,
         redirect: false,
     })
-    console.log(response)
 
     if (response.error === "CredentialsSignin") {
       setError("Invalid credentials")

@@ -33,4 +33,5 @@ model User {
   updatedAt  DateTime @default(now())
   list       Json[]
   isVerified Boolean  @default(false)
+  location   Json?
 }

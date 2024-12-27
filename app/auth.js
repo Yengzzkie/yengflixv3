@@ -8,12 +8,17 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     jwt({ token, user }) {
       if (user) {
         token.id = user.id;
+        token.location = user.location
+        // add user id and location to the token because it is not included in the token
+        // by default
       }
       return token;
     },
     session({ session, token }) {
       session.user.id = token.id;
+      session.user.location = token.location
       return session;
+      // and assign the ID and location to the session to be used in the frontend
     },
   },
   providers: [
@@ -42,7 +47,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           return null;
         }
 
-        return { name: user.name, email: user.email, id: user.id };
+        return { name: user.name, email: user.email, id: user.id, location: user.location };
       },
     }),
   ],

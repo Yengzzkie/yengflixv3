@@ -187,6 +187,7 @@ function NavList() {
 
 export default function Navigation({ session }) {
   const [openNav, setOpenNav] = React.useState(false);
+  const country = session.user.location.countryCode.toLowerCase()
 
   React.useEffect(() => {
     window.addEventListener(
@@ -214,15 +215,21 @@ export default function Navigation({ session }) {
         </div>
         <div className="hidden gap-2 lg:flex items-center">
           <div className="mr-4">
-            <span className="mr-2 text-sm text-gray-400]">Hello, {session.user.name}</span>
+            <div className="flex items-center">
+              <span className="mr-2 text-sm text-gray-400]">Hello, {session.user.name}</span>
+              <img src={`/flags/${country}.png`} alt="flag" className="w-6 h-4" />
+            </div>
             <p className="text-xs text-gray-400">{session.user.email}</p>
           </div>
           <Logout />
         </div>
         <div className="block mr-0 lg:hidden lg:mr-4">
+          <div className="flex">
             <span className="mr-2 text-sm text-gray-400]">Hello, {session.user.name}</span>
-            <p className="text-xs text-gray-400">{session.user.email}</p>
+            <img src={`/flags/${country}.png`} alt="flag" className="w-6 h-4" />
           </div>
+          <p className="text-xs text-gray-400">{session.user.email}</p>
+        </div>
         <IconButton
           variant="text"
           className="lg:hidden w-12"

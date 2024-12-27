@@ -6,7 +6,7 @@ import { generateVerificationToken } from "@/app/utils/generateVerificationToken
 
 export async function POST(request) {
   try {
-    const { name, email, password } = await request.json();
+    const { name, email, password, location } = await request.json();
 
     const userExist = await prisma.user.findUnique({
       where: { email },
@@ -26,6 +26,7 @@ export async function POST(request) {
         name,
         email,
         password: hashedPassword,
+        location,
       },
     });
 

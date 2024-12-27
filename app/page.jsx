@@ -46,7 +46,7 @@ const HomePage = () => {
 
   async function fetchAllTv() {
     const allTv = await fetchData(
-      `https://api.themoviedb.org/3/discover/tv?include_adult=false&include_null_first_air_dates=false&language=en-US&page=${moviePage}&sort_by=popularity.desc`
+      `https://api.themoviedb.org/3/tv/top_rated?language=en-US&page=1`
     );
     setAllTv(allTv);
   }

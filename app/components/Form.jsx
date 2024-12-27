@@ -52,6 +52,7 @@ const Form = () => {
     name: "",
     email: "",
     password: "",
+    location: "",
     confirmPassword: "",
   });
   const router = useRouter();
@@ -100,34 +101,42 @@ const Form = () => {
         setError(error.response?.data?.message);
       }
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   };
 
   // INPUT HANDLER
-  function handleInputChange(e) {
+  async function handleInputChange(e) {
     const { name, value } = e.target;
+    // get the user's location via IP address. ssssshhhh
+    try {
+      const res = await fetch("https://api.db-ip.com/v2/free/self");
+      const loc = await res.json();
 
-    setFormData((prevFormData) => {
-      const updatedFormData = {
-        ...prevFormData,
-        [name]: value,
-      };
-
-      console.log(calculateStrength)
-
-      if (updatedFormData.password !== updatedFormData.confirmPassword) {
-        setError("Passwords do not match");
-      } else {
-        setError(null);
-      }
-
-      if (name === "password") {
-        setPassword(value);
-      }
-
-      return updatedFormData;
-    });
+      setFormData((prevFormData) => {
+        const updatedFormData = {
+          ...prevFormData,
+          [name]: value,
+          location: loc
+        };
+  
+        console.log(updatedFormData)
+  
+        if (updatedFormData.password !== updatedFormData.confirmPassword) {
+          setError("Passwords do not match");
+        } else {
+          setError(null);
+        }
+  
+        if (name === "password") {
+          setPassword(value);
+        }
+  
+        return updatedFormData;
+      });
+    } catch (error) {
+      console.error({ error })
+    }
   }
 
   return (
@@ -194,17 +203,26 @@ const Form = () => {
               {isVisible ? <EyeOff size={16} /> : <Eye size={16} />}
             </button>
           </div>
-          <LabelInputContainer className="mb-0 mt-4">
-            <Label htmlFor="confirmPassword">Confirm Password</Label>
-            <Input
-              onChange={handleInputChange}
-              value={formData.confirmPassword}
+
+          <label
+            htmlFor="confirmPassword"
+            className="block text-sm font-medium mt-4 mb-1"
+          >
+            Confirm password
+          </label>
+          <div className="relative">
+            <input
               id="confirmPassword"
-              placeholder="••••••••"
-              type="password"
               name="confirmPassword"
+              type={isVisible ? "text" : "password"}
+              value={formData.confirmPassword}
+              onChange={handleInputChange}
+              placeholder="••••••••"
+              aria-invalid={calculateStrength.score < 4}
+              aria-describedby="password-strength"
+              className="w-full p-2 hover:border-2 text-gray-200 rounded-md bg-[#27272a] outline-none focus-within:border-[#525252] transition"
             />
-          </LabelInputContainer>
+          </div>
 
           {/* PASSWORD MATCH ERROR */}
           <p className="text-red-500 italic font-sm">{error}</p>
@@ -228,10 +246,12 @@ const Form = () => {
             id="password-strength"
             className="mb-2 text-sm font-medium flex justify-between"
           >
-            <span>Must contain:</span>
-            <span className={`${
+            <span>Password must contain:</span>
+            <span
+              className={`${
                 STRENGTH_CONFIG.text_color[calculateStrength.score]
-              } transition-all duration-500`}>
+              } transition-all duration-500`}
+            >
               {STRENGTH_CONFIG.texts[Math.min(calculateStrength.score, 4)]}
             </span>
           </p>
