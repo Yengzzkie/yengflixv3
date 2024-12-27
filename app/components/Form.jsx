@@ -74,8 +74,14 @@ const Form = () => {
     setLoading(true);
     setError(null);
 
-    if (calculateStrength.score < 5) {
-      setError("Password is too weak");
+    if (formData.name || formData.email === "") {
+      setError("Display name or email cannot be empty");
+      setLoading(false);
+      return; // prevent form submission
+    }
+
+    if (calculateStrength.score !== 5) {
+      setError("Password must meet all criteria");
       setLoading(false);
       return; // prevent form submission
     }
@@ -141,22 +147,22 @@ const Form = () => {
 
   return (
     <div className="min-h-fit max-w-xl w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input bg-[#000000dd] lg:bg-black">
-      <h2 className="text-center font-bold text-xl text-neutral-800 dark:text-neutral-200">
+      <h2 className="text-center font-bold text-xl text-neutral-200">
         <span className="text-[var(--secondary-dark)] text-3xl tracking-tighter">
           YENGFLIX
         </span>
         <span className="text-yellow-500 text-xs font-thin">V3</span>
       </h2>
-      <p className="text-neutral-600 text-sm max-w-sm mt-2 dark:text-neutral-300">
+      <p className="text-sm max-w-sm mt-2 text-neutral-400">
         Sign up to Yengflix then give me your credit card info so I can bill you
         everytime you use this app.
       </p>
       <br />
-      <p>Just kidding, this is 100% FREE!</p>
+      <p className="text-yellow-600">Just kidding, this is 100% FREE!</p>
       <form className="my-8" onSubmit={handleSubmit}>
         <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mb-4">
           <LabelInputContainer>
-            <Label htmlFor="name">Display Name</Label>
+            <Label htmlFor="name" className="text-neutral-300">Display Name</Label>
             <Input
               onChange={handleInputChange}
               value={formData.name}
@@ -164,11 +170,12 @@ const Form = () => {
               placeholder="Your name"
               type="text"
               name="name"
+              className="bg-[#27272a] text-neutral-300"
             />
           </LabelInputContainer>
         </div>
         <LabelInputContainer className="mb-4">
-          <Label htmlFor="email">Email Address</Label>
+          <Label htmlFor="email" className="text-neutral-300">Email Address</Label>
           <Input
             onChange={handleInputChange}
             value={formData.email}
@@ -176,10 +183,11 @@ const Form = () => {
             placeholder="user@domain.com"
             type="email"
             name="email"
+            className="bg-[#27272a] text-neutral-300"
           />
         </LabelInputContainer>
         <div className="w-full mx-auto mb-4">
-          <label htmlFor="password" className="block text-sm font-medium">
+          <label htmlFor="password" className="text-neutral-300 block text-sm font-medium">
             Password
           </label>
           <div className="relative">
@@ -192,7 +200,7 @@ const Form = () => {
               placeholder="••••••••"
               aria-invalid={calculateStrength.score < 4}
               aria-describedby="password-strength"
-              className="w-full p-2 hover:border-2 text-gray-200 rounded-md bg-[#27272a] outline-none focus-within:border-[#525252] transition"
+              className="w-full p-2 hover:border-2 text-gray-300 rounded-md bg-[#27272a] outline-none focus-within:border-[#525252] transition"
             />
             <button
               type="button"
@@ -206,7 +214,7 @@ const Form = () => {
 
           <label
             htmlFor="confirmPassword"
-            className="block text-sm font-medium mt-4 mb-1"
+            className="text-neutral-300 block text-sm font-medium mt-4 mb-1"
           >
             Confirm password
           </label>
@@ -220,7 +228,7 @@ const Form = () => {
               placeholder="••••••••"
               aria-invalid={calculateStrength.score < 4}
               aria-describedby="password-strength"
-              className="w-full p-2 hover:border-2 text-gray-200 rounded-md bg-[#27272a] outline-none focus-within:border-[#525252] transition"
+              className="w-full p-2 hover:border-2 text-gray-300 rounded-md bg-[#27272a] outline-none focus-within:border-[#525252] transition"
             />
           </div>
 
@@ -280,22 +288,22 @@ const Form = () => {
         </div>
 
         <button
-          className="flex justify-center items-center bg-gradient-to-br relative group/btn from-black dark:from-zinc-900 dark:to-zinc-900 to-neutral-600 dark:bg-zinc-800 w-full text-white rounded-md h-10 font-medium shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset]"
+          className="flex justify-center items-center bg-gradient-to-br relative group/btn from-zinc-900 to-zinc-900 bg-zinc-800 w-full text-white rounded-md h-10 font-medium shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset]"
           type="submit"
         >
           {loading ? <Loader /> : "Sign up"}
           <BottomGradient />
         </button>
 
-        <div className="bg-gradient-to-r from-transparent via-neutral-300 dark:via-neutral-700 to-transparent my-8 h-[1px] w-full" />
+        <div className="bg-gradient-to-r from-transparent via-neutral-700 to-transparent my-8 h-[1px] w-full" />
 
         <div className="flex flex-col space-y-4">
           <button
             className=" relative group/btn flex space-x-2 items-center justify-start px-4 w-full text-black rounded-md h-10 font-medium shadow-input bg-gray-50 dark:bg-zinc-900 dark:shadow-[0px_0px_1px_1px_var(--neutral-800)]"
             type="submit"
           >
-            <IconBrandFacebook className="h-4 w-4 text-neutral-800 dark:text-neutral-300" />
-            <span className="text-neutral-700 dark:text-neutral-300 text-sm">
+            <IconBrandFacebook className="h-4 w-4 text-neutral-300" />
+            <span className="text-neutral-300 text-sm">
               Facebook
             </span>
             <BottomGradient />
@@ -304,8 +312,8 @@ const Form = () => {
             className=" relative group/btn flex space-x-2 items-center justify-start px-4 w-full text-black rounded-md h-10 font-medium shadow-input bg-gray-50 dark:bg-zinc-900 dark:shadow-[0px_0px_1px_1px_var(--neutral-800)]"
             type="submit"
           >
-            <IconBrandGoogle className="h-4 w-4 text-neutral-800 dark:text-neutral-300" />
-            <span className="text-neutral-700 dark:text-neutral-300 text-sm">
+            <IconBrandGoogle className="h-4 w-4 text-neutral-300" />
+            <span className="text-neutral-300 text-sm">
               Google
             </span>
             <BottomGradient />
