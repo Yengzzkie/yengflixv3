@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import {
   Navbar,
   Collapse,
@@ -27,6 +27,7 @@ import {
   RectangleGroupIcon,
   TagIcon,
   UserGroupIcon,
+  MagnifyingGlassIcon,
 } from "@heroicons/react/24/solid";
 import Link from "next/link";
 import Logout from "./Logout";
@@ -36,11 +37,13 @@ const navListMenuItems = [
     title: "Browse Movies",
     description: "Find the perfect solution for your needs.",
     icon: VideoCameraIcon,
+    link: "/browse-movies",
   },
   {
     title: "Browse TV Shows",
     description: "Find the perfect solution for your needs.",
     icon: TvIcon,
+    link: "browse-tv%20shows",
   },
   {
     title: "My List",
@@ -83,8 +86,8 @@ function NavListMenu() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
   const renderItems = navListMenuItems.map(
-    ({ icon, title, description }, key) => (
-      <a href="#" key={key}>
+    ({ icon, title, description, link }, key) => (
+      <a href={link} key={key}>
         <MenuItem className="flex items-center gap-3 rounded-l p-6 hover:bg-[var(--primary-dark)]">
           <div className="flex items-center justify-center rounded-lg p-2">
             {" "}
@@ -167,7 +170,7 @@ function NavList() {
         className="font-medium"
       >
         <ListItem className="flex items-center gap-2 py-2 pr-4">
-          <Link href="/">Home</Link>
+          <Link onClick={() => setOpenNav(!openNav)} href="/">Home</Link>
         </ListItem>
       </Typography>
       <NavListMenu />
@@ -175,10 +178,10 @@ function NavList() {
         as="div"
         variant="small"
         color="blue-gray"
-        className="font-medium"
+        className="font-medium lg:hidden"
       >
         <ListItem className="flex items-center gap-2 py-2 pr-4">
-          <Link href="/browse-movies">Search Title</Link>
+          <Link onClick={() => setOpenNav(!openNav)} href="/search">Search Title</Link>
         </ListItem>
       </Typography>
     </List>
@@ -187,18 +190,27 @@ function NavList() {
 
 export default function Navigation({ session }) {
   const [openNav, setOpenNav] = React.useState(false);
-  const country = session.user.location.countryCode.toLowerCase()
+  const [openSearch, setOpenSearch] = React.useState(false);
+  const [searchValue, setSearchValue] = React.useState("");
+
+  const country = session.user.location.countryCode.toLowerCase();
 
   React.useEffect(() => {
     window.addEventListener(
       "resize",
       () => window.innerWidth >= 960 && setOpenNav(false)
     );
+    return () =>
+      window.removeEventListener(
+        "resize",
+        () => window.innerWidth >= 960 && setOpenNav(false)
+      );
   }, []);
 
   return (
     <Navbar className="mx-auto max-w-screen rounded-none border-none px-4 py-4 bg-[#1b1b1b]">
       <div className="flex items-center justify-between text-blue-gray-900">
+        {/* Logo */}
         <Typography
           as="a"
           href="/"
@@ -210,26 +222,76 @@ export default function Navigation({ session }) {
           </span>
           <span className="text-xs font-thin text-yellow-500">V3</span>
         </Typography>
-        <div className="hidden lg:block">
+
+        {/* Navigation */}
+        <div className="hidden lg:block mr-auto ml-6">
           <NavList />
         </div>
+
+        {/* Search and User Info */}
         <div className="hidden gap-2 lg:flex items-center">
+          {/* SEARCH BAR */}
+          <div
+            className={`flex relative h-8 mr-2 ${
+              openSearch ? "bg-[var(--primary-dark)]" : "bg-transparent"
+            } ${
+              openSearch ? "border" : "border-none"
+            } transition-all duration-1000`}
+          >
+            <MagnifyingGlassIcon
+              fill="white"
+              className="p-1 cursor-pointer"
+              onClick={() => {
+                setOpenSearch(!openSearch);
+                setSearchValue("");
+              }}
+            />
+            <input
+              type="text"
+              value={searchValue}
+              onChange={(e) => setSearchValue(e.target.value)}
+              className={`${
+                openSearch ? "w-52 px-2" : "w-0 px-0"
+              } transition-all duration-1000 rounded-sm outline-none bg-[var(--primary-light)]`}
+            />
+            <XMarkIcon
+              className={`${
+                searchValue === "" ? "invisible" : "block"
+              } absolute w-5 right-1 top-1/2 -translate-y-1/2 cursor-pointer`}
+              onClick={() => setSearchValue("")}
+            />
+          </div>
+
+          {/* USER DISPLAY NAME */}
           <div className="mr-4">
             <div className="flex items-center">
-              <span className="mr-2 text-sm text-gray-400]">Hello, {session.user.name}</span>
-              <img src={`/flags/${country}.png`} alt="flag" className="w-6 h-4" />
+              <span className="mr-2 text-sm text-gray-400">
+                Hello, {session.user.name}
+              </span>
+              <img
+                src={`/flags/${country}.png`}
+                alt="flag"
+                className="w-6 h-4"
+              />
             </div>
             <p className="text-xs text-gray-400">{session.user.email}</p>
           </div>
+
           <Logout />
         </div>
+
+        {/* Mobile User Info */}
         <div className="block mr-0 lg:hidden lg:mr-4">
           <div className="flex">
-            <span className="mr-2 text-sm text-gray-400]">Hello, {session.user.name}</span>
+            <span className="mr-2 text-sm text-gray-400">
+              Hello, {session.user.name}
+            </span>
             <img src={`/flags/${country}.png`} alt="flag" className="w-6 h-4" />
           </div>
           <p className="text-xs text-gray-400">{session.user.email}</p>
         </div>
+
+        {/* Mobile Navigation Toggle */}
         <IconButton
           variant="text"
           className="lg:hidden w-12"
@@ -242,9 +304,11 @@ export default function Navigation({ session }) {
           )}
         </IconButton>
       </div>
+
+      {/* Collapsible Navigation for Mobile */}
       <Collapse open={openNav}>
         <NavList />
-        <div className="flex w-full flex-nowrap items-center gap-2 lg:hidden">
+        <div className="flex w-full flex-nowrap items-center gap-2 pl-2 lg:hidden">
           <Logout />
         </div>
       </Collapse>

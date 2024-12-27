@@ -14,7 +14,7 @@ const fetchData = async (URL) => {
     if (!response) {
       throw new Error("HTTP request unsuccessful");
     }
-    console.log(response.data.results)
+    // console.log(response.data.results)
     return response.data.results;
   } catch (error) {
     console.error(error);
