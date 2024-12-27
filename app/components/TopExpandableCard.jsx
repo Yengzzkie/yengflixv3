@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useOutsideClick } from "../utils/useOutsideHook";
 import RatingStar from "./Rating";
-import { PlayIcon, BookmarkIcon } from "@heroicons/react/24/solid";
+import { PlayIcon, BookmarkIcon, CheckIcon } from "@heroicons/react/24/solid";
 
 export default function TopExpandableCard({
   open,
@@ -13,8 +13,9 @@ export default function TopExpandableCard({
   const IMG_PATH = "https://image.tmdb.org/t/p/original/";
   const ref = useRef(null);
   // const [credits, setCredits] = useState({});
-  const NEXT_PUBLIC_API_KEY = process.env.NEXT_PUBLIC_API_KEY
-  const isMovie = media_type === 'Movies'
+  const NEXT_PUBLIC_API_KEY = process.env.NEXT_PUBLIC_API_KEY;
+  const isMovie = media_type === "Movies";
+  const [addToList, setAddToList] = useState(false);
 
   // async function getMovieCredits() {
   //   try {
@@ -56,6 +57,14 @@ export default function TopExpandableCard({
   }, [open, setOpen]);
 
   useOutsideClick(ref, () => setOpen(false));
+
+  function handleAddToList() {
+    setAddToList(true);
+
+    setTimeout(() => {
+      setAddToList(false);
+    }, 2000);
+  }
 
   return (
     <AnimatePresence>
@@ -136,7 +145,9 @@ export default function TopExpandableCard({
                   {/* META DATA */}
                   <div className="my-1 flex items-center py-1">
                     <span className="text-xs mr-3">
-                      {isMovie ? selectedSlide.release_date : selectedSlide.first_air_date}
+                      {isMovie
+                        ? selectedSlide.release_date
+                        : selectedSlide.first_air_date}
                     </span>
                     <span className="bg-gray-700 text-gray-300 text-xs p-[3px] rounded-sm mr-3">
                       {selectedSlide.adult ? "18+" : "PG-13"}
@@ -159,10 +170,21 @@ export default function TopExpandableCard({
 
                   {/* BOOKMARK ICON */}
                   <motion.a
-                    href={`/watch/${selectedSlide.id}?media_type=${media_type}`}
+                    onClick={() => handleAddToList()}
+                    // href={`/watch/${selectedSlide.id}?media_type=${media_type}`}
                     className="flex justify-center items-center px-4 py-2 my-3 text-sm rounded-[3px] font-bold bg-[var(--primary-dark)] hover:bg-[var(--secondary-dark)] text-[var(--primary)] w-full text-center"
                   >
-                    <BookmarkIcon className="w-4 mr-1" /> Add To List
+                    {!addToList ? (
+                      <div className="flex items-center cursor-pointer">
+                        <BookmarkIcon className="w-4 mr-1" />
+                        <span>Add To List</span>
+                      </div>
+                    ) : (
+                      <div className="flex items-center cursor-pointer">
+                        <CheckIcon className="w-4 mr-1" />
+                        <span>Added To List</span>
+                      </div>
+                    )}
                   </motion.a>
 
                   {/* OVERVIEW */}

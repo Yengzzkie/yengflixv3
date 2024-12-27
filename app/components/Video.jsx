@@ -6,6 +6,7 @@ import {
   PlusIcon,
   HandThumbUpIcon,
   ShareIcon,
+  CheckIcon
 } from "@heroicons/react/24/outline";
 import axios from "axios";
 import TopExpandableCard from "./TopExpandableCard";
@@ -18,6 +19,7 @@ const Video = ({ params }) => {
   const [details, setDetails] = useState({});
   const [selectedSlide, setSelectedSlide] = useState(null);
   const [open, setOpen] = useState(false);
+  const [addToList, setAddToList] = useState(false);
   const movieSrc = `https://vidsrc.xyz/embed/movie/${id}`;
   const tvSrc = `https://vidsrc.xyz/embed/tv/${id}`;
   const IMG_PATH = "https://image.tmdb.org/t/p/original/";
@@ -66,6 +68,14 @@ const Video = ({ params }) => {
     console.log(slide)
   };
 
+  function handleAddToList() {
+    setAddToList(true)
+
+    setTimeout(() => {
+      setAddToList(false)
+    }, 2000)
+  }
+
   return (
     <div>
       <TopExpandableCard open={open} setOpen={setOpen} selectedSlide={selectedSlide} media_type={mediaType} />
@@ -85,8 +95,8 @@ const Video = ({ params }) => {
 
       <div className="flex justify-evenly p-6">
         <div className="flex flex-col items-center">
-          <PlusIcon className="w-6 mb-2 cursor-pointer hover:text-[var(--secondary-dark)]" />
-          <p className="text-xs">My List</p>
+          {addToList ? <CheckIcon className="w-6 mb-2 cursor-pointer hover:text-[var(--secondary-dark)]" /> : <PlusIcon onClick={() => handleAddToList()} className="w-6 mb-2 cursor-pointer hover:text-[var(--secondary-dark)]" />}
+          <p className="text-xs">{addToList ? "Added To List" : "My List"}</p>
         </div>
         <div className="flex flex-col items-center">
           <HandThumbUpIcon className="w-6 mb-2 cursor-pointer hover:text-[var(--secondary-dark)]" />
