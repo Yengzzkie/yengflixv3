@@ -54,6 +54,7 @@ const navListMenuItems = [
     title: "Users",
     description: "Meet and learn about our dedication",
     icon: UserGroupIcon,
+    link: "/users",
   },
   {
     title: "Forum",
