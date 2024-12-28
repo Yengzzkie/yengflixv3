@@ -28,10 +28,22 @@ const Video = ({ params }) => {
   const NEXT_PUBLIC_API_KEY = process.env.NEXT_PUBLIC_API_KEY;
 
   async function fetchSimilarMovies() {
-    const response = await fetchData(
-      `https://api.themoviedb.org/3/movie/${id}/recommendations?language=en-US&page=1`
-    );
-    setSimilarMovies(response);
+    try {
+      const response = await fetchData(
+        `https://api.themoviedb.org/3/movie/${id}/recommendations?language=en-US&page=1`
+      );
+
+      if (!response || response === undefined || response === null) {
+        setSimilarMovies([]);
+      } else {
+        setSimilarMovies(response);
+      }
+    } catch (error) {
+      console.error({ error })
+      if (error) {
+        setSimilarMovies([])
+      }
+    }
   }
 
   async function fetchDetails() {
@@ -52,7 +64,7 @@ const Video = ({ params }) => {
     }
   }
 
-  // fetch similar movies and currently viewing movie
+  // fetch similar movies and currently viewing movie at once
   useEffect(() => {
     const fetchDataAll = async () => {
       try {

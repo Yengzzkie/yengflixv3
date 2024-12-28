@@ -5,16 +5,26 @@ import { ChevronRightIcon } from "@heroicons/react/24/outline";
 import TopExpandableCard from "./TopExpandableCard";
 import Link from "next/link";
 
-const RecommendedCarousel = (props) => {
-  const { slides, options, media_type } = props;
+const MyListCarousel = (props) => {
+  const { slides, options } = props;
   const [selectedSlide, setSelectedSlide] = useState(null);
+  const [mediaType, setMediaType] = useState(null)
   const [open, setOpen] = useState(false);
   const [emblaRef] = useEmblaCarousel(options);
   const IMG_PATH = "https://image.tmdb.org/t/p/original/";
-  const route = media_type.toLowerCase();
+  const media_type = mediaType;
 
   const handleSlideClick = (slide) => {
     setSelectedSlide(slide);
+
+    // this gave me a headache, this is causing misrendering as the video rendering relies on
+    // the media_type of the video
+    if (slide.title) { // so if the media object has "Title"...
+        setMediaType("Movies") // assign media_type as "Movies"
+    } else {
+        setMediaType("TV%20Shows") // otherwise assign as "TV Shows
+    }
+
     setOpen(true);
   };
 
@@ -28,10 +38,10 @@ const RecommendedCarousel = (props) => {
       />
       <div className="flex justify-between">
         <h1 className="font-roboto text-lg text-nowrap lg:text-4xl font-bold">
-          Recommended {media_type}
+          My List
         </h1>
         <h2 className="text-xs lg:text-lg ml-auto">
-          <Link href={`/browse-${route}`}>Browse all {media_type} </Link>
+          <Link href={`#`}>Browse all List</Link>
           <ChevronRightIcon className="inline-block w-4" />
         </h2>
       </div>
@@ -59,4 +69,4 @@ const RecommendedCarousel = (props) => {
   );
 };
 
-export default RecommendedCarousel;
+export default MyListCarousel;

@@ -1,6 +1,7 @@
 import prisma from "@/db/prismaClient";
 import { NextResponse } from "next/server";
 
+// Add movie to user's list
 export async function POST(request) {
   if (request.method === "POST") {
     const { email, newMovie } = await request.json();
@@ -39,5 +40,22 @@ export async function POST(request) {
     }
   } else {
     return NextResponse.json({ message: "Method not allowed." });
+  }
+}
+
+// Get all user's favorite list
+export async function GET(request) {
+  const { searchParams } = new URL(request.url)
+  const email = searchParams.get("email")
+
+  try {
+    const response = await prisma.user.findUnique({
+      where: { email },
+      select: { list: true }
+    });
+
+    return NextResponse.json(response)
+  } catch (error) {
+    
   }
 }

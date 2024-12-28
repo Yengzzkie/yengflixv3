@@ -32,6 +32,7 @@ const EmblaCarousel = (props) => {
                 alt={`${slide.media_type === 'movie' ? slide.title : slide.name}`}
                 width={300}
                 height={300}
+                loading="lazy"
               />
             </div>
           ))}

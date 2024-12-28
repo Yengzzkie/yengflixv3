@@ -30,6 +30,12 @@ export const useMoviePage = create((set) => ({
     setMoviePage: (data) => set({ moviePage: data })
 }))
 
+// state for my list
+export const useMyList = create((set) => ({
+    myList: [],
+    setMyList: (data) => set({ myList: data })
+}))
+
 export const useLoading = create((set) => ({
     isLoading: false,
     setIsLoading: (bool) => set({ isLoading: bool })

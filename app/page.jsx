@@ -1,7 +1,5 @@
 "use client";
-import { ToastContainer } from "react-toastify";
 import RecommendedCarousel from "./components/RecommendedCarousel";
-import ExpandableCards from "./components/ExpandableCard";
 import { useEffect, useState } from "react";
 import { fetchData } from "./utils/fetchData";
 import {
@@ -10,9 +8,12 @@ import {
   useMoviePage,
   useBrowseMovies,
   useBrowseTv,
+  useMyList,
 } from "./stores/useDataStore";
 import EmblaCarousel from "./components/TopCarousel";
-import addToList from "./utils/addToList";
+import { getSession } from "next-auth/react";
+import axios from "axios";
+import MyListCarousel from "./components/MyListCarousel";
 
 const HomePage = () => {
   const { movieData, setMovieData } = useMovieData();
@@ -20,8 +21,8 @@ const HomePage = () => {
   const { allMovies, setAllMovies } = useBrowseMovies();
   const { allTv, setAllTv } = useBrowseTv();
   const { moviePage } = useMoviePage();
+  const { myList, setMyList } = useMyList();
   const [loading, setLoading] = useState(true);
-
   const OPTIONS = { align: 'start', dragFree: true, loop: true }
 
   async function fetchMovieData() {
@@ -52,10 +53,20 @@ const HomePage = () => {
     setAllTv(allTv);
   }
 
+  async function fetchMyList() {
+    const session = await getSession();
+    const email = session.user.email;
+
+    const response = await axios.get(`/api/users/list?email=${email}`);
+    setMyList(response.data.list)
+  }
+  
+
   useEffect(() => {
     const fetchDataAll = async () => {
       setLoading(true);
       try {
+        fetchMyList()
         await Promise.all([fetchMovieData(), fetchTvData(), fetchAllTv(), fetchAllMovies()]);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -65,11 +76,10 @@ const HomePage = () => {
     };
 
     fetchDataAll();
-  }, [moviePage, setAllTv]);
+  }, [moviePage, setMyList]);
 
   return (
     <>
-      <ToastContainer />
       {loading ? (
         <div className="flex flex-col justify-center items-center h-screen">
           <div className="flex items-center">
@@ -90,16 +100,9 @@ const HomePage = () => {
           {/* RECOMMENDED SECTION */}
           <RecommendedCarousel slides={allMovies} options={OPTIONS} media_type={"Movies"} />
           <RecommendedCarousel slides={allTv} options={OPTIONS} media_type={"TV Shows"} />
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 px-4 lg:px-16 grid-flow-row">
-            <div>
-              <h1>Recommended</h1>
-              <ExpandableCards data={allMovies} />
-            </div>
-            <div>
-              <h1>Recommended</h1>
-              <ExpandableCards data={allTv} />
-            </div>
-          </div>
+
+          {/* MY LIST SECTION */}
+          <MyListCarousel slides={myList} options={OPTIONS} media_type={"Movies"} />
         </>
       )}
     </>
