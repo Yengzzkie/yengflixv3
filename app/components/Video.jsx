@@ -10,6 +10,7 @@ import {
 } from "@heroicons/react/24/outline";
 import axios from "axios";
 import TopExpandableCard from "./TopExpandableCard";
+import addToList from "../utils/addToList";
 
 const Video = ({ params }) => {
   const idParams = use(params);
@@ -19,7 +20,8 @@ const Video = ({ params }) => {
   const [details, setDetails] = useState({});
   const [selectedSlide, setSelectedSlide] = useState(null);
   const [open, setOpen] = useState(false);
-  const [addToList, setAddToList] = useState(false);
+  const [added, setAdded] = useState(false);
+  const [buttonText, setButtonText] = useState(null);
   const movieSrc = `https://vidsrc.xyz/embed/movie/${id}`;
   const tvSrc = `https://vidsrc.xyz/embed/tv/${id}`;
   const IMG_PATH = "https://image.tmdb.org/t/p/original/";
@@ -50,6 +52,7 @@ const Video = ({ params }) => {
     }
   }
 
+  // fetch similar movies and currently viewing movie
   useEffect(() => {
     const fetchDataAll = async () => {
       try {
@@ -68,12 +71,23 @@ const Video = ({ params }) => {
     console.log(slide)
   };
 
-  function handleAddToList() {
-    setAddToList(true)
+  // add-to-list logic
+  async function handleAddToList() {
+    // assign the movie details from fetched data from fetchDetails()
+    const newMovie = details;
+
+    try {
+      const response = await addToList(newMovie);
+      setButtonText(response);
+      setAdded(true);
+    } catch (error) {
+      console.error({ error })
+    }
 
     setTimeout(() => {
-      setAddToList(false)
-    }, 2000)
+      setAdded(false);
+      setButtonText(null)
+    }, 2000);
   }
 
   return (
@@ -95,8 +109,8 @@ const Video = ({ params }) => {
 
       <div className="flex justify-evenly p-6">
         <div className="flex flex-col items-center">
-          {addToList ? <CheckIcon className="w-6 mb-2 cursor-pointer hover:text-[var(--secondary-dark)]" /> : <PlusIcon onClick={() => handleAddToList()} className="w-6 mb-2 cursor-pointer hover:text-[var(--secondary-dark)]" />}
-          <p className="text-xs">{addToList ? "Added To List" : "My List"}</p>
+          {added ? <CheckIcon className="w-6 mb-2 cursor-pointer hover:text-[var(--secondary-dark)]" /> : <PlusIcon onClick={() => handleAddToList()} className="w-6 mb-2 cursor-pointer hover:text-[var(--secondary-dark)]" />}
+          <p className="text-xs">{added ? (buttonText) : ("Add To List")}</p>
         </div>
         <div className="flex flex-col items-center">
           <HandThumbUpIcon className="w-6 mb-2 cursor-pointer hover:text-[var(--secondary-dark)]" />

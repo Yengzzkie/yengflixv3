@@ -12,6 +12,7 @@ import {
   useBrowseTv,
 } from "./stores/useDataStore";
 import EmblaCarousel from "./components/TopCarousel";
+import addToList from "./utils/addToList";
 
 const HomePage = () => {
   const { movieData, setMovieData } = useMovieData();

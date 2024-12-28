@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useOutsideClick } from "../utils/useOutsideHook";
 import RatingStar from "./Rating";
 import { PlayIcon, BookmarkIcon, CheckIcon } from "@heroicons/react/24/solid";
+import addToList from "../utils/addToList";
 
 export default function TopExpandableCard({
   open,
@@ -13,9 +14,10 @@ export default function TopExpandableCard({
   const IMG_PATH = "https://image.tmdb.org/t/p/original/";
   const ref = useRef(null);
   // const [credits, setCredits] = useState({});
-  const NEXT_PUBLIC_API_KEY = process.env.NEXT_PUBLIC_API_KEY;
+  // const NEXT_PUBLIC_API_KEY = process.env.NEXT_PUBLIC_API_KEY;
   const isMovie = media_type === "Movies";
-  const [addToList, setAddToList] = useState(false);
+  const [added, setAdded] = useState(false);
+  const [buttonText, setButtonText] = useState(null);
 
   // async function getMovieCredits() {
   //   try {
@@ -58,11 +60,20 @@ export default function TopExpandableCard({
 
   useOutsideClick(ref, () => setOpen(false));
 
-  function handleAddToList() {
-    setAddToList(true);
+  // add-to-list logic
+  async function handleAddToList() {
+    const newMovie = selectedSlide;
+
+    try {
+      const response = await addToList(newMovie)
+      setButtonText(response)
+      setAdded(true);
+    } catch (error) {
+      console.error({ error })
+    }
 
     setTimeout(() => {
-      setAddToList(false);
+      setAdded(false);
     }, 2000);
   }
 
@@ -174,7 +185,7 @@ export default function TopExpandableCard({
                     // href={`/watch/${selectedSlide.id}?media_type=${media_type}`}
                     className="flex justify-center items-center px-4 py-2 my-3 text-sm rounded-[3px] font-bold bg-[var(--primary-dark)] hover:bg-[var(--secondary-dark)] text-[var(--primary)] w-full text-center"
                   >
-                    {!addToList ? (
+                    {!added ? (
                       <div className="flex items-center cursor-pointer">
                         <BookmarkIcon className="w-4 mr-1" />
                         <span>Add To List</span>
@@ -182,7 +193,7 @@ export default function TopExpandableCard({
                     ) : (
                       <div className="flex items-center cursor-pointer">
                         <CheckIcon className="w-4 mr-1" />
-                        <span>Added To List</span>
+                        <span>{buttonText}</span>
                       </div>
                     )}
                   </motion.a>
@@ -190,7 +201,7 @@ export default function TopExpandableCard({
                   {/* OVERVIEW */}
                   <motion.p
                     layoutId={`description-${selectedSlide.description}`}
-                    className="text-neutral-300 font-extralight mr-4 mt-2 text-sm"
+                    className="text-neutral-300 font-extralight mr-4 mt-2 text-sm overflow-y-scroll scrollbar-none"
                   >
                     {selectedSlide.overview === ""
                       ? "No description"
