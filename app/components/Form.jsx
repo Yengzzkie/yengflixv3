@@ -74,7 +74,7 @@ const Form = () => {
     setLoading(true);
     setError(null);
 
-    if (formData.name || formData.email === "") {
+    if (formData.name === "" || formData.email === "") {
       setError("Display name or email cannot be empty");
       setLoading(false);
       return; // prevent form submission

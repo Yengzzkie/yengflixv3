@@ -10,7 +10,7 @@ const RegistrationSuccess = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       router.push("/login");
-    }, 3000); // 3 seconds
+    }, 5000); // 3 seconds
     return () => clearTimeout(timer);
   }, [router]);
 
@@ -34,7 +34,7 @@ const RegistrationSuccess = () => {
             Yengflix.
           </p>
           <p className="text-gray-200 mt-4 text-sm italic">
-            You’ll be redirected to the login page shortly.
+            You will be redirected to the login page shortly.
           </p>
           <button
             className="mt-6 px-4 py-2 bg-red-500 text-white rounded hover:bg-blue-700"
