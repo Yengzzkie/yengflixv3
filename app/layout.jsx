@@ -7,6 +7,7 @@ export const metadata = {
   title: "Yengflix V3",
   description: "A free movie-streaming app where you can browse and stream your favorite movies and TV shows",
   keywords: "yengflix, movie streaming, free watch, free streaming",
+  referrer: "origin"
 };
 
 export default async function RootLayout({ children }) {
