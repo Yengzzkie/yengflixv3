@@ -1,6 +1,14 @@
 import UsersTable from "../components/UsersTable"
+import { auth } from "../auth"
+import { redirect } from "next/navigation";
 
-const UsersTablePage = () => {
+const UsersTablePage = async () => {
+  const session = await auth();
+  
+  if(!session) {
+    redirect("/login")
+  }
+
   return (
     <div>
         <UsersTable />
