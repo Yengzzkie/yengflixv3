@@ -115,7 +115,7 @@ const Video = ({ params }) => {
       <h1 className="font-bold text-neutral-200 text-2xl px-3 lg:px-6 py-2">
         {details.title}
       </h1>
-      <p className="px-3 lg:px-6 py-2 text-sm text-[var(--primary)]">
+      <p className="px-3 lg:px-6 py-2 text-sm text-[var(--primary-content)]">
         {details.overview}
       </p>
 
