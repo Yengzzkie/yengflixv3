@@ -250,10 +250,11 @@ export default function Navigation({ session }) {
             <input
               type="text"
               value={searchValue}
+              placeholder="Search movies or TV shows..."
               onChange={(e) => setSearchValue(e.target.value)}
               className={`${
                 openSearch ? "w-52 px-2" : "w-0 px-0"
-              } transition-all duration-1000 rounded-sm outline-none bg-[var(--primary-light)]`}
+              } transition-all duration-1000 rounded-sm outline-none bg-[var(--primary-light)] text-sm`}
             />
             <XMarkIcon
               className={`${
