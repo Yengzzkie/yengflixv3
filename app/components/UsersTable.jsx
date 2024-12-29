@@ -15,7 +15,7 @@ import {
 } from "@material-tailwind/react";
 import axios from "axios";
 
-const TABLE_HEAD = ["Name", "Location", "Status", "Joined", ""];
+const TABLE_HEAD = ["Name", "Location", "Email Verified", "Joined", ""];
 
 export default function UsersTable() {
   const [TABLE_ROWS, setTABLE_ROWS] = useState([]);
@@ -120,7 +120,7 @@ export default function UsersTable() {
           </thead>
           <tbody>
             {filteredUsers.map(
-              ({ id, name, email, location, online, createdAt }) => {
+              ({ id, name, email, location, isVerified, createdAt }) => {
                 const joinDate = new Date(createdAt).toLocaleDateString("en-US", {
                   month: "short",
                   day: "2-digit",
@@ -147,12 +147,13 @@ export default function UsersTable() {
                     </td>
                     <td className="p-4">{location.countryName}</td>
                     <td className="p-4">
-                      <Chip
+                      {isVerified ? <span className="font-medium text-sm text-[var(--secondary-content)] bg-green-300 border border-[var(--secondary-content)] rounded-full py-1 px-2">Verified</span> : <span className="font-medium text-sm text-[var(--secondary-dark)] bg-red-300 border border-red-500 rounded-full py-1 px-2">Not Verified</span>}
+                      {/* <Chip
                         variant="ghost"
                         size="sm"
-                        value={online ? "online" : "offline"}
-                        color={online ? "green" : "blue-gray"}
-                      />
+                        value={isVerified ? "Verified" : "Not Verified"}
+                        color={isVerified ? "green" : "blue-gray"}
+                      /> */}
                     </td>
                     <td className="p-4">{joinDate}</td>
                   </tr>
