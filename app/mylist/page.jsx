@@ -54,6 +54,10 @@ const MyListPage = () => {
     <>
       {loading ? (
         <CustomSpinner />
+      ) : myList.length === 0 ? (
+        <div className="h-[90vh] w-screen flex justify-center items-center">
+          <p className="text-2xl font-bold text-center">Your List is Empty</p>
+        </div>
       ) : (
         <div className="grid grid-cols-3 lg:grid-cols-5 gap-4 px-6">
           <TopExpandableCard
