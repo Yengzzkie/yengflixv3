@@ -126,8 +126,6 @@ const Form = () => {
           location: loc
         };
   
-        console.log(updatedFormData)
-  
         if (updatedFormData.password !== updatedFormData.confirmPassword) {
           setError("Passwords do not match");
         } else {

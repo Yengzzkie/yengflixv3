@@ -14,7 +14,6 @@ export async function POST(request) {
     }
 
     try {
-        console.log(JWT_SECRET)
         const decoded = verify(token, process.env.JWT_SECRET);
 
         if (!decoded) {
@@ -24,16 +23,16 @@ export async function POST(request) {
             );
         }
 
-        const { email } = decoded;
+        const { id } = decoded;
+        const user = await prisma.user.update({
+            where: { id },
+            data: { isVerified: true}
+        })
 
-        if (!email) {
-            return NextResponse.json(
-                { message: "Token does not contain a valid email" },
-                { status: 400 } // Bad Request
-            );
+        if (!user) {
+            return NextResponse.json({ message: "Can't find user" }, { status: 404 }) // Not found
         }
 
-        console.log(email);
         return NextResponse.json(
             { message: "Verified successfully", token },
             { status: 200 } // OK
