@@ -36,6 +36,12 @@ export const useMyList = create((set) => ({
     setMyList: (data) => set({ myList: data })
 }))
 
+// state for movie/tv search 
+export const useSearchResult = create((set) => ({
+    searchResult: [],
+    setSearchResult: (data) => set({ searchResult: data })
+}))
+
 export const useLoading = create((set) => ({
     isLoading: false,
     setIsLoading: (bool) => set({ isLoading: bool })

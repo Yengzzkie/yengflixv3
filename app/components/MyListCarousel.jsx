@@ -41,7 +41,7 @@ const MyListCarousel = (props) => {
           My List
         </h1>
         <h2 className="text-xs lg:text-lg ml-auto">
-          <Link href={`#`}>Browse all List</Link>
+          <Link href={`#`}>Manage your List</Link>
           <ChevronRightIcon className="inline-block w-4" />
         </h2>
       </div>

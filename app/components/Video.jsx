@@ -57,6 +57,7 @@ const Video = ({ params }) => {
           },
         }
       );
+      console.log(response)
       // im using axios to fetch the details because for some reason the fetchData hook is returning undefined
       setDetails(response?.data);
     } catch (error) {
@@ -80,7 +81,6 @@ const Video = ({ params }) => {
   const handleSlideClick = (slide) => {
     setSelectedSlide(slide);
     setOpen(true);
-    console.log(slide)
   };
 
   // add-to-list logic

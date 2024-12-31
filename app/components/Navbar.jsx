@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Navbar,
   Collapse,
@@ -31,6 +31,9 @@ import {
 } from "@heroicons/react/24/solid";
 import Link from "next/link";
 import Logout from "./Logout";
+import { fetchData } from "../utils/fetchData";
+import { useRouter } from "next/navigation";
+import { useSearchResult } from "../stores/useDataStore";
 
 const navListMenuItems = [
   {
@@ -193,6 +196,8 @@ export default function Navigation({ session }) {
   const [openNav, setOpenNav] = React.useState(false);
   const [openSearch, setOpenSearch] = React.useState(false);
   const [searchValue, setSearchValue] = React.useState("");
+  const { setSearchResult } = useSearchResult();
+  const router = useRouter();
 
   const country = session.user.location.countryCode.toLowerCase();
 
@@ -207,6 +212,29 @@ export default function Navigation({ session }) {
         () => window.innerWidth >= 960 && setOpenNav(false)
       );
   }, []);
+
+  useEffect(() => {
+    const trimmedSearchValue = searchValue.trim();
+  
+    if (!trimmedSearchValue) {
+      return; // avoid unnecessary fetch for empty or whitespace input
+    }
+  
+    const debounceFetch = setTimeout(async () => {
+      try {
+        const response = await fetchData(
+          `https://api.themoviedb.org/3/search/multi?query=${trimmedSearchValue}&include_adult=true&language=en-US&page=1`
+        );
+        setSearchResult(response);
+        router.push(`/search?title=${searchValue}`);
+      } catch (error) {
+        console.error({ error });
+      }
+    }, 800);
+  
+    return () => clearTimeout(debounceFetch);
+  }, [searchValue, router]);
+  
 
   return (
     <Navbar className="mx-auto max-w-screen rounded-none border-none px-4 py-4 bg-[#1b1b1b]">
