@@ -26,6 +26,8 @@ const Video = ({ params }) => {
   const tvSrc = `https://vidsrc.xyz/embed/tv/${id}`;
   const IMG_PATH = "https://image.tmdb.org/t/p/original/";
   const NEXT_PUBLIC_API_KEY = process.env.NEXT_PUBLIC_API_KEY;
+  const movieDetailsEndpoint = `https://api.themoviedb.org/3/movie/${id}?language=en-US`
+  const tvDetailsEndpoint = `https://api.themoviedb.org/3/tv/${id}?language=en-US`
 
   async function fetchSimilarMovies() {
     try {
@@ -49,7 +51,7 @@ const Video = ({ params }) => {
   async function fetchDetails() {
     try {
       const response = await axios.get(
-        `https://api.themoviedb.org/3/movie/${id}?language=en-US`,
+        mediaType === "Movies" ? movieDetailsEndpoint : tvDetailsEndpoint,
         {
           headers: {
             accept: "application/json",
@@ -113,7 +115,7 @@ const Video = ({ params }) => {
       ></iframe>
 
       <h1 className="font-bold text-neutral-200 text-2xl px-3 lg:px-6 py-2">
-        {details.title}
+        {details.title || details.name}
       </h1>
       <p className="px-3 lg:px-6 py-2 text-sm text-[var(--primary-content)]">
         {details.overview}
