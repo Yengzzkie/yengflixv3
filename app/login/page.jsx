@@ -2,8 +2,8 @@ import LoginForm from "../components/LoginForm";
 import { auth } from "../auth";
 import { redirect } from "next/navigation";
 
-const LoginPage = () => {
-  const session = auth();
+const LoginPage = async () => {
+  const session = await auth();
 
   if(session) {
     redirect("/")
