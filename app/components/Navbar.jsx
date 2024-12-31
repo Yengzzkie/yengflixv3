@@ -46,13 +46,13 @@ const navListMenuItems = [
     title: "Browse TV Shows",
     description: "Find the perfect solution for your needs.",
     icon: TvIcon,
-    link: "browse-tv%20shows",
+    link: "/browse-tv%20shows",
   },
   {
     title: "My List",
     description: "Learn how we can help you achieve your goals.",
     icon: BookmarkIcon,
-    link: "mylist",
+    link: "/mylist",
   },
   {
     title: "Users",
