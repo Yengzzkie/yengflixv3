@@ -59,3 +59,33 @@ export async function GET(request) {
     
   }
 }
+
+// Delete a movie from user's favorite list
+export async function DELETE(request) {
+  const { searchParams } = new URL(request.url)
+  const email = searchParams.get("email")
+  const id = searchParams.get("id")
+
+  try {
+    const user = await prisma.user.findUnique({
+      where: { email },
+      select: { list: true }
+    });
+
+    const updatedList = user.list.filter((movie) => movie.id !== parseInt(id));
+    console.log(updatedList)
+
+    await prisma.user.update({
+      where: { email },
+      data: { list: updatedList }
+    })
+
+    return NextResponse.json({ message: "Movie removed successfully", updatedList }, { status: 200 })
+  } catch (error) {
+    console.error({ error });
+    return NextResponse.json(
+      { error: "An error occurred while removing the movie" },
+      { status: 500 }
+    );
+  }
+}

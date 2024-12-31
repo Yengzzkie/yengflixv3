@@ -52,6 +52,7 @@ const navListMenuItems = [
     title: "My List",
     description: "Learn how we can help you achieve your goals.",
     icon: BookmarkIcon,
+    link: "mylist",
   },
   {
     title: "Users",
