@@ -1,6 +1,7 @@
 import "./globals.css";
 import Navigation from "./components/Navbar";
 import NavigationLogin from "./components/NavbarLogin";
+import Head from "next/head";
 import { auth } from "./auth";
 
 export const metadata = {
@@ -16,6 +17,7 @@ export default async function RootLayout({ children }) {
 
   return (
     <html lang="en">
+      <link rel="icon" href="/favicon.png" />
       <body className="bg-[var(--background)]">
         {session ? <Navigation session={session} /> : <NavigationLogin />}
         <main>{children}</main>
