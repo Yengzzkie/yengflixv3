@@ -31,15 +31,15 @@ const Video = ({ params }) => {
 
   async function fetchSimilarMovies() {
     try {
-      const response = await fetchData(
-        `https://api.themoviedb.org/3/movie/${id}/recommendations?language=en-US&page=1`
-      );
+      const response = mediaType === "Movies" ? await fetchData(`https://api.themoviedb.org/3/movie/${id}/recommendations?language=en-US&page=1`) : 
+      await fetchData(`https://api.themoviedb.org/3/tv/${id}/recommendations?language=en-US&page=1`)
 
-      if (!response || response === undefined || response === null) {
+      console.log(response)
+      if (!response) {
         setSimilarMovies([]);
-      } else {
-        setSimilarMovies(response);
+        return;
       }
+      setSimilarMovies(response);
     } catch (error) {
       console.error({ error })
       if (error) {
