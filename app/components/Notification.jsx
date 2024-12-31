@@ -3,7 +3,7 @@ import { FiCheckSquare, FiX } from "react-icons/fi";
 import { AnimatePresence, motion } from "framer-motion";
 import { TrashIcon } from "@heroicons/react/24/outline";
 
-const SlideInNotifications = ({ onTriggerDelete }) => {
+const SlideInNotifications = ({ onTriggerDelete, title }) => {
   const [notifications, setNotifications] = useState([]);
 
   const removeNotif = (id) => {
@@ -15,7 +15,7 @@ const SlideInNotifications = ({ onTriggerDelete }) => {
       <TrashIcon
         onClick={() => {
           const notif = generateRandomNotif();
-          setNotifications((pv) => [generateRandomNotif(), ...pv]);
+          setNotifications((pv) => [generateRandomNotif(title), ...pv]);
           onTriggerDelete(notif.id)
         }}
         fill="red"
@@ -33,7 +33,7 @@ const SlideInNotifications = ({ onTriggerDelete }) => {
   );
 };
 
-const NOTIFICATION_TTL = 5000;
+const NOTIFICATION_TTL = 10000;
 
 export const Notification = ({ text, id, removeNotif }) => {
   useEffect(() => {
@@ -64,11 +64,11 @@ export const Notification = ({ text, id, removeNotif }) => {
 
 export default SlideInNotifications;
 
-export const generateRandomNotif = () => {
+export const generateRandomNotif = (title) => {
 
   const data = {
     id: Math.random(),
-    text: `Movie successully deleted`,
+    text: `Movie successully deleted ${title}`,
   };
 
   return data;

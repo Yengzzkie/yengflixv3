@@ -173,7 +173,7 @@ export default function TopExpandableCard({
 
                   {/* PLAY BUTTON */}
                   <motion.a
-                    href={`/watch/${selectedSlide.id}?media_type=${media_type}&title=${selectedSlide.title}`}
+                    href={`/watch/${selectedSlide.id}?media_type=${media_type}&title=${selectedSlide?.title || selectedSlide?.name}`}
                     className="flex justify-center items-center px-4 py-2 my-3 text-sm rounded-[3px] font-bold bg-white hover:bg-[var(--secondary-dark)] hover:text-white text-[var(--primary-dark)] w-full text-center"
                   >
                     <PlayIcon className="w-4 mr-1" /> Play

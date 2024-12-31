@@ -4,15 +4,16 @@ import Link from "next/link";
 import Image from "next/image";
 import { getSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import { TrashIcon } from "@heroicons/react/24/outline";
 import SlideInNotifications from "../components/Notification";
 import axios from "axios";
-import { generateRandomNotif, Notification } from "../components/Notification";
+import TopExpandableCard from "../components/TopExpandableCard";
 
 const MyListPage = () => {
   const { myList, setMyList } = useMyList();
   const IMG_PATH = "https://image.tmdb.org/t/p/original/";
   const [email, setEmail] = useState("");
+  const [selectedSlide, setSelectedSlide] = useState(null);
+  const [open, setOpen] = useState(false);
 
   async function fetchMyList() {
     try {
@@ -35,41 +36,38 @@ const MyListPage = () => {
     const response = await axios.delete(
       `/api/users/list?email=${email}&id=${id}`
     );
-    callback();
-    console.log(response)
+    setTimeout(() => {
+      callback();
+    }, 3000)
   }
+
+  const handleSlideClick = (slide) => {
+    setSelectedSlide(slide);
+    setOpen(true);
+    console.log(slide)
+  };
 
   return (
     <>
     
       <div className="grid grid-cols-3 lg:grid-cols-5 gap-4 px-6">
+      <TopExpandableCard open={open} setOpen={setOpen} selectedSlide={selectedSlide} media_type={selectedSlide?.title || null ? "Movies" : "TV Shows"} />
         {myList.map((list) => (
-          <div key={list.id} className="relative">
-            <Link
-              href={`watch/${list.id}?media_type=${
-                list.media_type === "movie" ? "Movies" : "TV Shows"
-              }&title=${list.title || list.name}`}
-            >
-              <Image
-                src={
-                  list.poster_path === null
-                    ? multimedia
-                    : `${IMG_PATH}${list.poster_path}`
-                }
-                width={300}
-                height={300}
-                className="card-shadow rounded-md"
-                alt={list.title || list.name}
-              />
-            </Link>
-            <SlideInNotifications 
+          <div key={list.id} className="relative" onClick={() => handleSlideClick(list)}>
+            <Image
+              src={
+                list.poster_path === null
+                  ? multimedia
+                  : `${IMG_PATH}${list.poster_path}`
+              }
+              width={300}
+              height={300}
+              className="card-shadow rounded-md"
+              alt={list.title || list.name}
+            />
+            <SlideInNotifications title={list.title}
                 onTriggerDelete={() => deleteMovieHandler(list.id, fetchMyList)}
             />
-            {/* <TrashIcon
-              onClick={() => deleteMovieHandler(list.id, fetchMyList)}
-              className="absolute top-4 right-2 w-6 hover:text-red-500 cursor-pointer"
-              fill="red"
-            /> */}
           </div>
         ))}
       </div>
