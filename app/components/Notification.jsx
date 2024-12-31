@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { FiCheckSquare, FiX } from "react-icons/fi";
 import { AnimatePresence, motion } from "framer-motion";
+import { TrashIcon } from "@heroicons/react/24/outline";
 
-const SlideInNotifications = () => {
+const SlideInNotifications = ({ onTriggerDelete }) => {
   const [notifications, setNotifications] = useState([]);
 
   const removeNotif = (id) => {
@@ -10,15 +11,17 @@ const SlideInNotifications = () => {
   };
 
   return (
-    <div className="bg-white min-h-[200px] flex items-center justify-center">
-      {/* <button
+    <div className="bg-white flex items-center justify-center">
+      <TrashIcon
         onClick={() => {
+          const notif = generateRandomNotif();
           setNotifications((pv) => [generateRandomNotif(), ...pv]);
+          onTriggerDelete(notif.id)
         }}
-        className="text-sm text-white bg-indigo-500 hover:bg-indigo-600 active:scale-95 transition-all font-medium px-3 py-2 rounded"
-      >
-        Add notification
-      </button> */}
+        fill="red"
+        className="absolute top-4 right-2 w-5 text-sm text-white hover:bg-red-600 active:scale-95 transition-all font-medium rounded"
+       />
+
       <div className="flex flex-col gap-1 w-72 fixed top-2 right-2 z-50 pointer-events-none">
         <AnimatePresence>
           {notifications.map((n) => (
@@ -32,7 +35,7 @@ const SlideInNotifications = () => {
 
 const NOTIFICATION_TTL = 5000;
 
-const Notification = ({ text, id, removeNotif }) => {
+export const Notification = ({ text, id, removeNotif }) => {
   useEffect(() => {
     const timeoutRef = setTimeout(() => {
       removeNotif(id);
@@ -48,7 +51,7 @@ const Notification = ({ text, id, removeNotif }) => {
       animate={{ y: 0, scale: 1 }}
       exit={{ x: "100%", opacity: 0 }}
       transition={{ duration: 0.35, ease: "easeOut" }}
-      className="p-2 flex items-start rounded gap-2 text-xs font-medium shadow-lg text-white bg-indigo-500 pointer-events-auto"
+      className="p-2 flex items-start rounded gap-2 text-xs font-medium shadow-lg text-white bg-green-500 pointer-events-auto"
     >
       <FiCheckSquare className=" mt-0.5" />
       <span>{text}</span>
@@ -61,11 +64,11 @@ const Notification = ({ text, id, removeNotif }) => {
 
 export default SlideInNotifications;
 
-const generateRandomNotif = () => {
+export const generateRandomNotif = () => {
 
   const data = {
     id: Math.random(),
-    text: `New notification from`,
+    text: `Movie successully deleted`,
   };
 
   return data;

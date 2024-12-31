@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { TrashIcon } from "@heroicons/react/24/outline";
 import SlideInNotifications from "../components/Notification";
 import axios from "axios";
+import { generateRandomNotif, Notification } from "../components/Notification";
 
 const MyListPage = () => {
   const { myList, setMyList } = useMyList();
@@ -31,44 +32,48 @@ const MyListPage = () => {
   }, []);
 
   async function deleteMovieHandler(id, callback) {
-    console.log("ID:", id);
     const response = await axios.delete(
       `/api/users/list?email=${email}&id=${id}`
     );
     callback();
-    console.log(response);
+    console.log(response)
   }
 
   return (
-    <div className="grid grid-cols-3 lg:grid-cols-5 gap-4 px-6">
-      {/* <SlideInNotifications /> */}
-      {myList.map((list) => (
-        <div key={list.id} className="relative">
-          <Link
-            href={`watch/${list.id}?media_type=${
-              list.media_type === "movie" ? "Movies" : "TV Shows"
-            }&title=${list.title || list.name}`}
-          >
-            <Image
-              src={
-                list.poster_path === null
-                  ? multimedia
-                  : `${IMG_PATH}${list.poster_path}`
-              }
-              width={300}
-              height={300}
-              className="card-shadow rounded-md"
-              alt={list.title || list.name}
+    <>
+    
+      <div className="grid grid-cols-3 lg:grid-cols-5 gap-4 px-6">
+        {myList.map((list) => (
+          <div key={list.id} className="relative">
+            <Link
+              href={`watch/${list.id}?media_type=${
+                list.media_type === "movie" ? "Movies" : "TV Shows"
+              }&title=${list.title || list.name}`}
+            >
+              <Image
+                src={
+                  list.poster_path === null
+                    ? multimedia
+                    : `${IMG_PATH}${list.poster_path}`
+                }
+                width={300}
+                height={300}
+                className="card-shadow rounded-md"
+                alt={list.title || list.name}
+              />
+            </Link>
+            <SlideInNotifications 
+                onTriggerDelete={() => deleteMovieHandler(list.id, fetchMyList)}
             />
-          </Link>
-          <TrashIcon
-            onClick={() => deleteMovieHandler(list.id, fetchMyList)}
-            className="absolute top-4 right-2 w-6 hover:text-red-500 cursor-pointer"
-            fill="red"
-          />
-        </div>
-      ))}
-    </div>
+            {/* <TrashIcon
+              onClick={() => deleteMovieHandler(list.id, fetchMyList)}
+              className="absolute top-4 right-2 w-6 hover:text-red-500 cursor-pointer"
+              fill="red"
+            /> */}
+          </div>
+        ))}
+      </div>
+    </>
   );
 };
 
