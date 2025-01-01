@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
-import Image from "next/image";
 import { ChevronRightIcon } from "@heroicons/react/24/outline";
 import TopExpandableCard from "./TopExpandableCard";
 import Link from "next/link";
@@ -53,12 +52,12 @@ const MyListCarousel = (props) => {
               className="embla__slide max-w-fit mx-2"
               key={slide.id}
             >
-              <Image
+              <img
                 className="card-shadow rounded-md lg:w-44 cursor-pointer"
                 src={`${IMG_PATH}${slide.poster_path}`}
                 alt={`${slide.title}`}
-                width={300}
-                height={300}
+                // width={300}
+                // height={300}
                 loading="lazy"
               />
             </div>

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
-import Image from "next/image";
 import TopExpandableCard from "./TopExpandableCard"
 
 const EmblaCarousel = (props) => {
@@ -26,7 +25,7 @@ const EmblaCarousel = (props) => {
               <h1 className="absolute -left-8 lg:left-7 top-[65%] -translate-y-1/2 text-[75px] lg:text-[200px] text-shadow tracking-[-20px] lg:tracking-[-55px] leading-tight col-start-1 z-20">
                 {index + 1}
               </h1>
-              <Image
+              <img
                 className="card-shadow card-shadow rounded-lg col-start-3 lg:col-start-4 col-end-[-1] z-30 w-full lg:w-48 cursor-pointer"
                 src={`${IMG_PATH}${slide.poster_path}`}
                 alt={`${slide.media_type === 'movie' ? slide.title : slide.name}`}

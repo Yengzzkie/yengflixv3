@@ -72,14 +72,14 @@ const MyListPage = () => {
               className="relative cursor-pointer"
               onClick={() => handleSlideClick(list)}
             >
-              <Image
+              <img
                 src={
                   list.poster_path === null
                     ? multimedia
                     : `${IMG_PATH}${list.poster_path}`
                 }
-                width={300}
-                height={300}
+                // width={300}
+                // height={300}
                 className="card-shadow rounded-md"
                 alt={list.title || list.name}
               />
