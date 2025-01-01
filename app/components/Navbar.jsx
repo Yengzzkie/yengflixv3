@@ -301,7 +301,7 @@ export default function Navigation({ session }) {
           <div className="mr-4">
             <div className="flex items-center">
               <span className="mr-1 text-sm text-gray-400 flex items-end">
-                Hello, {session.user.name}{" "}
+                Hello, <span className="font-semibold ml-1">{session.user.name}</span>
                 {session.user.isVerified ? <VerifiedBadge /> : <NotVerifiedBadge /> }
               </span>
               <img
@@ -320,7 +320,7 @@ export default function Navigation({ session }) {
         <div className="block mr-0 lg:hidden lg:mr-4">
           <div className="flex items-center">
             <span className="mr-1 text-sm text-gray-400 flex items-end">
-              Hello, {session.user.name}{" "}
+              Hello, <span className="font-semibold ml-1">{session.user.name}</span>
               {session.user.isVerified ? <VerifiedBadge /> : <NotVerifiedBadge /> }
             </span>
             <img src={`/flags/${country}.png`} alt="flag" className="w-6 h-4" />
