@@ -5,7 +5,7 @@ import { fetchData } from "./utils/fetchData";
 import {
   useMovieData,
   useTvData,
-  useMoviePage,
+  usePagination,
   useBrowseMovies,
   useBrowseTv,
   useMyList,
@@ -20,7 +20,7 @@ const HomePage = () => {
   const { tvData, setTvData } = useTvData();
   const { allMovies, setAllMovies } = useBrowseMovies();
   const { allTv, setAllTv } = useBrowseTv();
-  const { moviePage } = useMoviePage();
+  const { page } = usePagination();
   const { myList, setMyList } = useMyList();
   const [loading, setLoading] = useState(true);
   const OPTIONS = { align: 'start', dragFree: true, loop: true }
@@ -41,7 +41,7 @@ const HomePage = () => {
 
   async function fetchAllMovies() {
     const allMovies = await fetchData(
-      `https://api.themoviedb.org/3/discover/movie?include_adult=true&include_video=false&language=en-US&page=${moviePage}&sort_by=popularity.desc`
+      `https://api.themoviedb.org/3/discover/movie?include_adult=true&include_video=false&language=en-US&page=${page}&sort_by=popularity.desc`
     );
     setAllMovies(allMovies);
   }
@@ -76,7 +76,7 @@ const HomePage = () => {
     };
 
     fetchDataAll();
-  }, [moviePage, setMyList]);
+  }, [page, setMyList]);
 
   return (
     <>

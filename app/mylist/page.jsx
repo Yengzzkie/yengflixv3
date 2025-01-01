@@ -1,20 +1,19 @@
 "use client";
-import { useMyList } from "../stores/useDataStore";
-import Image from "next/image";
-import { getSession } from "next-auth/react";
 import { useEffect, useState } from "react";
+import { useMyList } from "../stores/useDataStore";
+import { getSession } from "next-auth/react";
+import { CustomSpinner } from "../components/Spinner";
+import TopExpandableCard from "../components/TopExpandableCard";
 import SlideInNotifications from "../components/Notification";
 import axios from "axios";
-import TopExpandableCard from "../components/TopExpandableCard";
-import { CustomSpinner } from "../components/Spinner";
 
 const MyListPage = () => {
-  const { myList, setMyList } = useMyList();
-  const IMG_PATH = "https://image.tmdb.org/t/p/original/";
   const [email, setEmail] = useState("");
   const [selectedSlide, setSelectedSlide] = useState(null);
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const { myList, setMyList } = useMyList();
+  const IMG_PATH = "https://image.tmdb.org/t/p/original/";
 
   async function fetchMyList() {
     setLoading(true);

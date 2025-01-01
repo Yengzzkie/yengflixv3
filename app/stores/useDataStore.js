@@ -25,9 +25,9 @@ export const useBrowseTv = create((set) => ({
 }))
 
 // state for page navigation when browsing movies
-export const useMoviePage = create((set) => ({
-    moviePage: 1,
-    setMoviePage: (data) => set({ moviePage: data })
+export const usePagination = create((set) => ({
+    page: 1,
+    setPage: (data) => set({ page: data })
 }))
 
 // state for my list
