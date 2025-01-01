@@ -1,24 +1,25 @@
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
-import { compare } from "bcryptjs";
 import prisma from "@/db/prismaClient";
+import { compare } from "bcryptjs";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   callbacks: {
     jwt({ token, user }) {
       if (user) {
         token.id = user.id;
-        token.location = user.location
-        // add user id and location to the token because it is not included in the token
-        // by default
+        token.location = user.location;
+        token.isVerified = user.isVerified;
+        // add user id, location and isVerified to the token because it is not included in the token by default
       }
       return token;
     },
     session({ session, token }) {
       session.user.id = token.id;
-      session.user.location = token.location
+      session.user.location = token.location;
+      session.user.isVerified = token.isVerified;
       return session;
-      // and assign the ID and location to the session to be used in the frontend
+      // and assign the ID, location and isVerified status to the session to be used in the frontend
     },
   },
   providers: [
@@ -47,10 +48,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           return null;
         }
 
-        return { name: user.name, email: user.email, id: user.id, location: user.location };
+        return { name: user.name, email: user.email, id: user.id, location: user.location, isVerified: user.isVerified };
       },
     }),
   ],
 });
-
-// export { handler as GET, handler as POST };

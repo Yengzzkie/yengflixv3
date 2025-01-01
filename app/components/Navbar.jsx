@@ -34,6 +34,7 @@ import Logout from "./Logout";
 import { fetchData } from "../utils/fetchData";
 import { useRouter } from "next/navigation";
 import { useSearchResult } from "../stores/useDataStore";
+import { VerifiedBadge, NotVerifiedBadge } from "./VerifiedBadge";
 
 const navListMenuItems = [
   {
@@ -175,7 +176,9 @@ function NavList() {
         className="font-medium"
       >
         <ListItem className="flex items-center gap-2 py-2 pr-4">
-          <Link onClick={() => setOpenNav(!openNav)} href="/">Home</Link>
+          <Link onClick={() => setOpenNav(!openNav)} href="/">
+            Home
+          </Link>
         </ListItem>
       </Typography>
       <NavListMenu />
@@ -186,7 +189,9 @@ function NavList() {
         className="font-medium lg:hidden"
       >
         <ListItem className="flex items-center gap-2 py-2 pr-4">
-          <Link onClick={() => setOpenNav(!openNav)} href="/search">Search Title</Link>
+          <Link onClick={() => setOpenNav(!openNav)} href="/search">
+            Search Title
+          </Link>
         </ListItem>
       </Typography>
     </List>
@@ -200,7 +205,7 @@ export default function Navigation({ session }) {
   const { setSearchResult } = useSearchResult();
   const router = useRouter();
 
-  const country = session.user.location.countryCode.toLowerCase();
+  const country = session.user.location.countryCode.toLowerCase(); 
 
   React.useEffect(() => {
     window.addEventListener(
@@ -216,11 +221,11 @@ export default function Navigation({ session }) {
 
   useEffect(() => {
     const trimmedSearchValue = searchValue.trim();
-  
+
     if (!trimmedSearchValue) {
       return; // avoid unnecessary fetch for empty or whitespace input
     }
-  
+
     const debounceFetch = setTimeout(async () => {
       try {
         const response = await fetchData(
@@ -232,10 +237,9 @@ export default function Navigation({ session }) {
         console.error({ error });
       }
     }, 800);
-  
+
     return () => clearTimeout(debounceFetch);
   }, [searchValue, router]);
-  
 
   return (
     <Navbar className="mx-auto max-w-screen rounded-none border-none px-4 py-4 bg-[#1b1b1b]">
@@ -296,8 +300,9 @@ export default function Navigation({ session }) {
           {/* USER DISPLAY NAME */}
           <div className="mr-4">
             <div className="flex items-center">
-              <span className="mr-2 text-sm text-gray-400">
-                Hello, {session.user.name}
+              <span className="mr-1 text-sm text-gray-400 flex items-end">
+                Hello, {session.user.name}{" "}
+                {session.user.isVerified ? <VerifiedBadge /> : <NotVerifiedBadge /> }
               </span>
               <img
                 src={`/flags/${country}.png`}
@@ -305,7 +310,7 @@ export default function Navigation({ session }) {
                 className="w-6 h-4"
               />
             </div>
-            <p className="text-xs text-gray-400">{session.user.email}</p>
+            <p className="text-[11px] text-gray-400">{session.user.email}</p>
           </div>
 
           <Logout />
@@ -313,13 +318,14 @@ export default function Navigation({ session }) {
 
         {/* Mobile User Info */}
         <div className="block mr-0 lg:hidden lg:mr-4">
-          <div className="flex">
-            <span className="mr-2 text-sm text-gray-400">
-              Hello, {session.user.name}
+          <div className="flex items-center">
+            <span className="mr-1 text-sm text-gray-400 flex items-end">
+              Hello, {session.user.name}{" "}
+              {session.user.isVerified ? <VerifiedBadge /> : <NotVerifiedBadge /> }
             </span>
             <img src={`/flags/${country}.png`} alt="flag" className="w-6 h-4" />
           </div>
-          <p className="text-xs text-gray-400">{session.user.email}</p>
+          <p className="text-[11px] text-gray-400">{session.user.email}</p>
         </div>
 
         {/* Mobile Navigation Toggle */}
