@@ -128,7 +128,7 @@ const Form = () => {
       setFormData((prevFormData) => {
         const updatedFormData = {
           ...prevFormData,
-          [name]: name === "email" ? value.toLowerCase().trim() : value,
+          [name]: name === "email" ? value.toLowerCase().trim() : value.trim(),
           location: loc
         };
         console.log(formData)

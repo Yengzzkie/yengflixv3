@@ -62,7 +62,7 @@ const SearchPage = () => {
       <div className="grid grid-cols-3 lg:grid-cols-5 gap-4 px-6">
         {searchResult.filter((result) => (result.media_type !== "person")).map((result) => (
           <Link key={result.id} href={`watch/${result.id}?media_type=${result.media_type === "movie" ? "Movies" : "TV Shows"}&title=${result.title || result.name}`}>
-            <Image src={result.poster_path === null ? (multimedia) : `${IMG_PATH}${result.poster_path}`} width={300} height={300} className="card-shadow rounded-md" alt={result.title || result.name} />
+            <img src={result.poster_path === null ? (multimedia) : `${IMG_PATH}${result.poster_path}`} width={300} height={300} className="card-shadow rounded-md" alt={result.title || result.name} />
           </Link>
         ))}
       </div>

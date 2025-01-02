@@ -35,6 +35,7 @@ import { fetchData } from "../utils/fetchData";
 import { useRouter } from "next/navigation";
 import { useSearchResult } from "../stores/useDataStore";
 import { VerifiedBadge, NotVerifiedBadge } from "./VerifiedBadge";
+import { Tooltip } from "@material-tailwind/react";
 
 const navListMenuItems = [
   {
@@ -205,7 +206,7 @@ export default function Navigation({ session }) {
   const { setSearchResult } = useSearchResult();
   const router = useRouter();
 
-  const country = session.user.location.countryCode.toLowerCase(); 
+  const country = session.user.location.countryCode.toLowerCase();
 
   React.useEffect(() => {
     window.addEventListener(
@@ -300,14 +301,19 @@ export default function Navigation({ session }) {
           {/* USER DISPLAY NAME */}
           <div className="mr-4">
             <div className="flex items-center">
-              <span className="mr-1 text-sm text-gray-400 flex items-end">
-                Hello, <span className="font-semibold mx-1">{session.user.name}</span>
-                {session.user.isVerified ? <VerifiedBadge /> : <NotVerifiedBadge /> }
+              <span className="text-sm text-gray-400 flex items-end">
+                Hello,{" "}
+                <span className="font-semibold mx-1">{session.user.name}</span>
               </span>
+              {session.user.isVerified ? (
+                <VerifiedBadge />
+              ) : (
+                <NotVerifiedBadge />
+              )}
               <img
                 src={`/flags/${country}.png`}
                 alt="flag"
-                className="w-6 h-4"
+                className="w-6 h-4 ml-1"
               />
             </div>
             <p className="text-[11px] text-gray-400">{session.user.email}</p>
@@ -319,11 +325,27 @@ export default function Navigation({ session }) {
         {/* Mobile User Info */}
         <div className="block mr-0 lg:hidden lg:mr-4">
           <div className="flex items-center">
-            <span className="mr-1 text-sm text-gray-400 flex items-center">
-              Hello, <span className="font-semibold mx-1">{session.user.name}</span>
-              {session.user.isVerified ? <VerifiedBadge /> : <NotVerifiedBadge /> }
+            <span className="text-xs text-gray-400 flex items-center max-w-[130px]">
+              Hello,{" "}
+              <Tooltip // added tooltip for truncated display names
+                content={session.user.name}
+                animate={{
+                  mount: { scale: 1, y: 0 },
+                  unmount: { scale: 0, y: 25 },
+                }}
+                className="bg-[var(--primary-dark)] card-shadow"
+              >
+                <span className="font-semibold mx-1 truncate">
+                  {session.user.name}
+                </span>
+              </Tooltip>
             </span>
-            <img src={`/flags/${country}.png`} alt="flag" className="w-5 h-3 lg:w-6 lg:h-4" />
+            {session.user.isVerified ? <VerifiedBadge /> : <NotVerifiedBadge />}
+            <img
+              src={`/flags/${country}.png`}
+              alt="flag"
+              className="w-5 h-3 lg:w-6 lg:h-4 ml-1"
+            />
           </div>
           <p className="text-[11px] text-gray-400">{session.user.email}</p>
         </div>
