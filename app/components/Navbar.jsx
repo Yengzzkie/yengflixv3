@@ -40,53 +40,53 @@ import { Tooltip } from "@material-tailwind/react";
 const navListMenuItems = [
   {
     title: "Browse Movies",
-    description: "Find the perfect solution for your needs.",
+    description: "Explore a wide variety of movies from all genres.",
     icon: VideoCameraIcon,
     link: "/browse-movies",
   },
   {
     title: "Browse TV Shows",
-    description: "Find the perfect solution for your needs.",
+    description: "Discover the latest and most popular TV shows to watch.",
     icon: TvIcon,
     link: "/browse-tv%20shows",
   },
   {
     title: "My List",
-    description: "Learn how we can help you achieve your goals.",
+    description: "Save your favorite movies and TV shows for easy access later.",
     icon: BookmarkIcon,
     link: "/mylist",
   },
   {
     title: "Users",
-    description: "Meet and learn about our dedication",
+    description: "Manage user profiles and interact with other members.",
     icon: UserGroupIcon,
     link: "/users",
   },
   {
     title: "Forum",
-    description: "Reach out to us for assistance or inquiries",
+    description: "Join the community discussion, ask questions, and share ideas.",
     icon: ChatBubbleLeftRightIcon,
   },
   {
     title: "Account Settings",
-    description: "Find the perfect solution for your needs.",
+    description: "Update your personal information and adjust account preferences.",
     icon: Cog6ToothIcon,
   },
-  {
-    title: "News",
-    description: "Read insightful articles, tips, and expert opinions.",
-    icon: NewspaperIcon,
-  },
-  {
-    title: "Products",
-    description: "Find the perfect solution for your needs.",
-    icon: RectangleGroupIcon,
-  },
-  {
-    title: "Special Offers",
-    description: "Explore limited-time deals and bundles",
-    icon: TagIcon,
-  },
+  // {
+  //   title: "News",
+  //   description: "Read insightful articles, tips, and expert opinions.",
+  //   icon: NewspaperIcon,
+  // },
+  // {
+  //   title: "Products",
+  //   description: "Find the perfect solution for your needs.",
+  //   icon: RectangleGroupIcon,
+  // },
+  // {
+  //   title: "Special Offers",
+  //   description: "Explore limited-time deals and bundles",
+  //   icon: TagIcon,
+  // },
 ];
 
 function NavListMenu() {
@@ -112,7 +112,7 @@ function NavListMenu() {
             </Typography>
             <Typography
               variant="paragraph"
-              className="text-xs !font-medium text-blue-gray-500 text-[#a7a7a7]"
+              className="text-xs text-left !font-medium text-blue-gray-500 text-[#a7a7a7]"
             >
               {description}
             </Typography>
