@@ -301,7 +301,7 @@ export default function Navigation({ session }) {
           <div className="mr-4">
             <div className="flex items-center">
               <span className="mr-1 text-sm text-gray-400 flex items-end">
-                Hello, <span className="font-semibold ml-1">{session.user.name}</span>
+                Hello, <span className="font-semibold mx-1">{session.user.name}</span>
                 {session.user.isVerified ? <VerifiedBadge /> : <NotVerifiedBadge /> }
               </span>
               <img
@@ -319,11 +319,11 @@ export default function Navigation({ session }) {
         {/* Mobile User Info */}
         <div className="block mr-0 lg:hidden lg:mr-4">
           <div className="flex items-center">
-            <span className="mr-1 text-sm text-gray-400 flex items-end">
-              Hello, <span className="font-semibold ml-1">{session.user.name}</span>
+            <span className="mr-1 text-sm text-gray-400 flex items-center">
+              Hello, <span className="font-semibold mx-1">{session.user.name}</span>
               {session.user.isVerified ? <VerifiedBadge /> : <NotVerifiedBadge /> }
             </span>
-            <img src={`/flags/${country}.png`} alt="flag" className="w-6 h-4" />
+            <img src={`/flags/${country}.png`} alt="flag" className="w-5 h-3 lg:w-6 lg:h-4" />
           </div>
           <p className="text-[11px] text-gray-400">{session.user.email}</p>
         </div>

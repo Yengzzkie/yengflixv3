@@ -80,6 +80,12 @@ const Form = () => {
       return; // prevent form submission
     }
 
+    if (/\s/.test(formData.password)) {
+      setError("Password cannot have spaces");
+      setLoading(false);
+      return; // prevent form submission
+    }
+    
     if (calculateStrength.score !== 5) {
       setError("Password must meet all criteria");
       setLoading(false);
@@ -122,9 +128,10 @@ const Form = () => {
       setFormData((prevFormData) => {
         const updatedFormData = {
           ...prevFormData,
-          [name]: value,
+          [name]: name === "email" ? value.toLowerCase().trim() : value,
           location: loc
         };
+        console.log(formData)
   
         if (updatedFormData.password !== updatedFormData.confirmPassword) {
           setError("Passwords do not match");

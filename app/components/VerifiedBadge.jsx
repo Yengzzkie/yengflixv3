@@ -11,7 +11,7 @@ export const VerifiedBadge = () => {
         unmount: { scale: 0, y: 25 },
       }}
     >
-      <VerifiedIcon className="h-6 w-6 ml-2" fill="green" />
+      <VerifiedIcon className="h-4 w-4 lg:h-5 lg:w-5" fill="green" />
     </Tooltip>
   );
 };
@@ -26,7 +26,7 @@ export const NotVerifiedBadge = () => {
         unmount: { scale: 0, y: 25 },
       }}
     >
-      <XCircleIcon className="h-5 w-5 ml-2" fill="red" />
+      <XCircleIcon className="h-4 w-4 lg:h-5 lg:w-5" fill="red" />
     </Tooltip>
   );
 };
