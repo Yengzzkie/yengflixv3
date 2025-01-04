@@ -4,7 +4,6 @@ import { motion } from "framer-motion";
 import { MagnifyingGlassIcon, XMarkIcon } from "@heroicons/react/24/solid";
 import { useSearchResult } from "../stores/useDataStore";
 import { fetchData } from "../utils/fetchData";
-import Image from "next/image";
 import Link from "next/link";
 import multimedia from "../../public/multimedia.png"
 

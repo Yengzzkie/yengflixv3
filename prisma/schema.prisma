@@ -10,8 +10,8 @@ generator client {
 
 datasource db {
   provider  = "postgresql"
-  url       = env("NEXT_PUBLIC_DATABASE_URL")
-  directUrl = env("NEXT_PUBLIC_DIRECT_URL")
+  url       = env("DATABASE_URL")
+  directUrl = env("DB_DIRECT_URL")
   // url      = "postgresql://macbookpro:Yengzzkie18@localhost:5432/mydb?schema=public"
 }
 

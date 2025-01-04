@@ -1,36 +1,62 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Yengflixv3
 
-## Getting Started
+Yengflixv3 is a movie streaming platform that allows users to browse, search, and stream movies or TV shows. It also requires users to register and verify their email to utilize the full features of Yengflix v3. Built using NextJS fullstack.
 
-First, run the development server:
+## Features
+
+- **Movie Browsing & Searching**: Discover and search for your favorite movies or TV shows.
+- **Streaming**: Watch movies and TV show episodes directly on the platform.
+- **User Authentication**: Register and log in to access personalized features such as favorites list.
+- **User Profiles**: Create and manage your own profile.
+- **Responsive Design**: Optimized for use on both desktop and mobile devices.
+
+## Tech Stack
+
+- **Frontend**: NextJS, Zustand (State Management), TailwindCSS
+- **Backend**: NextJS integrated backend
+- **Database**: PostgreSQL and Prisma ORM
+- **Authentication**: next-auth
+- **APIs**: Integrated with TMDP APIs to fetch movie data
+
+## Installation
+
+### Prerequisites
+
+Ensure you have the following installed on your machine:
+
+- [Node.js](https://nodejs.org/) (version >=14)
+- [PostgreSQL](https://www.postgresql.org/) (or any other database you plan to use)
+
+### Clone the repository
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/yourusername/yengflixv3.git
+cd yengflixv3
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Prerequisites
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+1. Install the dependencies:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm install
+```
 
-## Learn More
+2. Create an `.env.local` file in the root of the directory and add your environment variables (e.g., database URL, JWT secret, etc.).
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+AUTH_SECRET="YOUR_JWT_AUTH_SECRET_FOR_NEXT_AUTH"
+NEXT_PUBLIC_API_KEY="API_KEY_FOR_TMDB_API"
+NEXT_DATABASE_URL="YOUR_DATABASE_URL"
+GMAIL_USERNAME="YOUR_GMAIL_FOR_NODEMAILER"
+GMAIL_PASS="YOUR_GENERATED_GMAIL_APP_PASSWORD_DO_NOT_USE_YOUR_GMAIL'S_PASSWORD"
+JWT_SECRET="JWT_SECRET_FOR_RESENDING_VERIFICATION_EMAIL"
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+3. Run development server:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+   ```bash
+   npm run dev
+   ```
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+The app will be running at http://localhost:3000 by default.

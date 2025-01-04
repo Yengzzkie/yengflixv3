@@ -5,8 +5,8 @@ import { Label } from "../components/ui/label";
 import { Input } from "../components/ui/input";
 import { cn } from "../utils/utils";
 import { IconBrandFacebook, IconBrandGoogle } from "@tabler/icons-react";
-import Loader from "./Loader";
 import { useRouter } from "next/navigation";
+import Loader from "./Loader";
 import Link from "next/link";
 
 export default function LoginForm() {
