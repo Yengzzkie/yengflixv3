@@ -12,6 +12,7 @@ import {
 } from "./stores/useDataStore";
 import EmblaCarousel from "./components/TopCarousel";
 import { getSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import axios from "axios";
 import MyListCarousel from "./components/MyListCarousel";
 
@@ -60,7 +61,6 @@ const HomePage = () => {
     const response = await axios.get(`/api/users/list?email=${email}`);
     setMyList(response.data.list)
   }
-  
 
   useEffect(() => {
     const fetchDataAll = async () => {
