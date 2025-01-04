@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const fetchData = async (URL) => {
-  const TMDB_API_KEY = process.env.TMDB_API_KEY
+  const TMDB_API_KEY = process.env.NEXT_PUBLIC_TMDB_API_KEY
 
   try {
     const response = await axios.get(URL, {
