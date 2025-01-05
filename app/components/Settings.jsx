@@ -3,9 +3,13 @@ import { useState } from "react";
 
 const Badge = ({ cn, text }) => {
   return (
-    <span className={`${cn} px-2 py-1 rounded-full text-sm font-extralight border-[2px]`}>{text}</span>
-  )
-}
+    <span
+      className={`${cn} px-2 py-1 rounded-full text-sm font-extralight border-[2px]`}
+    >
+      {text}
+    </span>
+  );
+};
 
 const AccountSettings = ({ user }) => {
   const [name, setName] = useState(user.name);
@@ -28,8 +32,8 @@ const AccountSettings = ({ user }) => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-6 space-y-8 bg-gray-900 text-gray-200">
-      <section className="bg-gray-800 p-6 rounded-lg shadow-md">
+    <div className="max-w-4xl mx-auto p-6 space-y-8 bg-[var(--background)] text-gray-200">
+      <section className="bg-zinc-800 p-6 rounded-lg shadow-md">
         <h2 className="text-2xl font-semibold text-white mb-4">
           Profile Overview
         </h2>
@@ -46,7 +50,7 @@ const AccountSettings = ({ user }) => {
               className="mt-2 p-3 w-full border border-gray-600 bg-gray-700 text-white rounded-md"
             />
           ) : (
-            <p>{name}</p>
+            <p className="bg-[var(--primary-light)] p-2">{name}</p>
           )}
         </div>
         <div className="mb-6">
@@ -68,7 +72,7 @@ const AccountSettings = ({ user }) => {
               </p>
             </>
           ) : (
-            <p>{email}</p>
+            <p className="bg-[var(--primary-light)] p-2">{email}</p>
           )}
         </div>
         <div className="mb-6">
@@ -88,22 +92,98 @@ const AccountSettings = ({ user }) => {
             )}
           </div>
         </div>
+
+        {isEditMode ? null : (
+          <div>
+            <label htmlFor="current-password" className="block text-gray-300">
+              Current Password
+            </label>
+            <input
+              type="password"
+              id="current-password"
+              placeholder="**********"
+              value={currentPassword}
+              onChange={(e) => setCurrentPassword(e.target.value)}
+              className="mt-2 p-3 w-full border border-gray-600 bg-gray-700 text-white rounded-md"
+              disabled
+            />
+          </div>
+        )}
+        {isEditMode && (
+          <div className="mt-6 space-y-4">
+            <h3 className="text-lg font-semibold text-gray-300">
+              Change Password
+            </h3>
+            <div>
+              <label htmlFor="current-password" className="block text-gray-300">
+                Current Password
+              </label>
+              <input
+                type="password"
+                id="current-password"
+                value={currentPassword}
+                placeholder="*********"
+                onChange={(e) => setCurrentPassword(e.target.value)}
+                className="mt-2 p-3 w-full border border-gray-600 bg-gray-700 text-white rounded-md"
+              />
+            </div>
+            <div>
+              <label htmlFor="new-password" className="block text-gray-300">
+                New Password
+              </label>
+              <input
+                type="password"
+                id="new-password"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                className="mt-2 p-3 w-full border border-gray-600 bg-gray-700 text-white rounded-md"
+              />
+            </div>
+            <div>
+              <label htmlFor="confirm-password" className="block text-gray-300">
+                Confirm Password
+              </label>
+              <input
+                type="password"
+                id="confirm-password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                className="mt-2 p-3 w-full border border-gray-600 bg-gray-700 text-white rounded-md"
+              />
+            </div>
+          </div>
+        )}
       </section>
 
-      <section className="bg-gray-800 p-6 rounded-lg shadow-md mt-8">
+      <section className="bg-zinc-800 p-6 rounded-lg shadow-md mt-8">
         <h2 className="text-2xl font-semibold text-white mb-4">Location</h2>
         <div>
-          <p className="text-gray-300">{location}</p>
+          <p className="bg-[var(--primary-light)] p-2">{location}</p>
         </div>
       </section>
 
-      <section className="bg-gray-800 p-6 rounded-lg shadow-md mt-8">
+      <section className="bg-zinc-800 p-6 rounded-lg shadow-md mt-8">
         <h2 className="text-2xl font-semibold text-white mb-4">
           Account Verification
         </h2>
         <div>
           <p className="text-gray-300">
-            Status: {user.isVerified ? <Badge cn={"text-[var(--secondary-content)] bg-green-300 border border-[var(--secondary-content)]"} text={"Verified"} /> : <Badge cn={"text-[var(--secondary-dark)] bg-red-300 border border-red-500"} text={"Not Verified"} />}
+            Status:{" "}
+            {user.isVerified ? (
+              <Badge
+                cn={
+                  "text-[var(--secondary-content)] bg-green-300 border border-[var(--secondary-content)]"
+                }
+                text={"Verified"}
+              />
+            ) : (
+              <Badge
+                cn={
+                  "text-[var(--secondary-dark)] bg-red-300 border border-red-500"
+                }
+                text={"Not Verified"}
+              />
+            )}
           </p>
           {!user.isVerified && (
             <button className="mt-2 text-blue-400 hover:underline">
@@ -115,14 +195,14 @@ const AccountSettings = ({ user }) => {
 
       <div className="flex justify-between items-center mt-8">
         <button
-          className="w-1/4 bg-blue-500 text-white py-3 rounded-md hover:bg-blue-600"
+          className="w-1/4 bg-[var(--secondary-dark)] text-white font-thin p-2 rounded-md hover:bg-[var(--secondary-light)]"
           onClick={toggleEditMode}
         >
           {isEditMode ? "Cancel" : "Edit"}
         </button>
         {isEditMode && (
           <button
-            className="w-1/4 bg-green-500 text-white py-3 rounded-md hover:bg-green-600"
+            className="w-fit bg-green-500 text-white p-2 rounded-md hover:bg-green-600"
             onClick={handleSaveChanges}
           >
             Save Changes
