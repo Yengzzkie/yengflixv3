@@ -2,6 +2,7 @@ import "./globals.css";
 import Navigation from "./components/Navbar";
 import NavigationLogin from "./components/NavbarLogin";
 import { SpeedInsights } from "@vercel/speed-insights/next"
+import { Analytics } from "@vercel/analytics/react"
 import { auth } from "./auth";
 
 export const metadata = {
@@ -22,6 +23,7 @@ export default async function RootLayout({ children }) {
         {session ? <Navigation session={session} /> : <NavigationLogin />}
         <main>{children}</main>
         <SpeedInsights />
+        <Analytics />
       </body>
     </html>
   );
