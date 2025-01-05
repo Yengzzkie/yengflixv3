@@ -36,9 +36,7 @@ const MyListPage = () => {
   }, []);
 
   async function deleteMovieHandler(id, callback) {
-    const response = await axios.delete(
-      `/api/users/list?email=${email}&id=${id}`
-    );
+    await axios.delete(`/api/users/list?email=${email}&id=${id}`);
     setTimeout(() => {
       callback();
     }, 3000);

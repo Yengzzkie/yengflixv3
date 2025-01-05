@@ -206,7 +206,6 @@ export default function Navigation({ session }) {
   const [searchValue, setSearchValue] = React.useState("");
   const { setSearchResult } = useSearchResult();
   const router = useRouter();
-
   const country = session.user.location.countryCode.toLowerCase();
 
   React.useEffect(() => {

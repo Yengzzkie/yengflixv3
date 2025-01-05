@@ -1,6 +1,16 @@
 import { VerifiedIcon, XCircleIcon } from "lucide-react";
 import { Tooltip } from "@material-tailwind/react";
 
+export const GenericBadge = ({ cn, text }) => {
+  return (
+    <span
+      className={`${cn} px-2 py-1 rounded-full text-sm font-extralight border-[2px]`}
+    >
+      {text}
+    </span>
+  );
+};
+
 export const VerifiedBadge = () => {
   return (
     <Tooltip
