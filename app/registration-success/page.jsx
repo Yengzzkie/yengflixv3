@@ -3,11 +3,13 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { CheckCircleIcon } from "@heroicons/react/24/outline";
 import { motion } from "framer-motion";
+import { fireConfetti } from "../components/ui/Confetti";
 
 const RegistrationSuccess = () => {
   const router = useRouter();
 
   useEffect(() => {
+    fireConfetti();
     const timer = setTimeout(() => {
       router.push("/login");
     }, 5000); // 3 seconds

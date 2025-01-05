@@ -71,6 +71,7 @@ const navListMenuItems = [
     title: "Account Settings",
     description: "Update your personal information and adjust account preferences.",
     icon: Cog6ToothIcon,
+    link: "/account-settings"
   },
   // {
   //   title: "News",

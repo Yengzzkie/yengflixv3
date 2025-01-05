@@ -23,7 +23,7 @@ const TVShowsPage = () => {
         {
           headers: {
             accept: "application/json",
-            Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_KEY}`,
+            Authorization: `Bearer ${process.env.NEXT_PUBLIC_TMDB_API_KEY}`,
           },
         }
       );
@@ -61,7 +61,7 @@ const TVShowsPage = () => {
         <CustomSpinner />
       ) : (
         <>
-          <div className="flex flex-col lg:flex-row justify-between items-center mr-2 mt-4 mb-2">
+          <div className="flex flex-col lg:flex-row justify-between items-center mr-2 mt-4 mb-2 px-4">
             <h1 className="text-2xl font-bold ml-2 mb-2">Browse TV Shows</h1>
             <Pagination
               totalPages={totalPages}
