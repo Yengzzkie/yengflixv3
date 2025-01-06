@@ -25,7 +25,7 @@ const Video = ({ params }) => {
   const movieSrc = `https://vidsrc.xyz/embed/movie/${id}`;
   const tvSrc = `https://vidsrc.xyz/embed/tv/${id}`;
   const IMG_PATH = "https://image.tmdb.org/t/p/original/";
-  const NEXT_PUBLIC_API_KEY = process.env.NEXT_PUBLIC_API_KEY;
+  const TMDB_API_KEY = process.env.NEXT_PUBLIC_TMDB_API_KEY;
   const movieDetailsEndpoint = `https://api.themoviedb.org/3/movie/${id}?language=en-US`
   const tvDetailsEndpoint = `https://api.themoviedb.org/3/tv/${id}?language=en-US`
 
@@ -55,7 +55,7 @@ const Video = ({ params }) => {
         {
           headers: {
             accept: "application/json",
-            Authorization: `Bearer ${NEXT_PUBLIC_TMDB_API_KEY}`,
+            Authorization: `Bearer ${TMDB_API_KEY}`,
           },
         }
       );
