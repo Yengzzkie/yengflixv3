@@ -55,7 +55,7 @@ const Video = ({ params }) => {
         {
           headers: {
             accept: "application/json",
-            Authorization: `Bearer ${NEXT_PUBLIC_API_KEY}`,
+            Authorization: `Bearer ${NEXT_PUBLIC_TMDB_API_KEY}`,
           },
         }
       );
