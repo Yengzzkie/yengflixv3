@@ -8,6 +8,7 @@ import {
   ShareIcon,
   CheckIcon
 } from "@heroicons/react/24/outline";
+import NotificationAlert from "./ui/NotificationAlert";
 import axios from "axios";
 import TopExpandableCard from "./TopExpandableCard";
 import addToList from "../utils/addToList";
@@ -34,7 +35,6 @@ const Video = ({ params }) => {
       const response = mediaType === "Movies" ? await fetchData(`https://api.themoviedb.org/3/movie/${id}/recommendations?language=en-US&page=1`) : 
       await fetchData(`https://api.themoviedb.org/3/tv/${id}/recommendations?language=en-US&page=1`)
 
-      console.log(response)
       if (!response) {
         setSimilarMovies([]);
         return;
@@ -106,6 +106,7 @@ const Video = ({ params }) => {
 
   return (
     <div>
+      <NotificationAlert status={"success"} text={<>It is recommended that you stream from 'Brave Browser' to disable the pop-up ads when playing the video. The installer specific for your device can be downloaded <a href="https://brave.com/download" target="_blank" className="font-semibold underline text-blue-400">here</a></>} />
       <TopExpandableCard open={open} setOpen={setOpen} selectedSlide={selectedSlide} media_type={mediaType} />
       <iframe
         src={mediaType === "Movies" ? movieSrc : tvSrc}
