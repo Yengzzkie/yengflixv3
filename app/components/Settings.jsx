@@ -43,6 +43,18 @@ const AccountSettings = ({ user }) => {
     }
   };
 
+  async function resendVerificationEmail() {
+    try {
+      const response = await axios.post("/api/users/resend-verification", { email: user.email });
+
+      if (response.status === 200) {
+        alert("Verification email sent successfully");
+      }
+    } catch (error) {
+      console.error({ error });
+    }
+  }
+
   return (
     <div className="max-w-4xl mx-auto p-6 space-y-8 bg-[var(--background)] text-gray-200">
       <section className="bg-zinc-800 p-6 rounded-lg shadow-md">
@@ -164,7 +176,7 @@ const AccountSettings = ({ user }) => {
             )}
           </p>
           {!user.isVerified && (
-            <button className="mt-2 text-blue-400 hover:underline">Resend Verification Email</button>
+            <button onClick={resendVerificationEmail} className="mt-2 text-blue-400 hover:underline">Resend Verification Email</button>
           )}
         </div>
       </section>
