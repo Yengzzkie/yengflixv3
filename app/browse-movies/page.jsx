@@ -61,8 +61,8 @@ const MoviesPage = () => {
         <CustomSpinner />
       ) : (
         <>
-          <div className="flex flex-col lg:flex-row justify-between items-center mr-2 mt-4 mb-2 px-4">
-            <h1 className="text-2xl font-bold ml-2 mb-2">Browse Movies</h1>
+          <div className="pagination bg-transparent sticky top-0 flex flex-col lg:flex-row justify-between items-center mr-2 mb-2 px-4 py-2">
+            <h1 className="text-2xl font-bold ml-2 mb-2 text-shadow-dark">Browse Movies</h1>
             <Pagination
               totalPages={totalPages}
               onPageChange={pageChangeHandler}

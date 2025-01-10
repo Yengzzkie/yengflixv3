@@ -38,6 +38,12 @@ nav * {
   text-shadow: 0px 0px 2px var(--primary);
 }
 
+.text-shadow-dark {
+  color: var(--primary);
+  filter: drop-shadow( 0 0 2px var(--background));
+  text-shadow: 0px 0px 2px var(--background);
+}
+
 .card-shadow {
   box-shadow: -8px 8px 3px black;
 }
@@ -55,6 +61,17 @@ nav * {
   display: none;
 }
 
+.pagination::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(128, 128, 128, 0.081);
+  backdrop-filter: blur(10px);
+  z-index: -1;
+}
 
 /* EMBLA CAROUSEL STYLES */
 .embla {
@@ -76,4 +93,3 @@ nav * {
   min-width: 0;
   padding: .5rem 0;
 }
-
