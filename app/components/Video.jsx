@@ -2,11 +2,13 @@
 import { useSearchParams } from "next/navigation";
 import { use, useEffect, useState } from "react";
 import { fetchData } from "../utils/fetchData";
+import { useSession } from "next-auth/react";
 import {
   PlusIcon,
   HandThumbUpIcon,
   ShareIcon,
-  CheckIcon
+  CheckIcon,
+  ExclamationCircleIcon
 } from "@heroicons/react/24/outline";
 import NotificationAlert from "./ui/NotificationAlert";
 import axios from "axios";
@@ -23,17 +25,26 @@ const Video = ({ params }) => {
   const [open, setOpen] = useState(false);
   const [added, setAdded] = useState(false);
   const [buttonText, setButtonText] = useState(null);
+  const [showOverlay, setShowOverlay] = useState(false);
   const movieSrc = `https://vidsrc.xyz/embed/movie/${id}`;
   const tvSrc = `https://vidsrc.xyz/embed/tv/${id}`;
   const IMG_PATH = "https://image.tmdb.org/t/p/original/";
   const TMDB_API_KEY = process.env.NEXT_PUBLIC_TMDB_API_KEY;
-  const movieDetailsEndpoint = `https://api.themoviedb.org/3/movie/${id}?language=en-US`
-  const tvDetailsEndpoint = `https://api.themoviedb.org/3/tv/${id}?language=en-US`
+  const movieDetailsEndpoint = `https://api.themoviedb.org/3/movie/${id}?language=en-US`;
+  const tvDetailsEndpoint = `https://api.themoviedb.org/3/tv/${id}?language=en-US`;
+  const session = useSession();
+  const isVerified = session?.data?.user?.isVerified;
 
   async function fetchSimilarMovies() {
     try {
-      const response = mediaType === "Movies" ? await fetchData(`https://api.themoviedb.org/3/movie/${id}/recommendations?language=en-US&page=1`) : 
-      await fetchData(`https://api.themoviedb.org/3/tv/${id}/recommendations?language=en-US&page=1`)
+      const response =
+        mediaType === "Movies"
+          ? await fetchData(
+              `https://api.themoviedb.org/3/movie/${id}/recommendations?language=en-US&page=1`
+            )
+          : await fetchData(
+              `https://api.themoviedb.org/3/tv/${id}/recommendations?language=en-US&page=1`
+            );
 
       if (!response) {
         setSimilarMovies([]);
@@ -41,9 +52,9 @@ const Video = ({ params }) => {
       }
       setSimilarMovies(response);
     } catch (error) {
-      console.error({ error })
+      console.error({ error });
       if (error) {
-        setSimilarMovies([])
+        setSimilarMovies([]);
       }
     }
   }
@@ -59,7 +70,6 @@ const Video = ({ params }) => {
           },
         }
       );
-      console.log(response)
       // im using axios to fetch the details because for some reason the fetchData hook is returning undefined
       setDetails(response?.data);
     } catch (error) {
@@ -78,6 +88,12 @@ const Video = ({ params }) => {
     };
 
     fetchDataAll();
+
+    const timeout = setTimeout(() => {
+      setShowOverlay(true);
+    }, 180000);
+
+    return () => clearTimeout(timeout);
   }, []);
 
   const handleSlideClick = (slide) => {
@@ -95,25 +111,56 @@ const Video = ({ params }) => {
       setButtonText(response);
       setAdded(true);
     } catch (error) {
-      console.error({ error })
+      console.error({ error });
     }
 
     setTimeout(() => {
       setAdded(false);
-      setButtonText(null)
+      setButtonText(null);
     }, 2000);
   }
 
   return (
     <div>
-      <NotificationAlert status={"success"} text={<>It is recommended that you stream from 'Brave Browser' to disable the pop-up ads when playing the video. The installer specific for your device can be downloaded <a href="https://brave.com/download" target="_blank" className="font-semibold underline text-blue-400">here</a></>} />
-      <TopExpandableCard open={open} setOpen={setOpen} selectedSlide={selectedSlide} media_type={mediaType} />
-      <iframe
-        src={mediaType === "Movies" ? movieSrc : tvSrc}
-        className="w-screen h-[50vh] lg:h-screen"
-        allowFullScreen={true}
-        referrerPolicy="origin"
-      ></iframe>
+      <NotificationAlert
+        status={"success"}
+        text={
+          <>
+            It is recommended that you stream from 'Brave Browser' to disable
+            the pop-up ads when playing the video. The installer specific for
+            your device can be downloaded{" "}
+            <a
+              href="https://brave.com/download"
+              target="_blank"
+              className="font-semibold underline text-blue-400"
+            >
+              here
+            </a>
+          </>
+        }
+      />
+      <TopExpandableCard
+        open={open}
+        setOpen={setOpen}
+        selectedSlide={selectedSlide}
+        media_type={mediaType}
+      />
+      <div className="relative w-screen h-[50vh] lg:h-screen">
+        <iframe
+          src={mediaType === "Movies" ? movieSrc : tvSrc}
+          className={`video-player relative w-full h-full`}
+          allowFullScreen={true}
+          referrerPolicy="origin"
+        ></iframe>
+        {(!isVerified && showOverlay) && (
+          <div className="flex flex-col justify-center items-center gap-4 text-center text-zinc-200 absolute top-0 left-0 w-full h-full bg-zinc-800/80 backdrop-blur-md z-50">
+            <ExclamationCircleIcon className="h-10 w-10 text-yellow-500" />
+            <p className="font-semibold text-md lg:text-2xl ">Your email ({session?.data?.user?.email}) is unverified.</p>
+            <p className="font-extralight text-xs lg:text-sm">To continue watching, please verify it now by going to <strong className="font-bold">Resources</strong> &gt; <strong className="font-bold">Account Settings</strong> &gt; click <strong className="font-bold">'Resend Verification Email'</strong></p>
+            <p className="font-extralight text-xs lg:text-sm italic">If you don't receive the Verification Email, check your <strong className="font-bold">Spam</strong> folder</p>
+          </div>
+        )}
+      </div>
 
       <h1 className="font-bold text-neutral-200 text-2xl px-3 lg:px-6 py-2">
         {details.title || details.name}
@@ -124,8 +171,15 @@ const Video = ({ params }) => {
 
       <div className="flex justify-evenly p-6">
         <div className="flex flex-col items-center">
-          {added ? <CheckIcon className="w-6 mb-2 cursor-pointer hover:text-[var(--secondary-dark)]" /> : <PlusIcon onClick={() => handleAddToList()} className="w-6 mb-2 cursor-pointer hover:text-[var(--secondary-dark)]" />}
-          <p className="text-xs">{added ? (buttonText) : ("Add To List")}</p>
+          {added ? (
+            <CheckIcon className="w-6 mb-2 cursor-pointer hover:text-[var(--secondary-dark)]" />
+          ) : (
+            <PlusIcon
+              onClick={() => handleAddToList()}
+              className="w-6 mb-2 cursor-pointer hover:text-[var(--secondary-dark)]"
+            />
+          )}
+          <p className="text-xs">{added ? buttonText : "Add To List"}</p>
         </div>
         <div className="flex flex-col items-center">
           <HandThumbUpIcon className="w-6 mb-2 cursor-pointer hover:text-[var(--secondary-dark)]" />
@@ -143,10 +197,16 @@ const Video = ({ params }) => {
       </h1>
       <div className="grid grid-cols-4 lg:grid-cols-8 gap-3 lg:gap-5 px-3 lg:px-6">
         {similarMovies.length === 0 ? (
-          <p className="text-[var(--primary-light)] italic w-full">No Similar movies for this title</p>
+          <p className="text-[var(--primary-light)] italic w-full">
+            No Similar movies for this title
+          </p>
         ) : (
           similarMovies.map((movie) => (
-            <div key={movie.id} className="cursor-pointer" onClick={() => handleSlideClick(movie)}>
+            <div
+              key={movie.id}
+              className="cursor-pointer"
+              onClick={() => handleSlideClick(movie)}
+            >
               <img
                 className="card-shadow rounded-md"
                 loading="lazy"

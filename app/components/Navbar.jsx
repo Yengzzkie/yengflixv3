@@ -155,7 +155,7 @@ function NavListMenu() {
             </ListItem>
           </Typography>
         </MenuHandler>
-        <MenuList className="hidden border shadow-lg bg-[var(--background)] text-[var(--primary)] max-w-screen-xl rounded-xl lg:block">
+        <MenuList className="hidden border shadow-lg bg-[var(--background)] text-[var(--primary)] max-w-screen-xl rounded-xl lg:block z-[999]">
           <ul className="grid grid-cols-3 gap-y-2 outline-none outline-0">
             {renderItems}
           </ul>
