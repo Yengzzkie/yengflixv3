@@ -80,7 +80,7 @@ const AccountSettings = ({ user }) => {
 
   return (
     <div className="max-w-4xl mx-auto p-6 space-y-8 bg-[var(--background)] text-gray-200">
-      <NotificationAlert status={"success"} text={"For the update to reflect, please sign out then sign back in."} />
+      <NotificationAlert status={"success"} text={"If you make any update on your account, please sign out then sign back in for the update to reflect."} />
       <section className="bg-zinc-800 p-6 rounded-lg shadow-md">
         <h2 className="text-2xl font-semibold text-white mb-4">
           Profile Overview
