@@ -4,6 +4,7 @@ import NavigationLogin from "./components/NavbarLogin";
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import { Analytics } from "@vercel/analytics/react"
 import { auth } from "./auth";
+import { Provider } from "./components/Provider";
 
 export const metadata = {
   title: "Yengflix V3",
@@ -20,8 +21,10 @@ export default async function RootLayout({ children }) {
     <html lang="en">
       <link rel="icon" href="/favicon.png" />
       <body className="bg-[var(--background)]">
-        {session ? <Navigation session={session} /> : <NavigationLogin />}
-        <main>{children}</main>
+        <Provider>
+          {session ? <Navigation session={session} /> : <NavigationLogin />}
+          <main>{children}</main>
+        </Provider>
         <SpeedInsights />
         <Analytics />
       </body>

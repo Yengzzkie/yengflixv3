@@ -5,21 +5,33 @@ import { compare } from "bcryptjs";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   callbacks: {
-    jwt({ token, user }) {
+    jwt({ token, user, trigger, session }) {
       if (user) {
-        token.id = user.id;
-        token.location = user.location;
-        token.isVerified = user.isVerified;
-        // add user id, location and isVerified to the token because it is not included in the token by default
+        // Add user details to the token when it's first created
+        token = {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          location: user.location,
+          isVerified: user.isVerified,
+        };
       }
+
+      if (trigger === "update") {
+        // Update token when the session is updated
+        return {...token, ...session.user};
+      }
+
       return token;
     },
     session({ session, token }) {
+      // Assign updated user data from the token to the session
+      session.user.name = token.name;
       session.user.id = token.id;
       session.user.location = token.location;
       session.user.isVerified = token.isVerified;
+
       return session;
-      // and assign the ID, location and isVerified status to the session to be used in the frontend
     },
   },
   providers: [
@@ -30,6 +42,11 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       },
 
       async authorize(credentials) {
+        if (!credentials?.email || !credentials?.password) {
+          console.log("Email or password is missing");
+          return null;
+        }
+
         const user = await prisma.user.findUnique({
           where: {
             email: credentials.email,
@@ -41,14 +58,20 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           return null;
         }
 
-        const isMatch = await compare(credentials?.password, user.password);
+        const isMatch = await compare(credentials.password, user.password);
 
         if (!isMatch) {
           console.log("Incorrect password");
           return null;
         }
 
-        return { name: user.name, email: user.email, id: user.id, location: user.location, isVerified: user.isVerified };
+        return {
+          name: user.name,
+          email: user.email,
+          id: user.id,
+          location: user.location,
+          isVerified: user.isVerified,
+        };
       },
     }),
   ],

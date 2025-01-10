@@ -1,10 +1,12 @@
 "use client";
-import { useState } from "react";
+import { use, useState } from "react";
 import { GenericBadge } from "./ui/VerifiedBadge";
-import axios from "axios";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import PasswordInput from "./ui/PasswordInput";
-import Loader from "./ui/Loader";
 import NotificationAlert from "./ui/NotificationAlert";
+import Loader from "./ui/Loader";
+import axios from "axios";
 
 const AccountSettings = ({ user }) => {
   const [name, setName] = useState(user.name);
@@ -16,7 +18,10 @@ const AccountSettings = ({ user }) => {
   const [error, setError] = useState(null);
   const [isButtonDisabled, setIsButtonDisabled] = useState(false); // Manage disabled state
   const [timer, setTimer] = useState(0); // Timer for the resend button
+  const [showBanner, setShowBanner] = useState(false);
   const avatar = `https://ui-avatars.com/api/?name=${user.name}&background=random`;
+  const {  data: session, update } = useSession();
+  const router = useRouter();
 
   const toggleEditMode = () => setIsEditMode((prev) => !prev);
 
@@ -37,10 +42,12 @@ const AccountSettings = ({ user }) => {
       );
 
       if (response.status === 200) {
+        // Update the session with the new user data
+        await update({...session, user: {...session?.user, name: response?.data?.name}});
         alert("Changes saved successfully");
         setIsEditMode(false);
+        router.refresh();
       }
-      // console.log(response)
     } catch (error) {
       console.error({ error });
       setCurrentPassword("");
@@ -49,6 +56,7 @@ const AccountSettings = ({ user }) => {
     }
   };
 
+  // resend verification email
   async function resendVerificationEmail() {
     setLoading(true);
     setIsButtonDisabled(true); // Disable the button
@@ -67,9 +75,11 @@ const AccountSettings = ({ user }) => {
       setLoading(false);
 
       const countdown = setInterval(() => {
+        setShowBanner(true);
         setTimer((prev) => {
           if (prev === 1) {
             clearInterval(countdown);
+            setShowBanner(false);
             setIsButtonDisabled(false); // Re-enable the button
           }
           return prev - 1;
@@ -80,7 +90,7 @@ const AccountSettings = ({ user }) => {
 
   return (
     <div className="max-w-4xl mx-auto p-6 space-y-8 bg-[var(--background)] text-gray-200">
-      <NotificationAlert status={"success"} text={"If you make any update on your account, please sign out then sign back in for the update to reflect."} />
+      <NotificationAlert status={"info"} text={"If you make any update on your account, please sign out then sign back in for the update to reflect."} />
       <section className="bg-zinc-800 p-6 rounded-lg shadow-md">
         <h2 className="text-2xl font-semibold text-white mb-4">
           Profile Overview
@@ -205,7 +215,7 @@ const AccountSettings = ({ user }) => {
           </p>
         </div>
       </section>
-
+      {showBanner && <NotificationAlert status={"success"} text={<>Verification email sent. If you don't receive it after 30 seconds, check your <strong>Spam</strong> folder</>} />}
       <section className="bg-zinc-800 p-6 rounded-lg shadow-md mt-8">
         <h2 className="text-2xl font-semibold text-white mb-4">
           Account Verification

@@ -1,4 +1,5 @@
 import { Alert } from "@material-tailwind/react";
+import { ExclamationCircleIcon } from "@heroicons/react/24/outline";
 
 function CheckIcon() {
   return (
@@ -34,14 +35,22 @@ function XIcon() {
   );
 }
 
+function ExclamationIcon() {
+  return (
+    <ExclamationCircleIcon className="h-6 w-6 mr-4 text-yellow-500" />
+  );
+}
+
 const successClasses = `rounded-none border-l-4 border-[#2ec946] bg-[#2ec946]/10 text-[#2ec946] font-medium text-sm`;
 const errorClasses = `rounded-none border-l-4 border-[#FF0000] bg-[#FF0000]/20 text-[#FF0000] font-medium text-sm`;
+const infoClasses = `rounded-none border-l-4 border-[#FFA500] bg-[#FFA500]/20 text-[#FFA500] font-medium text-sm`;
 
+// status: "success" | "error" | "info"
 export default function NotificationAlert({ text, status }) {
   return (
     <Alert
-      icon={status === "success" ? <CheckIcon /> : <XIcon />}
-      className={status === "success" ? successClasses : errorClasses}
+      icon={status === "success" ? <CheckIcon /> : status === "error" ? <XIcon /> : <ExclamationIcon />}
+      className={status === "success" ? successClasses : status === "error" ? errorClasses : infoClasses}
     >
       {text}
     </Alert>
