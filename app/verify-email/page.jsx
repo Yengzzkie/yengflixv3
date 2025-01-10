@@ -1,6 +1,7 @@
 "use client";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
 import { CheckCircleIcon, ExclamationCircleIcon } from "@heroicons/react/24/outline";
 import { motion } from "framer-motion";
 import axios from "axios";
@@ -10,6 +11,7 @@ const VerificationSuccessPage = () => {
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
   const [status, setStatus] = useState("loading"); // "loading", "success", "error"
+  const { data: session, update } = useSession();
 
   async function verifyEmail() {
     try {
@@ -36,8 +38,10 @@ const VerificationSuccessPage = () => {
 
   useEffect(() => {
     if (status === "success") {
+      update({ ...session, user: { ...session?.user, isVerified: true } });
+      
       const timer = setTimeout(() => {
-        router.push("/login");
+        window.location.href = "/login";
       }, 3500); // Redirect after 5 seconds
       return () => clearTimeout(timer);
     }

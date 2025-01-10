@@ -1,5 +1,5 @@
 "use client";
-import { use, useState } from "react";
+import { useState } from "react";
 import { GenericBadge } from "./ui/VerifiedBadge";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -67,7 +67,7 @@ const AccountSettings = ({ user }) => {
       });
 
       if (response.status === 200) {
-        alert("Verification email sent successfully");
+        setShowBanner(true);
       }
     } catch (error) {
       console.error({ error });
@@ -75,7 +75,6 @@ const AccountSettings = ({ user }) => {
       setLoading(false);
 
       const countdown = setInterval(() => {
-        setShowBanner(true);
         setTimer((prev) => {
           if (prev === 1) {
             clearInterval(countdown);
