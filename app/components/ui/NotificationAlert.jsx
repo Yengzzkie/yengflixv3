@@ -36,7 +36,6 @@ function XIcon() {
 
 const successClasses = `rounded-none border-l-4 border-[#2ec946] bg-[#2ec946]/10 text-[#2ec946] font-medium text-sm`;
 const errorClasses = `rounded-none border-l-4 border-[#FF0000] bg-[#FF0000]/20 text-[#FF0000] font-medium text-sm`;
-console.log(errorClasses);
 
 export default function NotificationAlert({ text, status }) {
   return (

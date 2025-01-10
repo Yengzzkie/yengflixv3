@@ -3,6 +3,7 @@ import { useState } from "react";
 import { GenericBadge } from "./ui/VerifiedBadge";
 import axios from "axios";
 import PasswordInput from "./ui/PasswordInput";
+import Loader from "./ui/Loader";
 
 const AccountSettings = ({ user }) => {
   const [name, setName] = useState(user.name);
@@ -10,8 +11,11 @@ const AccountSettings = ({ user }) => {
   const [currentPassword, setCurrentPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isEditMode, setIsEditMode] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const avatar = `https://ui-avatars.com/api/?name=${user.name}&background=random`
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false); // Manage disabled state
+  const [timer, setTimer] = useState(0); // Timer for the resend button
+  const avatar = `https://ui-avatars.com/api/?name=${user.name}&background=random`;
 
   const toggleEditMode = () => setIsEditMode((prev) => !prev);
 
@@ -22,21 +26,22 @@ const AccountSettings = ({ user }) => {
     if (name !== user.name) formData.append("name", name);
     if (newPassword) {
       formData.append("currentPassword", currentPassword);
-      formData.append("newPassword", newPassword)
+      formData.append("newPassword", newPassword);
     }
 
     try {
-      const response = await axios.post(`/api/users/update?email=${user.email}`, formData);
+      const response = await axios.post(
+        `/api/users/update?email=${user.email}`,
+        formData
+      );
 
       if (response.status === 200) {
-        alert("Changes saved successfully")
+        alert("Changes saved successfully");
         setIsEditMode(false);
       }
-
-      console.log(response)
-      
+      // console.log(response)
     } catch (error) {
-      console.error({ error })
+      console.error({ error });
       setCurrentPassword("");
       setNewPassword("");
       setError(error.response?.data?.message);
@@ -44,23 +49,44 @@ const AccountSettings = ({ user }) => {
   };
 
   async function resendVerificationEmail() {
+    setLoading(true);
+    setIsButtonDisabled(true); // Disable the button
+    setTimer(60); // Set the timer to 30 seconds
     try {
-      const response = await axios.post("/api/users/resend-verification", { email: user.email });
+      const response = await axios.post("/api/users/resend-verification", {
+        email: user.email,
+      });
 
       if (response.status === 200) {
         alert("Verification email sent successfully");
       }
     } catch (error) {
       console.error({ error });
+    } finally {
+      setLoading(false);
+
+      const countdown = setInterval(() => {
+        setTimer((prev) => {
+          if (prev === 1) {
+            clearInterval(countdown);
+            setIsButtonDisabled(false); // Re-enable the button
+          }
+          return prev - 1;
+        });
+      }, 1000);
     }
   }
 
   return (
     <div className="max-w-4xl mx-auto p-6 space-y-8 bg-[var(--background)] text-gray-200">
       <section className="bg-zinc-800 p-6 rounded-lg shadow-md">
-        <h2 className="text-2xl font-semibold text-white mb-4">Profile Overview</h2>
+        <h2 className="text-2xl font-semibold text-white mb-4">
+          Profile Overview
+        </h2>
         <div className="mb-6">
-          <label htmlFor="name" className="block text-gray-300">Name</label>
+          <label htmlFor="name" className="block text-gray-300">
+            Name
+          </label>
           {isEditMode ? (
             <input
               type="text"
@@ -74,7 +100,9 @@ const AccountSettings = ({ user }) => {
           )}
         </div>
         <div className="mb-6">
-          <label htmlFor="email" className="block text-gray-300">Email</label>
+          <label htmlFor="email" className="block text-gray-300">
+            Email
+          </label>
           {isEditMode ? (
             <>
               <input
@@ -84,14 +112,18 @@ const AccountSettings = ({ user }) => {
                 className="mt-2 p-3 w-full border border-gray-600 bg-gray-700 text-white rounded-md"
                 disabled
               />
-              <p className="text-red-500 font-thin text-xs italic">Email cannot be changed</p>
+              <p className="text-red-500 font-thin text-xs italic">
+                Email cannot be changed
+              </p>
             </>
           ) : (
             <p className="bg-[var(--primary-light)] p-2">{user.email}</p>
           )}
         </div>
         <div className="mb-6">
-          <label htmlFor="avatar" className="block text-gray-300">Avatar</label>
+          <label htmlFor="avatar" className="block text-gray-300">
+            Avatar
+          </label>
           <div className="flex items-center space-x-4 mt-2">
             <img
               src={avatar}
@@ -99,14 +131,18 @@ const AccountSettings = ({ user }) => {
               className="w-16 h-16 rounded-full"
             />
             {isEditMode && (
-              <button className="text-blue-400 hover:underline">Change Avatar</button>
+              <button className="text-blue-400 hover:underline">
+                Change Avatar
+              </button>
             )}
           </div>
         </div>
 
         {isEditMode ? null : (
           <div>
-            <label htmlFor="current-password" className="block text-gray-300">Current Password</label>
+            <label htmlFor="current-password" className="block text-gray-300">
+              Current Password
+            </label>
             <input
               type="password"
               id="current-password"
@@ -123,9 +159,13 @@ const AccountSettings = ({ user }) => {
         )}
         {isEditMode && (
           <div className="mt-6 space-y-4">
-            <h3 className="text-lg font-semibold text-gray-300">Change Password</h3>
+            <h3 className="text-lg font-semibold text-gray-300">
+              Change Password
+            </h3>
             <div>
-              <label htmlFor="current-password" className="block text-gray-300">Current Password</label>
+              <label htmlFor="current-password" className="block text-gray-300">
+                Current Password
+              </label>
               <input
                 type="password"
                 id="current-password"
@@ -140,7 +180,9 @@ const AccountSettings = ({ user }) => {
               <PasswordInput setPassword={setNewPassword} />
             </div>
             <div>
-              <label htmlFor="confirm-password" className="block text-gray-300">Confirm Password</label>
+              <label htmlFor="confirm-password" className="block text-gray-300">
+                Confirm Password
+              </label>
               <input
                 type="password"
                 id="confirm-password"
@@ -156,27 +198,56 @@ const AccountSettings = ({ user }) => {
       <section className="bg-zinc-800 p-6 rounded-lg shadow-md mt-8">
         <h2 className="text-2xl font-semibold text-white mb-4">Location</h2>
         <div>
-          <p className="bg-[var(--primary-light)] p-2">{user.location.countryName}</p>
+          <p className="bg-[var(--primary-light)] p-2">
+            {user.location.countryName}
+          </p>
         </div>
       </section>
 
       <section className="bg-zinc-800 p-6 rounded-lg shadow-md mt-8">
-        <h2 className="text-2xl font-semibold text-white mb-4">Account Verification</h2>
+        <h2 className="text-2xl font-semibold text-white mb-4">
+          Account Verification
+        </h2>
         <div>
-          <p className="text-gray-300">Status:{" "}{user.isVerified ? (
+          <p className="text-gray-300">
+            Status:{" "}
+            {user.isVerified ? (
               <GenericBadge
-                cn={"text-[var(--secondary-content)] bg-green-200 border border-[var(--secondary-content)]"}
+                cn={
+                  "text-[var(--secondary-content)] bg-green-200 border border-[var(--secondary-content)]"
+                }
                 text={"Verified"}
               />
             ) : (
               <GenericBadge
-                cn={"text-[var(--secondary-dark)] bg-red-200 border border-red-500"}
+                cn={
+                  "text-[var(--secondary-dark)] bg-red-200 border border-red-500"
+                }
                 text={"Not Verified"}
               />
             )}
           </p>
           {!user.isVerified && (
-            <button onClick={resendVerificationEmail} className="mt-2 text-blue-400 hover:underline">Resend Verification Email</button>
+            <div>
+              {loading ? (
+                <Loader />
+              ) : (
+                <button
+                  onClick={resendVerificationEmail}
+                  className={`mt-2 text-blue-400 hover:underline ${
+                    isButtonDisabled ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
+                  disabled={isButtonDisabled} // Disable the button when necessary
+                >
+                  Resend Verification Email
+                </button>
+              )}
+              {isButtonDisabled && (
+                <p className="text-sm text-gray-400 mt-1">
+                  You can resend the email in {timer} seconds.
+                </p>
+              )}
+            </div>
           )}
         </div>
       </section>
@@ -189,7 +260,10 @@ const AccountSettings = ({ user }) => {
           {isEditMode ? "Cancel" : "Edit"}
         </button>
         {isEditMode && (
-          <button className="w-fit bg-green-500 text-white p-2 rounded-md hover:bg-green-600" onClick={handleSaveChanges} >
+          <button
+            className="w-fit bg-green-500 text-white p-2 rounded-md hover:bg-green-600"
+            onClick={handleSaveChanges}
+          >
             Save Changes
           </button>
         )}

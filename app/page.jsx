@@ -14,6 +14,7 @@ import EmblaCarousel from "./components/TopCarousel";
 import { getSession } from "next-auth/react";
 import axios from "axios";
 import MyListCarousel from "./components/MyListCarousel";
+import NotificationAlert from "./components/ui/NotificationAlert";
 
 const HomePage = () => {
   const { movieData, setMovieData } = useMovieData();
@@ -23,6 +24,7 @@ const HomePage = () => {
   const { page } = usePagination();
   const { myList, setMyList } = useMyList();
   const [loading, setLoading] = useState(true);
+  const [session, setSession] = useState(null);
   const OPTIONS = { align: 'start', dragFree: true, loop: true }
 
   async function fetchMovieData() {
@@ -56,7 +58,7 @@ const HomePage = () => {
   async function fetchMyList() {
     const session = await getSession();
     const email = session.user.email;
-
+    setSession(session);
     const response = await axios.get(`/api/users/list?email=${email}`);
     setMyList(response.data.list)
   }
@@ -90,6 +92,7 @@ const HomePage = () => {
       ) : (
         <>
           {/* TOP 10 MOVIES */}
+          {session?.user?.isVerified === false && <NotificationAlert status={"error"} text={<>Your email is not verified. Please verify your email to continue full access to YENGFLIX v3's features including streaming. To verify click {<a className="text-blue-400 font-semibold" href="/account-settings">here.</a>}</>} />}
           <EmblaCarousel slides={movieData} options={OPTIONS} media_type={"Movies"} />
 
           {/* TOP 10 TV */}
