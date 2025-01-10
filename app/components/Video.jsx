@@ -3,6 +3,7 @@ import { useSearchParams } from "next/navigation";
 import { use, useEffect, useState } from "react";
 import { fetchData } from "../utils/fetchData";
 import { useSession } from "next-auth/react";
+import { motion } from "framer-motion";
 import {
   PlusIcon,
   HandThumbUpIcon,
@@ -88,10 +89,11 @@ const Video = ({ params }) => {
     };
 
     fetchDataAll();
-
+    
+    // display overlay after 3 seconds
     const timeout = setTimeout(() => {
       setShowOverlay(true);
-    }, 180000);
+    }, 3000);
 
     return () => clearTimeout(timeout);
   }, []);
@@ -152,13 +154,19 @@ const Video = ({ params }) => {
           allowFullScreen={true}
           referrerPolicy="origin"
         ></iframe>
+        {/* overlay for unverified users */}
         {(!isVerified && showOverlay) && (
-          <div className="flex flex-col justify-center items-center gap-4 text-center text-zinc-200 absolute top-0 left-0 w-full h-full bg-zinc-800/80 backdrop-blur-md z-50">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ type: "tween", duration: 0.5 }}
+           className="flex flex-col justify-center items-center gap-4 text-center text-zinc-200 absolute top-0 left-0 w-full h-full bg-zinc-800/80 backdrop-blur-md z-50">
             <ExclamationCircleIcon className="h-10 w-10 text-yellow-500" />
             <p className="font-semibold text-md lg:text-2xl ">Your email ({session?.data?.user?.email}) is unverified.</p>
             <p className="font-extralight text-xs lg:text-sm">To continue watching, please verify it now by going to <strong className="font-bold">Resources</strong> &gt; <strong className="font-bold">Account Settings</strong> &gt; click <strong className="font-bold">'Resend Verification Email'</strong></p>
             <p className="font-extralight text-xs lg:text-sm italic">If you don't receive the Verification Email, check your <strong className="font-bold">Spam</strong> folder</p>
-          </div>
+          </motion.div>
         )}
       </div>
 
