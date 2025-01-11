@@ -22,7 +22,7 @@ const EmblaCarousel = (props) => {
         <div className="embla__container">
           {slides.slice(0, 10).map((slide, index) => (
             <div onClick={() => handleSlideClick(slide)} className="embla__slide grid mx-6 lg:mx-0 grid-cols-12 lg:grid-cols-8" key={slide.id}>
-              <h1 className="absolute -left-3 lg:left-20 -bottom-6 lg:-bottom-14 font-semibold text-[75px] md:text-[170px] text-shadow tracking-[-17px] lg:tracking-[-35px] col-start-1 z-[999]">
+              <h1 className="absolute -left-3 lg:left-20 -bottom-6 lg:-bottom-14 font-semibold text-[65px] md:text-[170px] text-shadow tracking-[-17px] lg:tracking-[-35px] col-start-1 z-[999]">
                 {index + 1}
               </h1>
               <img
