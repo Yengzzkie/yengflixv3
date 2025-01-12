@@ -1,8 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useOutsideClick } from "../utils/useOutsideHook";
-import RatingStar from "./Rating";
 import { PlayIcon, BookmarkIcon, CheckIcon } from "@heroicons/react/24/solid";
+import RatingStar from "./Rating";
+import TopTenBadge from "./ui/TopTenBadge";
 import addToList from "../utils/addToList";
 
 export default function TopExpandableCard({
@@ -139,6 +140,7 @@ export default function TopExpandableCard({
                       FILM
                     </span>
                   </div>
+                  
                   {/* TITLE */}
                   <motion.h3
                     layoutId={`title-${selectedSlide.title}`}
@@ -169,6 +171,12 @@ export default function TopExpandableCard({
                     <span className="border border-gray-500 text-gray-300 text-xs p-[2px] rounded-sm mr-3">
                       {media_type}
                     </span>
+                  </div>
+
+                  {/* TOP 10 BADGE */}
+                  <div className="flex items-center">
+                    <TopTenBadge />
+                    {selectedSlide.topTenPosition && <span className="ml-2 text-sm font-semibold text-[var(--primary-content)]">#{selectedSlide.topTenPosition} in {media_type} Today</span>}
                   </div>
 
                   {/* PLAY BUTTON */}

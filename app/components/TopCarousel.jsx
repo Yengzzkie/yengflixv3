@@ -3,7 +3,7 @@ import useEmblaCarousel from "embla-carousel-react";
 import TopExpandableCard from "./TopExpandableCard"
 
 const EmblaCarousel = (props) => {
-  const { slides, options, media_type } = props;
+  const { slides, options, media_type, isTopTen } = props;
   const [selectedSlide, setSelectedSlide] = useState(null);
   const [open, setOpen] = useState(false);
   const [emblaRef] = useEmblaCarousel(options);

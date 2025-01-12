@@ -31,14 +31,19 @@ const HomePage = () => {
     const movies = await fetchData(
       "https://api.themoviedb.org/3/trending/movie/day"
     );
-    setMovieData(movies);
+  
+    // Add a new property to each movie object
+    const topTenMovies = movies.map((movie, index) => ({...movie, topTenPosition: index + 1}));
+    setMovieData(topTenMovies.slice(0, 10));
   }
 
   async function fetchTvData() {
     const tvShows = await fetchData(
       "https://api.themoviedb.org/3/trending/tv/day"
     );
-    setTvData(tvShows);
+
+    const topTenTvShows = tvShows.map((tvShow, index) => ({...tvShow, topTenPosition: index + 1}));
+    setTvData(topTenTvShows.slice(0, 10));
   }
 
   async function fetchAllMovies() {
