@@ -1,13 +1,14 @@
 "use client";
 import React, { useState, useMemo } from "react";
+import { cn } from "../utils/utils";
 import { Label } from "../components/ui/label";
 import { Input } from "../components/ui/input";
-import { cn } from "../utils/utils";
 import { IconBrandFacebook, IconBrandGoogle } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
+import { Check, Eye, EyeOff, X } from "lucide-react";
+import { registerInputSchema } from "../utils/registerInputSchema";
 import Loader from "./Loader";
 import axios from "axios";
-import { Check, Eye, EyeOff, X } from "lucide-react";
 
 const PASSWORD_REQUIREMENTS = [
   { regex: /.{8,}/, text: "At least 8 characters" },
@@ -74,34 +75,52 @@ const Form = () => {
     setLoading(true);
     setError(null);
 
+    //make sure name and email are not empty
     if (formData.name === "" || formData.email === "") {
-      setError("Display name or email cannot be empty");
+      setError(["Display name or email cannot be empty"]);
       setLoading(false);
       return; // prevent form submission
     }
 
+    //make sure password is not empty
     if (/\s/.test(formData.password)) {
-      setError("Password cannot have spaces");
-      setLoading(false);
-      return; // prevent form submission
-    }
-    
-    if (calculateStrength.score !== 5) {
-      setError("Password must meet all criteria");
+      setError(["Password cannot have spaces"]);
       setLoading(false);
       return; // prevent form submission
     }
 
+    //make sure password meets all requirements
+    if (calculateStrength.score !== 5) {
+      setError(["Password must meet all criteria below"]);
+      setLoading(false);
+      return; // prevent form submission
+    }
+
+    //make sure passwords match
     if (formData.password !== formData.confirmPassword) {
-      setError("Passwords do not match");
+      setError(["Passwords do not match"]);
       setLoading(false);
       return; // prevent form submission
     }
 
     try {
+      // remove confirmPassword from data to send and for input validation
       const { confirmPassword, ...dataToSend } = formData;
+
+      // zod validation
+      const validationResult = registerInputSchema.safeParse(dataToSend);
+      if (!validationResult.success) {
+        formData.password = "";
+        formData.confirmPassword = "";
+        setError(validationResult.error.errors);
+        setLoading(false);
+        return;
+      }
+
+      // send data to server
       const response = await axios.post("/api/register", dataToSend);
 
+      // redirect to success page if registration is successful
       if (response) {
         router.push("/registration-success");
       }
@@ -129,24 +148,23 @@ const Form = () => {
         const updatedFormData = {
           ...prevFormData,
           [name]: name === "email" ? value.toLowerCase().trim() : value.trim(),
-          location: loc
+          location: loc,
         };
-        console.log(formData)
-  
+
         if (updatedFormData.password !== updatedFormData.confirmPassword) {
           setError("Passwords do not match");
         } else {
           setError(null);
         }
-  
+
         if (name === "password") {
           setPassword(value);
         }
-  
+
         return updatedFormData;
       });
     } catch (error) {
-      console.error({ error })
+      console.error({ error });
     }
   }
 
@@ -167,7 +185,9 @@ const Form = () => {
       <form className="my-8" onSubmit={handleSubmit}>
         <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mb-4">
           <LabelInputContainer>
-            <Label htmlFor="name" className="text-neutral-300">Display Name</Label>
+            <Label htmlFor="name" className="text-neutral-300">
+              Display Name
+            </Label>
             <Input
               onChange={handleInputChange}
               value={formData.name}
@@ -180,7 +200,9 @@ const Form = () => {
           </LabelInputContainer>
         </div>
         <LabelInputContainer className="mb-4">
-          <Label htmlFor="email" className="text-neutral-300">Email Address</Label>
+          <Label htmlFor="email" className="text-neutral-300">
+            Email Address
+          </Label>
           <Input
             onChange={handleInputChange}
             value={formData.email}
@@ -192,7 +214,10 @@ const Form = () => {
           />
         </LabelInputContainer>
         <div className="w-full mx-auto mb-4">
-          <label htmlFor="password" className="text-neutral-300 block text-sm font-medium">
+          <label
+            htmlFor="password"
+            className="text-neutral-300 block text-sm font-medium"
+          >
             Password
           </label>
           <div className="relative">
@@ -202,7 +227,6 @@ const Form = () => {
               type={isVisible ? "text" : "password"}
               value={formData.password}
               onChange={handleInputChange}
-              placeholder="••••••••"
               aria-invalid={calculateStrength.score < 4}
               aria-describedby="password-strength"
               className="w-full p-2 hover:border-2 text-gray-300 rounded-md bg-[#27272a] outline-none focus-within:border-[#525252] transition"
@@ -230,7 +254,6 @@ const Form = () => {
               type={isVisible ? "text" : "password"}
               value={formData.confirmPassword}
               onChange={handleInputChange}
-              placeholder="••••••••"
               aria-invalid={calculateStrength.score < 4}
               aria-describedby="password-strength"
               className="w-full p-2 hover:border-2 text-gray-300 rounded-md bg-[#27272a] outline-none focus-within:border-[#525252] transition"
@@ -238,7 +261,9 @@ const Form = () => {
           </div>
 
           {/* PASSWORD MATCH ERROR */}
-          <p className="text-red-500 italic font-sm">{error}</p>
+          {Array.isArray(error) && error.length !== 0 && error.map((err, index) => (
+            <p key={index} className="text-red-500 italic text-sm">{err.message || err}</p>
+          ))}
 
           <div
             className="mt-3 mb-2 h-1 rounded-full bg-border overflow-hidden"
@@ -308,9 +333,7 @@ const Form = () => {
             type="submit"
           >
             <IconBrandFacebook className="h-4 w-4 text-neutral-300" />
-            <span className="text-neutral-300 text-sm">
-              Facebook
-            </span>
+            <span className="text-neutral-300 text-sm">Facebook</span>
             <BottomGradient />
           </button>
           <button
@@ -318,9 +341,7 @@ const Form = () => {
             type="submit"
           >
             <IconBrandGoogle className="h-4 w-4 text-neutral-300" />
-            <span className="text-neutral-300 text-sm">
-              Google
-            </span>
+            <span className="text-neutral-300 text-sm">Google</span>
             <BottomGradient />
           </button>
         </div>
