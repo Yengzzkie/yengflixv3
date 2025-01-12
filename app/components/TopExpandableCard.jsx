@@ -174,10 +174,12 @@ export default function TopExpandableCard({
                   </div>
 
                   {/* TOP 10 BADGE */}
-                  <div className="flex items-center">
+                  {selectedSlide.topTenPosition && (
+                    <div className="flex items-center">
                     <TopTenBadge />
                     {selectedSlide.topTenPosition && <span className="ml-2 text-sm font-semibold text-[var(--primary-content)]">#{selectedSlide.topTenPosition} in {media_type} Today</span>}
                   </div>
+                  )}
 
                   {/* PLAY BUTTON */}
                   <motion.a
