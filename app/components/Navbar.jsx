@@ -243,7 +243,7 @@ export default function Navigation({ session }) {
   }, [searchValue, router]);
 
   return (
-    <Navbar className="mx-auto max-w-screen rounded-none border-none px-4 py-4 bg-[#1b1b1b]">
+    <Navbar className="mx-auto max-w-screen rounded-none border-none px-4 py-4 bg-[#141414]">
       <div className="flex items-center justify-between text-blue-gray-900">
         {/* Logo */}
         <Typography
