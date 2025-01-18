@@ -14,6 +14,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           email: user.email,
           location: user.location,
           isVerified: user.isVerified,
+          role: user.role,
         };
       }
 
@@ -30,6 +31,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       session.user.id = token.id;
       session.user.location = token.location;
       session.user.isVerified = token.isVerified;
+      session.user.role = token.role;
 
       return session;
     },
@@ -71,6 +73,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           id: user.id,
           location: user.location,
           isVerified: user.isVerified,
+          role: user.role,
         };
       },
     }),

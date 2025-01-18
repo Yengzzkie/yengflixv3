@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { use, useEffect } from "react";
 import {
   Navbar,
   Collapse,
@@ -36,6 +36,7 @@ import { useRouter } from "next/navigation";
 import { useSearchResult } from "../stores/useDataStore";
 import { VerifiedBadge, NotVerifiedBadge } from "./VerifiedBadge";
 import { Tooltip } from "@material-tailwind/react";
+import { useSession } from "next-auth/react";
 
 const navListMenuItems = [
   {
@@ -93,9 +94,12 @@ const navListMenuItems = [
 function NavListMenu() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
+  const user = useSession();
+
   const renderItems = navListMenuItems.map(
     ({ icon, title, description, link }, key) => (
-      <a href={link} key={key}>
+      title === "Users" && user?.data?.user?.role === "USER" ? null : ( // hide "Users" menu item for non-admin users
+        <a href={link} key={key}>
         <MenuItem className="flex items-center gap-3 rounded-l p-6 hover:bg-[var(--primary-dark)]">
           <div className="flex items-center justify-center rounded-lg p-2">
             {" "}
@@ -121,7 +125,7 @@ function NavListMenu() {
         </MenuItem>
       </a>
     )
-  );
+  ));
 
   return (
     <React.Fragment>
