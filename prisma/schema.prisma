@@ -13,21 +13,48 @@ model Admin {
   username  String   @unique
   password  String
   createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model User {
-  id         String   @id @default(uuid())
-  name       String
-  email      String   @unique
-  avatar     String?
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @default(now())
-  password   String
-  isVerified Boolean  @default(false)
-  list       Json[]
-  location   Json?
-  role       Role     @default(USER)
+  id          String    @id @default(uuid())
+  name        String
+  email       String    @unique
+  avatar      String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  password    String
+  isVerified  Boolean   @default(false)
+  list        Json[]
+  location    Json?
+  role        Role      @default(USER)
+  liked_posts Post[]    @relation("Liker")
+  posts       Post[]
+  comments    Comment[]
+}
+
+model Post {
+  id        String    @id @default(uuid())
+  title     String
+  content   String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  userId    String
+  likes     Int       @default(0)
+  liked_by  User[]    @relation("Liker")
+  posted_by User      @relation(fields: [userId], references: [id])
+  comments  Comment[]
+}
+
+model Comment {
+  id        String   @id @default(uuid())
+  content   String   @db.VarChar(300)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  postId    String
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  post      Post     @relation(fields: [postId], references: [id])
 }
 
 enum Role {

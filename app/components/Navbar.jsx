@@ -67,6 +67,7 @@ const navListMenuItems = [
     title: "Forum",
     description: "Join the community discussion, ask questions, and share ideas.",
     icon: ChatBubbleLeftRightIcon,
+    link: "/forum",
   },
   {
     title: "Account Settings",

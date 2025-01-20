@@ -27,6 +27,7 @@ const Video = ({ params }) => {
   const [added, setAdded] = useState(false);
   const [buttonText, setButtonText] = useState(null);
   const [showOverlay, setShowOverlay] = useState(false);
+  
   const movieSrc = `https://vidsrc.xyz/embed/movie/${id}`;
   const tvSrc = `https://vidsrc.xyz/embed/tv/${id}`;
   const IMG_PATH = "https://image.tmdb.org/t/p/original/";
