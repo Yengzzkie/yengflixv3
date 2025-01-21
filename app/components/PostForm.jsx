@@ -44,9 +44,9 @@ export default function PostForm({ onSubmit, placeholderTitle, placeholderConten
 
       <button
         type="submit"
-        className="mt-3 px-4 py-2 bg-[var(--primary-light)] hover:bg-[var(--primary-dark)] text-white rounded-full hover:bg-blue-600"
+        className="mt-3 px-4 py-2 bg-[var(--primary-light)] hover:bg-[var(--primary-dark)] text-white rounded-full"
       >
-        Submit
+        Post
       </button>
     </form>
   );
