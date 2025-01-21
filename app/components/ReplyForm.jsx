@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 
-export default function ReplyForm({ onSubmit, placeholder }) {
+export default function ReplyForm({ onSubmit }) {
   const [content, setContent] = useState("");
 
   const handleSubmit = (e) => {
@@ -13,19 +13,18 @@ export default function ReplyForm({ onSubmit, placeholder }) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="mb-4">
-      <label className="block mt-3 mb-2 text-zinc-300">Content</label>
+    <form onSubmit={handleSubmit} className="mb-4 mt-8">
       <textarea
         value={content}
         onChange={(e) => setContent(e.target.value)}
-        placeholder={placeholder}
-        className="w-full p-2 rounded-md border-[1px] text-zinc-200 bg-[var(--primary-dark)]"
+        placeholder={"Add comment..."}
+        className="w-full px-4 py-2 rounded-lg border border-zinc-500 text-zinc-200 bg-[var(--primary-dark)] outline-none"
         rows={2}
       />
 
-      <button
+<button
         type="submit"
-        className="mt-3 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+        className="mt-3 px-4 py-2 bg-[var(--primary-light)] hover:bg-[var(--primary-dark)] text-white rounded-full"
       >
         Submit
       </button>

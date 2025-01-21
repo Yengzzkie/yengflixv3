@@ -5,10 +5,19 @@ export default function PostForm({ onSubmit, placeholderTitle, placeholderConten
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
 
+  // Function to detect links and format them as anchor tags
+  const autoLinkify = (text) => {
+    const urlRegex = /(https?:\/\/[^\s]+)/g;
+    return text.replace(urlRegex, (url) => `<a href="${url}" target="_blank" class="text-blue-500 underline">${url}</a>`);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!title.trim() || !content.trim()) return;
-    onSubmit({ title, content });
+
+    const formattedContent = autoLinkify(content); // Convert URLs into anchor tags
+    onSubmit({ title, content: formattedContent });
+
     setTitle("");
     setContent("");
   };

@@ -4,14 +4,16 @@ import {
   ChatBubbleBottomCenterIcon,
   HandThumbUpIcon,
 } from "@heroicons/react/24/outline";
+import DOMPurify from "dompurify";
 import Link from "next/link";
 import ReplyForm from "./ReplyForm";
 
 export default function Post({ post, addReply }) {
   const [showReplyForm, setShowReplyForm] = useState(false);
+  const sanitizedContent = DOMPurify.sanitize(post?.content)
 
   return (
-    <div className="relative border-b-[1px] py-2">
+    <div className="relative border-b-[1px] border-zinc-600 py-1">
       <Link href={`/forum/${post.id}`}>
         <div className="p-4 shadow-md hover:bg-zinc-500/30 rounded-lg">
           <p className="text-zinc-500 italic text-xs">
@@ -19,7 +21,10 @@ export default function Post({ post, addReply }) {
             <span>{new Date(post?.createdAt).toLocaleDateString()}</span>
           </p>
           <h1 className="text-lg font-semibold text-zinc-200 my-2">{post?.title}</h1>
-          <p className="text-sm font-extralight text-zinc-400">{post?.content}</p>
+          <div
+            className="text-sm font-extralight text-zinc-400"
+            dangerouslySetInnerHTML={{ __html: sanitizedContent }} // Render post content with auto-linking
+          />
 
           {/* BUTTONS */}
           <div className="flex items-center mt-3">
@@ -50,12 +55,6 @@ export default function Post({ post, addReply }) {
             />
           )}
         </div>
-        {/* Render Replies */}
-        {/* <div className="ml-6 border-l-2 border-gray-300 pl-4">
-          {post?.comments?.map((post) => (
-            <Post key={post.id} post={post} addReply={addReply} />
-          ))}
-        </div> */}
       </Link>
     </div>
   );
