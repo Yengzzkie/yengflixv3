@@ -13,6 +13,7 @@ import {
   CardFooter,
   Avatar,
 } from "@material-tailwind/react";
+import { generateAvatar } from "./ui/AvatarIcon";
 import axios from "axios";
 
 const TABLE_HEAD = ["Name", "Location", "Email Verified", "Joined", ""];
@@ -131,7 +132,7 @@ export default function UsersTable() {
                     <td className="p-4">
                       <div className="flex items-center gap-3">
                         <Avatar
-                          src={`https://ui-avatars.com/api/?name=${name}&background=random`}
+                          src={generateAvatar(encodeURIComponent(name))}
                           alt={name}
                           size="sm"
                         />

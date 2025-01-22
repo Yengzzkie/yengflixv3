@@ -17,16 +17,16 @@ export default function ReplyForm({ onSubmit }) {
       <textarea
         value={content}
         onChange={(e) => setContent(e.target.value)}
-        placeholder={"Add comment..."}
+        placeholder={"Post reply..."}
         className="w-full px-4 py-2 rounded-lg border border-zinc-500 text-zinc-200 bg-[var(--primary-dark)] outline-none"
         rows={2}
       />
 
 <button
         type="submit"
-        className="mt-3 px-4 py-2 bg-[var(--primary-light)] hover:bg-[var(--primary-dark)] text-white rounded-full"
+        className="mt-3 px-4 py-1 bg-[var(--primary-light)] hover:bg-[var(--primary-dark)] text-white rounded-full"
       >
-        Submit
+        Post
       </button>
     </form>
   );

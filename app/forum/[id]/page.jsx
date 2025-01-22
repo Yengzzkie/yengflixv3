@@ -6,8 +6,9 @@ import {
   ChatBubbleBottomCenterIcon,
 } from "@heroicons/react/24/outline";
 import DOMPurify from "dompurify";
-import Replies from "@/app/components/Replies"
+import Replies from "@/app/components/Replies";
 import ReplyForm from "@/app/components/ReplyForm";
+import { generateAvatar } from "@/app/components/ui/AvatarIcon";
 import axios from "axios";
 
 const PostPage = ({ params }) => {
@@ -15,11 +16,11 @@ const PostPage = ({ params }) => {
   const [post, setPost] = useState(null);
   const [showReplyForm, setShowReplyForm] = useState(false);
   const sanitizedContent = DOMPurify.sanitize(post?.content);
+  const avatar = generateAvatar(encodeURIComponent(post?.posted_by?.name))
 
   async function getPost() {
     const post = await axios.get(`/api/posts/post?postId=${postId}`);
     setPost(post.data);
-    console.log(post);
   }
 
   useEffect(() => {
@@ -27,16 +28,17 @@ const PostPage = ({ params }) => {
   }, []);
 
   return (
-    <div className="p-4 max-w-5xl mx-auto border border-zinc-500 rounded-lg my-4">
+    <div className="p-4 max-w-5xl mx-auto border-zinc-500 rounded-lg my-4">
       <div className="flex items-center">
         <Avatar
-          src={`https://ui-avatars.com/api/?name=${post?.posted_by?.name}&background=random`}
+          src={avatar}
           alt={`avatar ${post?.posted_by?.name}`}
           size="xs"
-          className="mr-2 rounded-full"
+          className="mr-2"
         />
         <p className="text-sm italic text-zinc-400">
-          Posted by: {post?.posted_by?.name}
+          <span className="font-semibold text-[var(--primary-content)]">/ {post?.posted_by?.name}</span>
+          <span> - {new Date(post?.createdAt).toLocaleDateString()}</span>
         </p>
       </div>
       <h1 className="text-2xl font-bold my-4">{post?.title}</h1>
