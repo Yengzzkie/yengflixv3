@@ -86,9 +86,19 @@ nav * {
   border: 1px solid red;
 }
 
-.post-list a {
+.post-list {
+  a {
   color: #3b82f6 !important;
   text-decoration: underline;
+  }
+
+  ol {
+    list-style: disc !important;
+  }
+
+  ul {
+    list-style: disc !important;
+  }
 }
 
 .ql-snow.ql-toolbar > * {
@@ -112,8 +122,8 @@ nav * {
   border-radius: 0 0 10px 10px;
 }
 
-.ql-editor {
-  height: 100px !important;
+.ql-editor { 
+  height: 200px !important; /* Text editor's height */
 }
 
 /* EMBLA CAROUSEL STYLES */

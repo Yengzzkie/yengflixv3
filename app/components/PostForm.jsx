@@ -1,36 +1,35 @@
 "use client";
 import { useState } from "react";
 import QuillEditor from "./Editor";
+import DOMPurify from "dompurify";
 
 export default function PostForm({ onSubmit }) {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState(""); // Stores Quill editor content
+  const previewTitle = title;
   const toolbar = [
-    ["bold", "italic", "underline"],
-    [{ list: "ordered" }, { list: "bullet" }], // Enables bullet points
-    ["link"],
-    [{ color: [] }],
+    [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
+    // [{ 'header': [1, 2, 3, false] }],
+    ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+    ['blockquote', 'code-block'],
+    ['link', 'image', 'video'],
+    [{ 'list': 'bullet' }],
+    [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
+    [{ 'direction': 'rtl' }],                         // text direction
+    [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+    [{ 'font': [] }],
+    [{ 'align': [] }],
+    ['clean']                                         // remove formatting button
   ];
-
-  // Function to detect links and format them as anchor tags
-  // const autoLinkify = (text) => {
-  //   const urlRegex = /(https?:\/\/[^\s]+)/g;
-  //   return text.replace(
-  //     urlRegex,
-  //     (url) => `<a href="${url}" target="_blank" class="text-blue-500 underline">${url}</a>`
-  //   );
-  // };
+  console.log(content)
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!title.trim() || !content.trim()) {
+      return alert("Input fields cannot be empty");
+    }
 
-      return alert("Input fields cannot be empty")
-    };
-
-    // const formattedContent = autoLinkify(content); // Convert URLs into anchor tags
-    onSubmit({ title, content: content });
-
+    onSubmit({ title, content });
     setTitle("");
     setContent("");
   };
@@ -43,10 +42,16 @@ export default function PostForm({ onSubmit }) {
         onChange={(e) => setTitle(e.target.value)}
         placeholder={"Your title here..."}
         className="w-full px-4 py-2 border-[1px] text-zinc-100 bg-transparent rounded-lg"
+        required
       />
 
       <div className="mt-4 text-white">
-        <QuillEditor value={content} onChange={setContent} toolbar={toolbar} placeholder={"Type your content here..."} />
+        <QuillEditor
+          value={content}
+          onChange={setContent}
+          toolbar={toolbar}
+          placeholder={"Type your content here..."}
+        />
       </div>
 
       <button
@@ -55,6 +60,17 @@ export default function PostForm({ onSubmit }) {
       >
         Post
       </button>
+
+      <div>
+        <h1 className="font-bold text-2xl mt-4">Post preview</h1>
+        <div className="border min-h-[50vh] card-shadow ">
+          <h1>{previewTitle}</h1>
+          <div
+            className="ql-editor text-zinc-300 post-list"
+            dangerouslySetInnerHTML={{ __html: content }}
+          />
+        </div>
+      </div>
     </form>
   );
 }
