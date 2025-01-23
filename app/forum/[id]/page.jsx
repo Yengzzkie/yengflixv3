@@ -8,6 +8,7 @@ import {
 import DOMPurify from "dompurify";
 import Replies from "@/app/components/Replies";
 import ReplyForm from "@/app/components/ReplyForm";
+import { getTimeAgo } from "@/app/utils/getTimeAgo";
 import { generateAvatar } from "@/app/components/ui/AvatarIcon";
 import axios from "axios";
 
@@ -28,7 +29,7 @@ const PostPage = ({ params }) => {
   }, []);
 
   return (
-    <div className="p-4 max-w-5xl mx-auto border-zinc-500 rounded-lg my-4">
+    <div className="post-list p-4 max-w-5xl mx-auto border-zinc-500 rounded-lg my-4">
       <div className="flex items-center">
         <Avatar
           src={avatar}
@@ -36,29 +37,29 @@ const PostPage = ({ params }) => {
           size="xs"
           className="mr-2"
         />
-        <p className="text-sm italic text-zinc-400">
-          <span className="font-semibold text-[var(--primary-content)]">/ {post?.posted_by?.name}</span>
-          <span> - {new Date(post?.createdAt).toLocaleDateString()}</span>
+        <p className="text-sm italic">
+          <span className="font-semibold text-zinc-200">/ {post?.posted_by?.name}</span>
+          <span className="text-zinc-400 text-xs"> - {getTimeAgo(post?.createdAt)}</span>
         </p>
       </div>
-      <h1 className="text-2xl font-bold my-4">{post?.title}</h1>
-      <p dangerouslySetInnerHTML={{ __html: sanitizedContent }} />
+      <h1 className="text-2xl font-bold my-4 text-white">{post?.title}</h1>
+      <p className="text-zinc-300" dangerouslySetInnerHTML={{ __html: sanitizedContent }} />
 
       {/* BUTTONS */}
       <div className="flex items-center mt-3">
         <button
           onClick={() => setShowReplyForm(!showReplyForm)}
-          className="text-zinc-200 text-sm  border border-zinc-500 hover:bg-[var(--primary-dark)] px-3 py-1 rounded-full mr-2"
+          className="text-zinc-200 text-sm border border-zinc-500 hover:bg-[var(--primary-dark)] px-3 py-1 rounded-full mr-2"
         >
           {showReplyForm ? "Close" : "Reply"}
         </button>
 
-        <div className="flex items-center bg-[var(--primary-light)] hover:bg-[var(--primary-dark)] text-sm px-3 py-1 rounded-full mr-2">
+        <div className="flex items-center border border-zinc-500 hover:bg-[var(--primary-dark)] text-sm px-3 py-1 rounded-full mr-2">
           <HandThumbUpIcon className="w-4 mr-2" />
           <span>{post?.comments?.length}</span>
         </div>
 
-        <div className="flex items-center bg-[var(--primary-light)] hover:bg-[var(--primary-dark)] text-sm px-3 py-1 rounded-full">
+        <div className="flex items-center border border-zinc-500 hover:bg-[var(--primary-dark)] text-sm px-3 py-1 rounded-full">
           <ChatBubbleBottomCenterIcon className="w-4 mr-2" />
           <span>{post?.comments?.length}</span>
         </div>

@@ -4,6 +4,7 @@ import { useSession } from "next-auth/react";
 import axios from "axios";
 import Post from "../components/Post";
 import PostForm from "../components/PostForm";
+import Editor from "../components/Editor";
 
 export default function ForumPage() {
   const [posts, setPosts] = useState([]);
