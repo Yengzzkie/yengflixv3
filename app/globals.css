@@ -110,8 +110,8 @@ nav * {
 }
 
 .ql-editor::before {
-  color: var(--primary-content) !important; /* Change placeholder text color */
-  opacity: 1; /* Ensure visibility */
+  color: var(--primary-content) !important;
+  opacity: 1;
 }
 
 .ql-toolbar {
@@ -123,6 +123,7 @@ nav * {
 }
 
 .ql-editor { 
+  min-height: fit-content !important;
   height: 200px !important; /* Text editor's height */
 }
 

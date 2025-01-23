@@ -32,3 +32,30 @@ export async function GET(request) {
     NextResponse.json({ message: "Failed to fetch post" });
   }
 }
+
+// Delete post
+export async function DELETE(request) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const postId = searchParams.get("postId");
+
+    const post = await prisma.post.delete({
+      where: { id: postId }
+    });
+
+    if (!postId) {
+      return NextResponse.json(
+        { message: "Invalid postId" },
+        { status: 400 }
+      );
+    }
+
+    return NextResponse.json({ message: "Post deleted successfully", post });
+  } catch (error) {
+    console.error("Error deleting post:", error);
+    return NextResponse.json(
+      { message: "Failed to delete post", error: error.message },
+      { status: 500 }
+    );
+  }
+}

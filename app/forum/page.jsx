@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { DragCloseDrawer } from "../components/ui/Drawer";
 import { PencilIcon } from "@heroicons/react/24/outline";
+import { Spinner } from "../components/Spinner";
 import axios from "axios";
 import Post from "../components/Post";
 import PostForm from "../components/PostForm";
@@ -10,15 +11,23 @@ import PostForm from "../components/PostForm";
 export default function ForumPage() {
   const [posts, setPosts] = useState([]);
   const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
   const session = useSession();
   const userId = session?.data?.user?.id;
 
   async function fetchPosts() {
-    const response = await axios.get("/api/posts");
-    const sortedPost = response?.data.sort(
-      (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
-    ); // sort posts from newest to latest
-    setPosts(sortedPost);
+    setLoading(true)
+    try {
+      const response = await axios.get("/api/posts");
+      const sortedPost = response?.data.sort(
+        (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+      ); // sort posts from newest to latest
+      setPosts(sortedPost);
+    } catch (error) {
+      console.error("Failed fetching posts:", error);
+    } finally {
+      setLoading(false);
+    }
   }
 
   useEffect(() => {
@@ -29,7 +38,7 @@ export default function ForumPage() {
   const addPost = async ({ title, content }) => {
     const newPost = await axios.post("/api/posts", { userId, title, content });
     setPosts([newPost.data?.post, ...posts]);
-    setOpen(!open)
+    setOpen(!open);
     fetchPosts();
   };
 
@@ -55,7 +64,9 @@ export default function ForumPage() {
     setPosts(updateReplies(posts));
   };
 
-  return (
+  return loading ? (
+    <Spinner />
+  ) : (
     <div className="relative p-2 lg:p-8 w-full max-w-5xl mx-auto">
       <h1 className="text-2xl font-bold mb-4 text-center">
         Welcome to{" "}
@@ -65,7 +76,10 @@ export default function ForumPage() {
         </span>{" "}
         Community
       </h1>
-      <button className="fixed bottom-[5%] right-[10%] border h-10 w-10 p-2.5 z-[99] rounded-full shadow-md bg-zinc-800 hover:bg-zinc-600" onClick={() => setOpen(!open)}>
+      <button
+        className="fixed bottom-[5%] right-[10%] border h-10 w-10 p-2.5 z-[99] rounded-full shadow-md bg-zinc-800 hover:bg-zinc-600"
+        onClick={() => setOpen(!open)}
+      >
         <PencilIcon />
       </button>
 

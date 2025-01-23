@@ -1,27 +1,24 @@
 "use client";
 import { useState } from "react";
-import QuillEditor from "./Editor";
-import DOMPurify from "dompurify";
+import { DragCloseDrawer } from "./ui/Drawer";
+import QuillEditor from "./ui/Editor";
 
 export default function PostForm({ onSubmit }) {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState(""); // Stores Quill editor content
-  const previewTitle = title;
   const toolbar = [
-    [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
-    // [{ 'header': [1, 2, 3, false] }],
-    ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
-    ['blockquote', 'code-block'],
-    ['link', 'image', 'video'],
-    [{ 'list': 'bullet' }],
-    [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
-    [{ 'direction': 'rtl' }],                         // text direction
-    [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
-    [{ 'font': [] }],
-    [{ 'align': [] }],
-    ['clean']                                         // remove formatting button
+    [{ size: ["small", false, "large", "huge"] }],
+    [{ font: [] }],
+    ["bold", "italic", "underline", "strike"],
+    [{ color: [] }, { background: [] }],
+    ["link", "image", "video"],
+    [{ list: "bullet" }],
+    [{ align: [] }],
+    [{ indent: "-1" }, { indent: "+1" }],
+    [{ direction: "rtl" }],
+    ["blockquote", "code-block"],
+    ["clean"],
   ];
-  console.log(content)
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -60,17 +57,6 @@ export default function PostForm({ onSubmit }) {
       >
         Post
       </button>
-
-      <div>
-        <h1 className="font-bold text-2xl mt-4">Post preview</h1>
-        <div className="border min-h-[50vh] card-shadow ">
-          <h1>{previewTitle}</h1>
-          <div
-            className="ql-editor text-zinc-300 post-list"
-            dangerouslySetInnerHTML={{ __html: content }}
-          />
-        </div>
-      </div>
     </form>
   );
 }

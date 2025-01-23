@@ -1,33 +1,59 @@
 "use client";
 import { use, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { Avatar } from "@material-tailwind/react";
-import {
-  HandThumbUpIcon,
-  ChatBubbleBottomCenterIcon,
-} from "@heroicons/react/24/outline";
-import DOMPurify from "dompurify";
-import Replies from "@/app/components/Replies";
-import ReplyForm from "@/app/components/ReplyForm";
+import { HandThumbUpIcon, ChatBubbleBottomCenterIcon } from "@heroicons/react/24/outline";
+import { SpringModal } from "@/app/components/ui/Modal";
 import { getTimeAgo } from "@/app/utils/getTimeAgo";
 import { generateAvatar } from "@/app/components/ui/AvatarIcon";
+import { Spinner } from "@/app/components/Spinner";
+import PostActionsBtn from "@/app/components/ui/PostActionsBtn";
+import Replies from "@/app/components/Replies";
+import ReplyForm from "@/app/components/ReplyForm";
+import DOMPurify from "dompurify";
 import axios from "axios";
 
 const PostPage = ({ params }) => {
   const postId = use(params).id;
   const [post, setPost] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const router = useRouter();
   const sanitizedContent = DOMPurify.sanitize(post?.content);
   const avatar = generateAvatar(encodeURIComponent(post?.posted_by?.name));
 
   async function getPost() {
-    const post = await axios.get(`/api/posts/post?postId=${postId}`);
-    setPost(post.data);
+    setLoading(true);
+    try {
+      const post = await axios.get(`/api/posts/post?postId=${postId}`);
+      setPost(post.data);
+    } catch (error) {
+      console.error("Error fetching post:", error);
+    } finally {
+      setLoading(false);
+    }
   }
 
   useEffect(() => {
     getPost();
   }, []);
 
-  return (
+  async function deletePost() {
+    try {
+      const post = await axios.delete(`/api/posts/post?postId=${postId}`);
+
+      if (post.status === 200) {
+        router.push("/forum");
+      }
+      console.log(post)
+    } catch (error) {
+      console.error("Error deleting post:", error)
+    }
+  }
+
+  return loading ? (
+    <Spinner />
+  ) : (
     <div className="post-list p-4 max-w-5xl mx-auto border-zinc-500 rounded-lg my-4">
       <div className="flex items-center">
         <Avatar
@@ -45,10 +71,19 @@ const PostPage = ({ params }) => {
             - {getTimeAgo(post?.createdAt)}
           </span>
         </p>
+
+        {/* POST ACTION DROPDOWN BUTTONS */}
+        <div className="ml-auto">
+          <PostActionsBtn setIsOpen={setIsOpen} />
+        </div>
+
+        {/* DELETE CONFIRMATION MODAL */}
+        <SpringModal onDelete={deletePost} isOpen={isOpen} setIsOpen={setIsOpen} text={"Are you sure you want to delete this post?"} /> 
+
       </div>
       <h1 className="text-2xl font-bold my-4 text-white">{post?.title}</h1>
       <p
-        className="ql-editor text-zinc-300"
+        className="ql-editor text-zinc-300 !min-h-fit"
         dangerouslySetInnerHTML={{ __html: sanitizedContent }}
       />
 
@@ -68,6 +103,7 @@ const PostPage = ({ params }) => {
       {/* REPLY FORM */}
 
       <ReplyForm
+        value={post?.content}
         placeholder={"reply..."}
         onSubmit={(content) => {
           addReply(post.id, content);
