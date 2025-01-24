@@ -1,6 +1,7 @@
 "use client";
 import { use, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { Avatar } from "@material-tailwind/react";
 import { HandThumbUpIcon, ChatBubbleBottomCenterIcon } from "@heroicons/react/24/outline";
 import { SpringModal } from "@/app/components/ui/Modal";
@@ -15,6 +16,7 @@ import axios from "axios";
 
 const PostPage = ({ params }) => {
   const postId = use(params).id;
+  const session = useSession();
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -45,9 +47,8 @@ const PostPage = ({ params }) => {
       if (post.status === 200) {
         router.push("/forum");
       }
-      console.log(post)
     } catch (error) {
-      console.error("Error deleting post:", error)
+      console.error("Error deleting post:", error);
     }
   }
 
@@ -73,13 +74,20 @@ const PostPage = ({ params }) => {
         </p>
 
         {/* POST ACTION DROPDOWN BUTTONS */}
-        <div className="ml-auto">
-          <PostActionsBtn setIsOpen={setIsOpen} />
-        </div>
+        {session?.data?.user?.id === post?.userId && ( // if the user Id from session and user Id from post is the same
+          // then render the POST ACTION BUTTON
+          <div className="ml-auto">
+            <PostActionsBtn setIsOpen={setIsOpen} />
+          </div>
+        )}
 
         {/* DELETE CONFIRMATION MODAL */}
-        <SpringModal onDelete={deletePost} isOpen={isOpen} setIsOpen={setIsOpen} text={"Are you sure you want to delete this post?"} /> 
-
+        <SpringModal
+          onDelete={deletePost}
+          isOpen={isOpen}
+          setIsOpen={setIsOpen}
+          text={"Are you sure you want to delete this post?"}
+        />
       </div>
       <h1 className="text-2xl font-bold my-4 text-white">{post?.title}</h1>
       <p

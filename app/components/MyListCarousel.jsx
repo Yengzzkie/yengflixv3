@@ -56,8 +56,6 @@ const MyListCarousel = (props) => {
                 className="card-shadow rounded-md lg:w-44 cursor-pointer"
                 src={`${IMG_PATH}${slide.poster_path}`}
                 alt={`${slide.title}`}
-                // width={300}
-                // height={300}
                 loading="lazy"
               />
             </div>

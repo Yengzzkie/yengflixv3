@@ -77,7 +77,7 @@ export default function ForumPage() {
         Community
       </h1>
       <button
-        className="fixed bottom-[5%] right-[10%] border h-10 w-10 p-2.5 z-[99] rounded-full shadow-md bg-zinc-800 hover:bg-zinc-600"
+        className="fixed bottom-[5%] right-[10%] border h-14 w-14 p-3 z-[99] rounded-full shadow-md bg-zinc-800 hover:bg-zinc-600"
         onClick={() => setOpen(!open)}
       >
         <PencilIcon />

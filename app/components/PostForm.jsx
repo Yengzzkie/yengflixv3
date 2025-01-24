@@ -1,6 +1,5 @@
 "use client";
 import { useState } from "react";
-import { DragCloseDrawer } from "./ui/Drawer";
 import QuillEditor from "./ui/Editor";
 
 export default function PostForm({ onSubmit }) {

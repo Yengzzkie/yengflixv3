@@ -1,15 +1,12 @@
 "use client";
 import { useState } from "react";
-import {
-  ChatBubbleBottomCenterIcon,
-  HandThumbUpIcon,
-} from "@heroicons/react/24/outline";
-import DOMPurify from "dompurify";
-import Link from "next/link";
-import ReplyForm from "./ReplyForm";
+import { ChatBubbleBottomCenterIcon, HandThumbUpIcon } from "@heroicons/react/24/outline";
 import { Avatar } from "@material-tailwind/react";
 import { generateAvatar } from "./ui/AvatarIcon";
 import { getTimeAgo } from "../utils/getTimeAgo";
+import DOMPurify from "dompurify";
+import Link from "next/link";
+import ReplyForm from "./ReplyForm";
 import 'quill/dist/quill.snow.css';
 
 export default function Post({ post, addReply }) {
