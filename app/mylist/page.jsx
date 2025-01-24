@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { useMyList } from "../stores/useDataStore";
 import { getSession } from "next-auth/react";
-import { CustomSpinner } from "../components/Spinner";
+import { Spinner } from "../components/Spinner";
 import TopExpandableCard from "../components/TopExpandableCard";
 import SlideInNotifications from "../components/Notification";
 import axios from "axios";
@@ -50,7 +50,7 @@ const MyListPage = () => {
   return (
     <>
       {loading ? (
-        <CustomSpinner />
+        <Spinner />
       ) : myList.length === 0 ? (
         <div className="h-[90vh] w-screen flex justify-center items-center">
           <p className="text-2xl font-bold text-center">Your List is Empty</p>
