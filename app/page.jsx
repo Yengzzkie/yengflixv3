@@ -15,6 +15,7 @@ import { getSession } from "next-auth/react";
 import axios from "axios";
 import MyListCarousel from "./components/MyListCarousel";
 import NotificationAlert from "./components/ui/NotificationAlert";
+import { Spinner } from "./components/Spinner";
 
 const HomePage = () => {
   const { movieData, setMovieData } = useMovieData();
@@ -25,15 +26,18 @@ const HomePage = () => {
   const { myList, setMyList } = useMyList();
   const [loading, setLoading] = useState(true);
   const [session, setSession] = useState(null);
-  const OPTIONS = { align: 'start', dragFree: true, loop: true }
+  const OPTIONS = { align: "start", dragFree: true, loop: true };
 
   async function fetchMovieData() {
     const movies = await fetchData(
       "https://api.themoviedb.org/3/trending/movie/day"
     );
-  
+
     // Add a new property to each movie object
-    const topTenMovies = movies.map((movie, index) => ({...movie, topTenPosition: index + 1}));
+    const topTenMovies = movies.map((movie, index) => ({
+      ...movie,
+      topTenPosition: index + 1,
+    }));
     setMovieData(topTenMovies.slice(0, 10));
   }
 
@@ -42,7 +46,10 @@ const HomePage = () => {
       "https://api.themoviedb.org/3/trending/tv/day"
     );
 
-    const topTenTvShows = tvShows.map((tvShow, index) => ({...tvShow, topTenPosition: index + 1}));
+    const topTenTvShows = tvShows.map((tvShow, index) => ({
+      ...tvShow,
+      topTenPosition: index + 1,
+    }));
     setTvData(topTenTvShows.slice(0, 10));
   }
 
@@ -65,15 +72,20 @@ const HomePage = () => {
     const email = session.user.email;
     setSession(session);
     const response = await axios.get(`/api/users/list?email=${email}`);
-    setMyList(response.data.list)
+    setMyList(response.data.list);
   }
 
   useEffect(() => {
     const fetchDataAll = async () => {
       setLoading(true);
       try {
-        fetchMyList()
-        await Promise.all([fetchMovieData(), fetchTvData(), fetchAllTv(), fetchAllMovies()]);
+        fetchMyList();
+        await Promise.all([
+          fetchMovieData(),
+          fetchTvData(),
+          fetchAllTv(),
+          fetchAllMovies(),
+        ]);
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
@@ -87,29 +99,80 @@ const HomePage = () => {
   return (
     <>
       {loading ? (
-        <div className="flex flex-col justify-center items-center h-screen">
-          <div className="flex items-center">
-            <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-red-500"></div>
-            <span className="ml-4 text-lg font-medium">Loading...</span>
-          </div>
-          <p className="ml-4 text-sm font-sm italic p-4">If the page doesn't load, try reloading the page</p>
-        </div>
+        <Spinner
+          customText={"If the page doesn't load, try reloading the page"}
+        />
       ) : (
         <>
+          <NotificationAlert
+            status={"success"}
+            text={
+              <>
+                Browsing for Movies and TV Shows has been fixed! If you come
+                across any more issues, feel free to reach out to me on{" "}
+                <a
+                  href="https://www.facebook.com/yengzzkie/"
+                  target="_blank"
+                  className="font-semibold underline text-blue-400"
+                >
+                  Facebook
+                </a>
+                .
+              </>
+            }
+          />
           {/* TOP 10 MOVIES */}
-          {session?.user?.isVerified === false && <NotificationAlert status={"error"} text={<>Your email is not verified. Please verify your email to continue full access to YENGFLIX v3's features including streaming. To verify click {<a className="text-blue-400 font-semibold" href="/account-settings">here.</a>}</>} />}
-          <EmblaCarousel slides={movieData} options={OPTIONS} media_type={"Movies"} />
+          {session?.user?.isVerified === false && (
+            <NotificationAlert
+              status={"error"}
+              text={
+                <>
+                  Your email is not verified. Please verify your email to
+                  continue full access to YENGFLIX v3's features including
+                  streaming. To verify click{" "}
+                  {
+                    <a
+                      className="text-blue-400 font-semibold"
+                      href="/account-settings"
+                    >
+                      here.
+                    </a>
+                  }
+                </>
+              }
+            />
+          )}
+          <EmblaCarousel
+            slides={movieData}
+            options={OPTIONS}
+            media_type={"Movies"}
+          />
 
           {/* TOP 10 TV */}
-          <EmblaCarousel slides={tvData} options={OPTIONS} media_type={"TV Shows"} />
-
+          <EmblaCarousel
+            slides={tvData}
+            options={OPTIONS}
+            media_type={"TV Shows"}
+          />
 
           {/* RECOMMENDED SECTION */}
-          <RecommendedCarousel slides={allMovies} options={OPTIONS} media_type={"Movies"} />
-          <RecommendedCarousel slides={allTv} options={OPTIONS} media_type={"TV Shows"} />
+          <RecommendedCarousel
+            slides={allMovies}
+            options={OPTIONS}
+            media_type={"Movies"}
+          />
+          <RecommendedCarousel
+            slides={allTv}
+            options={OPTIONS}
+            media_type={"TV Shows"}
+          />
 
           {/* MY LIST SECTION */}
-          <MyListCarousel slides={myList} options={OPTIONS} media_type={"Movies"} />
+          <MyListCarousel
+            slides={myList}
+            options={OPTIONS}
+            media_type={"Movies"}
+          />
         </>
       )}
     </>

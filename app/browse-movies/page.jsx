@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { CustomSpinner } from "../components/Spinner";
+import { Spinner } from "../components/Spinner";
 import Pagination from "../components/Pagination";
 import TopExpandableCard from "../components/TopExpandableCard";
 import axios from "axios";
@@ -58,7 +58,7 @@ const MoviesPage = () => {
         media_type={selectedSlide?.title || null ? "Movies" : "TV Shows"}
       />
       {loading ? (
-        <CustomSpinner />
+        <Spinner />
       ) : (
         <>
           <div className="pagination bg-transparent sticky top-0 flex flex-col lg:flex-row justify-between items-center mr-2 mb-2 px-4 py-2">
