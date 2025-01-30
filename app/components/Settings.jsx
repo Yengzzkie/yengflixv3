@@ -3,6 +3,8 @@ import { useState } from "react";
 import { GenericBadge } from "./ui/VerifiedBadge";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { generateAvatar } from "./ui/AvatarIcon";
+import { Avatar } from "@material-tailwind/react";
 import PasswordInput from "./ui/PasswordInput";
 import NotificationAlert from "./ui/NotificationAlert";
 import Loader from "./ui/Loader";
@@ -20,7 +22,7 @@ const AccountSettings = ({ user }) => {
   const [timer, setTimer] = useState(0); // Timer for the resend button
   const [showBanner, setShowBanner] = useState(false);
   const avatar = `https://ui-avatars.com/api/?name=${user.name}&background=random`;
-  const {  data: session, update } = useSession();
+  const { data: session, update } = useSession();
   const router = useRouter();
 
   const toggleEditMode = () => setIsEditMode((prev) => !prev);
@@ -43,7 +45,10 @@ const AccountSettings = ({ user }) => {
 
       if (response.status === 200) {
         // Update the session with the new user data
-        await update({...session, user: {...session?.user, name: response?.data?.name}});
+        await update({
+          ...session,
+          user: { ...session?.user, name: response?.data?.name },
+        });
         alert("Changes saved successfully");
         setIsEditMode(false);
         router.refresh();
@@ -89,7 +94,12 @@ const AccountSettings = ({ user }) => {
 
   return (
     <div className="max-w-4xl mx-auto p-6 space-y-8 bg-[var(--background)] text-gray-200">
-      <NotificationAlert status={"info"} text={"If you make any update on your account, please sign out then sign back in for the update to reflect."} />
+      <NotificationAlert
+        status={"info"}
+        text={
+          "If you make any update on your account, please sign out then sign back in for the update to reflect."
+        }
+      />
       <section className="bg-zinc-800 p-6 rounded-lg shadow-md">
         <h2 className="text-2xl font-semibold text-white mb-4">
           Profile Overview
@@ -136,11 +146,13 @@ const AccountSettings = ({ user }) => {
             Avatar
           </label>
           <div className="flex items-center space-x-4 mt-2">
-            <img
-              src={avatar}
-              alt="User Avatar"
-              className="w-16 h-16 rounded-full"
+            <Avatar
+              src={generateAvatar(encodeURIComponent(name))}
+              alt={name}
+              size="md"
+              className="bg-zinc-600 rounded-full p-1"
             />
+            <p className="italic text-xs text-zinc-300">Your avatar will change based on your name.</p>
             {isEditMode && (
               <button className="text-blue-400 hover:underline">
                 Change Avatar
@@ -214,7 +226,17 @@ const AccountSettings = ({ user }) => {
           </p>
         </div>
       </section>
-      {showBanner && <NotificationAlert status={"success"} text={<>Verification email sent. If you don't receive it after 30 seconds, check your <strong>Spam</strong> folder</>} />}
+      {showBanner && (
+        <NotificationAlert
+          status={"success"}
+          text={
+            <>
+              Verification email sent. If you don't receive it after 30 seconds,
+              check your <strong>Spam</strong> folder
+            </>
+          }
+        />
+      )}
       <section className="bg-zinc-800 p-6 rounded-lg shadow-md mt-8">
         <h2 className="text-2xl font-semibold text-white mb-4">
           Account Verification

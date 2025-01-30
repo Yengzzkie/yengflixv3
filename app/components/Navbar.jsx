@@ -309,15 +309,63 @@ export default function Navigation({ session }) {
           </div>
 
           {/* USER DISPLAY NAME */}
-          <div className="mr-4">
+          <div className="flex items-center mr-2">
+            <Avatar
+              src={generateAvatar(encodeURIComponent(session.user.name))}
+              alt={session.user.name}
+              size="xs"
+              className="avatar-shadow  bg-zinc-600 rounded-full h-8 w-8 p-1"
+            />
+            <div className="mr-4">
+              <div className="flex items-center">
+                <span className="text-sm text-gray-400 flex items-end">
+                  <span className="font-semibold mx-1">
+                    {session.user.name}
+                  </span>
+                </span>
+                {session.user.isVerified ? (
+                  <VerifiedBadge />
+                ) : (
+                  <NotVerifiedBadge />
+                )}
+                <img
+                  src={`/flags/${country}.png`}
+                  alt="flag"
+                  className="w-6 h-4 ml-1"
+                />
+              </div>
+              <p className="text-[11px] text-gray-400 ml-1">
+                {session.user.email}
+              </p>
+            </div>
+          </div>
+
+          <Logout />
+        </div>
+
+        {/* Mobile User Info */}
+        <div className="flex items-center">
+          <Avatar
+            src={generateAvatar(encodeURIComponent(session.user.name))}
+            alt={session.user.name}
+            size="xs"
+            className="avatar-shadow  bg-zinc-600 rounded-full h-7 w-7 p-1 lg:hidden"
+          />
+          <div className="block mr-0 lg:hidden lg:mr-4">
             <div className="flex items-center">
-              <Avatar
-                src={generateAvatar(encodeURIComponent(session.user.name))}
-                alt={session.user.name}
-                size="xs"
-              />
-              <span className="text-sm text-gray-400 flex items-end">
-                <span className="font-semibold mx-1">{session.user.name}</span>
+              <span className="text-xs text-gray-400 flex items-center max-w-[130px]">
+                <Tooltip // added tooltip for truncated display names
+                  content={session.user.name}
+                  animate={{
+                    mount: { scale: 1, y: 0 },
+                    unmount: { scale: 0, y: 25 },
+                  }}
+                  className="bg-[var(--primary-dark)] card-shadow"
+                >
+                  <span className="font-semibold mx-1 truncate">
+                    {session.user.name}
+                  </span>
+                </Tooltip>
               </span>
               {session.user.isVerified ? (
                 <VerifiedBadge />
@@ -327,45 +375,13 @@ export default function Navigation({ session }) {
               <img
                 src={`/flags/${country}.png`}
                 alt="flag"
-                className="w-6 h-4 ml-1"
+                className="w-5 h-3 lg:w-6 lg:h-4 ml-1"
               />
             </div>
-            <p className="text-[11px] text-gray-400">{session.user.email}</p>
+            <p className="text-[11px] text-gray-400 ml-1">
+              {session.user.email}
+            </p>
           </div>
-
-          <Logout />
-        </div>
-
-        {/* Mobile User Info */}
-        <div className="block mr-0 lg:hidden lg:mr-4">
-          <div className="flex items-center">
-            <Avatar
-              src={generateAvatar(encodeURIComponent(session.user.name))}
-              alt={session.user.name}
-              size="xs"
-            />
-            <span className="text-xs text-gray-400 flex items-center max-w-[130px]">
-              <Tooltip // added tooltip for truncated display names
-                content={session.user.name}
-                animate={{
-                  mount: { scale: 1, y: 0 },
-                  unmount: { scale: 0, y: 25 },
-                }}
-                className="bg-[var(--primary-dark)] card-shadow"
-              >
-                <span className="font-semibold mx-1 truncate">
-                  {session.user.name}
-                </span>
-              </Tooltip>
-            </span>
-            {session.user.isVerified ? <VerifiedBadge /> : <NotVerifiedBadge />}
-            <img
-              src={`/flags/${country}.png`}
-              alt="flag"
-              className="w-5 h-3 lg:w-6 lg:h-4 ml-1"
-            />
-          </div>
-          <p className="text-[11px] text-gray-400">{session.user.email}</p>
         </div>
 
         {/* Mobile Navigation Toggle */}
