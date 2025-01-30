@@ -277,15 +277,16 @@ export default function Navigation({ session }) {
         <div className="hidden gap-2 lg:flex items-center">
           {/* SEARCH BAR */}
           <div
-            className={`flex relative h-8 mr-2 ${
+            className={`flex items-center relative h-8 mx-3 ${
               openSearch ? "bg-[var(--primary-dark)]" : "bg-transparent"
             } ${
               openSearch ? "border" : "border-none"
             } transition-all duration-1000`}
           >
+            {!openSearch && <p>Search</p>}
             <MagnifyingGlassIcon
               fill="white"
-              className="p-1 cursor-pointer"
+              className="p-1 cursor-pointer h-7 w-7"
               onClick={() => {
                 setOpenSearch(!openSearch);
                 setSearchValue("");
@@ -328,11 +329,11 @@ export default function Navigation({ session }) {
                 ) : (
                   <NotVerifiedBadge />
                 )}
-                <img
+                {/* <img
                   src={`/flags/${country}.png`}
                   alt="flag"
                   className="w-6 h-4 ml-1"
-                />
+                /> */}
               </div>
               <p className="text-[11px] text-gray-400 ml-1">
                 {session.user.email}
@@ -372,11 +373,11 @@ export default function Navigation({ session }) {
               ) : (
                 <NotVerifiedBadge />
               )}
-              <img
+              {/* <img
                 src={`/flags/${country}.png`}
                 alt="flag"
                 className="w-5 h-3 lg:w-6 lg:h-4 ml-1"
-              />
+              /> */}
             </div>
             <p className="text-[11px] text-gray-400 ml-1">
               {session.user.email}
