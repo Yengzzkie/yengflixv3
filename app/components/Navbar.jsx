@@ -11,6 +11,7 @@ import {
   MenuHandler,
   MenuList,
   MenuItem,
+  Avatar,
 } from "@material-tailwind/react";
 import {
   ChevronDownIcon,
@@ -31,6 +32,7 @@ import {
 } from "@heroicons/react/24/solid";
 import Link from "next/link";
 import Logout from "./Logout";
+import { generateAvatar } from "./ui/AvatarIcon";
 import { fetchData } from "../utils/fetchData";
 import { useRouter } from "next/navigation";
 import { useSearchResult } from "../stores/useDataStore";
@@ -53,7 +55,8 @@ const navListMenuItems = [
   },
   {
     title: "My List",
-    description: "Save your favorite movies and TV shows for easy access later.",
+    description:
+      "Save your favorite movies and TV shows for easy access later.",
     icon: BookmarkIcon,
     link: "/mylist",
   },
@@ -65,15 +68,17 @@ const navListMenuItems = [
   },
   {
     title: "Forum",
-    description: "Join the community discussion, ask questions, and share ideas.",
+    description:
+      "Join the community discussion, ask questions, and share ideas.",
     icon: ChatBubbleLeftRightIcon,
     link: "/forum",
   },
   {
     title: "Account Settings",
-    description: "Update your personal information and adjust account preferences.",
+    description:
+      "Update your personal information and adjust account preferences.",
     icon: Cog6ToothIcon,
-    link: "/account-settings"
+    link: "/account-settings",
   },
   // {
   //   title: "News",
@@ -98,35 +103,35 @@ function NavListMenu() {
   const user = useSession();
 
   const renderItems = navListMenuItems.map(
-    ({ icon, title, description, link }, key) => (
+    ({ icon, title, description, link }, key) =>
       title === "Users" && user?.data?.user?.role === "USER" ? null : ( // hide "Users" menu item for non-admin users
         <a href={link} key={key}>
-        <MenuItem className="flex items-center gap-3 rounded-l p-6 hover:bg-[var(--primary-dark)]">
-          <div className="flex items-center justify-center rounded-lg p-2">
-            {" "}
-            {React.createElement(icon, {
-              strokeWidth: 2,
-              className: "h-6 text-gray-200 w-6",
-            })}
-          </div>
-          <div>
-            <Typography
-              variant="h6"
-              className="flex items-center text-sm font-bold text-[var(--primary)]"
-            >
-              {title}
-            </Typography>
-            <Typography
-              variant="paragraph"
-              className="text-xs text-left !font-medium text-blue-gray-500 text-[#a7a7a7]"
-            >
-              {description}
-            </Typography>
-          </div>
-        </MenuItem>
-      </a>
-    )
-  ));
+          <MenuItem className="flex items-center gap-3 rounded-l p-6 hover:bg-[var(--primary-dark)]">
+            <div className="flex items-center justify-center rounded-lg p-2">
+              {" "}
+              {React.createElement(icon, {
+                strokeWidth: 2,
+                className: "h-6 text-gray-200 w-6",
+              })}
+            </div>
+            <div>
+              <Typography
+                variant="h6"
+                className="flex items-center text-sm font-bold text-[var(--primary)]"
+              >
+                {title}
+              </Typography>
+              <Typography
+                variant="paragraph"
+                className="text-xs text-left !font-medium text-blue-gray-500 text-[#a7a7a7]"
+              >
+                {description}
+              </Typography>
+            </div>
+          </MenuItem>
+        </a>
+      )
+  );
 
   return (
     <React.Fragment>
@@ -306,8 +311,12 @@ export default function Navigation({ session }) {
           {/* USER DISPLAY NAME */}
           <div className="mr-4">
             <div className="flex items-center">
+              <Avatar
+                src={generateAvatar(encodeURIComponent(session.user.name))}
+                alt={session.user.name}
+                size="xs"
+              />
               <span className="text-sm text-gray-400 flex items-end">
-                Hello,{" "}
                 <span className="font-semibold mx-1">{session.user.name}</span>
               </span>
               {session.user.isVerified ? (
@@ -330,8 +339,12 @@ export default function Navigation({ session }) {
         {/* Mobile User Info */}
         <div className="block mr-0 lg:hidden lg:mr-4">
           <div className="flex items-center">
+            <Avatar
+              src={generateAvatar(encodeURIComponent(session.user.name))}
+              alt={session.user.name}
+              size="xs"
+            />
             <span className="text-xs text-gray-400 flex items-center max-w-[130px]">
-              Hello,{" "}
               <Tooltip // added tooltip for truncated display names
                 content={session.user.name}
                 animate={{

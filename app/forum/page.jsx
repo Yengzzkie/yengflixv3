@@ -4,6 +4,7 @@ import { useSession } from "next-auth/react";
 import { DragCloseDrawer } from "../components/ui/Drawer";
 import { PencilIcon } from "@heroicons/react/24/outline";
 import { Spinner } from "../components/Spinner";
+import { redirect } from "next/navigation";
 import axios from "axios";
 import Post from "../components/Post";
 import PostForm from "../components/PostForm";
@@ -14,6 +15,10 @@ export default function ForumPage() {
   const [loading, setLoading] = useState(true);
   const session = useSession();
   const userId = session?.data?.user?.id;
+
+  if (session.status === "unauthenticated") {
+    redirect("/");
+  }
 
   async function fetchPosts() {
     setLoading(true)
