@@ -413,7 +413,7 @@ const Video = ({ params }) => {
               <Tab key={value} value={value}>
                 <div className="flex items-center gap-2">
                   {React.createElement(icon, { className: "w-5 h-5" })}
-                  <p className="text-2xl">{label}</p>
+                  <p className="text-md lg:text-2xl">{label}</p>
                 </div>
               </Tab>
             ))}
