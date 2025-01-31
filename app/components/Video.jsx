@@ -1,4 +1,5 @@
 "use client";
+import React from "react";
 import { useSearchParams } from "next/navigation";
 import { use, useEffect, useState } from "react";
 import { fetchData } from "../utils/fetchData";
@@ -9,12 +10,24 @@ import {
   HandThumbUpIcon,
   ShareIcon,
   CheckIcon,
-  ExclamationCircleIcon
+  ExclamationCircleIcon,
 } from "@heroicons/react/24/outline";
 import NotificationAlert from "./ui/NotificationAlert";
 import axios from "axios";
 import TopExpandableCard from "./TopExpandableCard";
 import addToList from "../utils/addToList";
+import {
+  Tabs,
+  TabsHeader,
+  TabsBody,
+  Tab,
+  TabPanel,
+  ThemeProvider,
+  Avatar
+} from "@material-tailwind/react";
+import { Square3Stack3DIcon, PencilIcon } from "@heroicons/react/24/solid";
+import { generateAvatar } from "./ui/AvatarIcon";
+import { getTimeAgo } from "../utils/getTimeAgo";
 
 const Video = ({ params }) => {
   const idParams = use(params);
@@ -27,7 +40,10 @@ const Video = ({ params }) => {
   const [added, setAdded] = useState(false);
   const [buttonText, setButtonText] = useState(null);
   const [showOverlay, setShowOverlay] = useState(false);
-  
+  const [comment, setComment] = useState("");
+  const [rating, setRating] = useState("");
+  const [reviews, setReviews] = useState([]);
+
   const movieSrc = `https://vidsrc.xyz/embed/movie/${id}`;
   const tvSrc = `https://vidsrc.xyz/embed/tv/${id}`;
   const IMG_PATH = "https://image.tmdb.org/t/p/original/";
@@ -37,6 +53,153 @@ const Video = ({ params }) => {
   const session = useSession();
   const isVerified = session?.data?.user?.isVerified;
 
+  // custom theme for the tabs
+  const theme = {
+    tab: {
+      defaultProps: {
+        className: "",
+        activeClassName: "",
+        disabled: false,
+      },
+      styles: {
+        base: {
+          indicator: {
+            position: "absolute",
+            inset: "inset-0",
+            zIndex: "z-10",
+            height: "h-full",
+            bg: "bg-zinc-400/40",
+            borderRadius: "rounded-sm",
+            boxShadow: "shadow",
+            color: "text-red-500",
+          },
+        },
+      },
+    },
+  };
+
+  // tabs contents
+  const tabs = [
+    {
+      label: "More Like This",
+      value: "More Like This",
+      icon: Square3Stack3DIcon,
+      component: (
+        <>
+          <div className="grid grid-cols-4 lg:grid-cols-8 gap-3 lg:gap-5 px-3 lg:px-6">
+            {similarMovies.length === 0 ? (
+              <p className="text-[var(--primary-light)] italic w-full">
+                No Similar movies for this title
+              </p>
+            ) : (
+              similarMovies.map((movie) => (
+                <div
+                  key={movie.id}
+                  className="cursor-pointer"
+                  onClick={() => handleSlideClick(movie)}
+                >
+                  <img
+                    className="card-shadow rounded-md"
+                    loading="lazy"
+                    src={`${IMG_PATH}${movie.poster_path}`}
+                    alt={movie.title}
+                  />
+                </div>
+              ))
+            )}
+          </div>
+        </>
+      ),
+    },
+    {
+      label: "Write a Review",
+      value: "Write a Review",
+      icon: PencilIcon,
+      component: (
+        <>
+          <div className="px-6 py-4 min-h-1/2">
+            <h2 className="text-lg font-semibold text-neutral-200">
+              Add a comment
+            </h2>
+            <div>
+              <textarea
+                value={comment}
+                onChange={(e) => setComment(e.target.value)}
+                className="w-full p-2 text-sm text-white bg-gray-800 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Write your comment here..."
+              ></textarea>
+              <label htmlFor="rating" className="block mt-2 text-neutral-200">
+                What do you think of this movie?
+              </label>
+              <select
+                name="rating"
+                id="rating"
+                className="w-full max-w-xs mt-1 p-2 bg-gray-800 text-white border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                onChange={(e) => setRating(e.target.value)}
+                defaultValue={"GOOD"}
+              >
+                <option value="POOR">Poor</option>
+                <option value="AVERAGE">Average</option>
+                <option value="GOOD">Good</option>
+                <option value="EXCELLENT">Excellent</option>
+              </select>
+            </div>
+            <button
+              onClick={handleCommentSubmit}
+              className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-700"
+            >
+              Submit
+            </button>
+          </div>
+
+          <div className="mt-6">
+            {reviews.length === 0 ? (<h1 className="text-lg text-center mb-10">No reviews yet. Be the first to review this movie!</h1>) : (
+              reviews
+              .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+              .map((review) => (
+                <div
+                  key={review.id}
+                  className="bg-gray-800 p-4 rounded-md mb-4 shadow-md"
+                >
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center">
+                      <Avatar
+                        src={generateAvatar(encodeURIComponent(review?.user?.name))}
+                        alt={review?.user?.name}
+                        size="xs"
+                      />
+                      <h4 className="text-md font-semibold text-zinc-300 ml-1">
+                        / {review?.user?.name}
+                      </h4>
+                      <span className="text-xs italic text-zinc-500 text-extralight ml-1"> - posted {getTimeAgo(review.createdAt)} ago</span>
+                    </div>
+                    <span
+                      className={`text-sm font-semibold ${
+                        review.rating === "EXCELLENT"
+                          ? "text-green-500"
+                          : review.rating === "GOOD"
+                          ? "text-yellow-500"
+                          : review.rating === "AVERAGE"
+                          ? "text-gray-500"
+                          : "text-red-500"
+                      }`}
+                    >
+                      {review.rating}
+                    </span>
+                  </div>
+                  <p className="text-sm text-neutral-400 mt-2">
+                    {review.content}
+                  </p>
+                </div>
+              ))
+            )}
+          </div>
+        </>
+      ),
+    },
+  ];
+
+  // fetch similar movies
   async function fetchSimilarMovies() {
     try {
       const response =
@@ -61,6 +224,7 @@ const Video = ({ params }) => {
     }
   }
 
+  // fetch movie details
   async function fetchDetails() {
     try {
       const response = await axios.get(
@@ -79,25 +243,39 @@ const Video = ({ params }) => {
     }
   }
 
+  // fetch reviews for the movie
+  async function fetchReviews() {
+    try {
+      const response = await axios.get(`/api/review?movieId=${id}`);
+      setReviews(response?.data);
+    } catch (error) {
+      console.error("Failed fetching reviews for this movie", error);
+    }
+  }
+
   // fetch similar movies and currently viewing movie at once
   useEffect(() => {
     const fetchDataAll = async () => {
       try {
-        await Promise.all([fetchSimilarMovies(), fetchDetails()]);
+        await Promise.all([
+          fetchSimilarMovies(),
+          fetchDetails(),
+          fetchReviews(),
+        ]);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
 
     fetchDataAll();
-    
+
     // display overlay after 3 seconds
     const timeout = setTimeout(() => {
       setShowOverlay(true);
     }, 3000);
 
     return () => clearTimeout(timeout);
-  }, []);
+  }, [comment]);
 
   const handleSlideClick = (slide) => {
     setSelectedSlide(slide);
@@ -121,6 +299,20 @@ const Video = ({ params }) => {
       setAdded(false);
       setButtonText(null);
     }, 2000);
+  }
+
+  // review submit handler
+  async function handleCommentSubmit() {
+    if (!comment.trim()) return;
+
+    const reviewPayload = {
+      userId: session?.data?.user?.id,
+      content: comment,
+      movie_id: id,
+      rating: rating,
+    };
+    const review = await axios.post("/api/review", reviewPayload);
+    setComment("");
   }
 
   return (
@@ -155,18 +347,30 @@ const Video = ({ params }) => {
           allowFullScreen={true}
           referrerPolicy="origin"
         ></iframe>
+
         {/* overlay for unverified users */}
-        {(!isVerified && showOverlay) && (
+        {!isVerified && showOverlay && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ type: "tween", duration: 0.5 }}
-           className="flex flex-col justify-center items-center gap-4 text-center text-zinc-200 absolute top-0 left-0 w-full h-full bg-zinc-800/80 backdrop-blur-md z-50">
+            className="flex flex-col justify-center items-center gap-4 text-center text-zinc-200 absolute top-0 left-0 w-full h-full bg-zinc-800/80 backdrop-blur-md z-50"
+          >
             <ExclamationCircleIcon className="h-10 w-10 text-yellow-500" />
-            <p className="font-semibold text-md lg:text-2xl ">Your email ({session?.data?.user?.email}) is unverified.</p>
-            <p className="font-extralight text-xs lg:text-sm">To continue watching, please verify it now by going to <strong className="font-bold">Resources</strong> &gt; <strong className="font-bold">Account Settings</strong> &gt; click <strong className="font-bold">'Resend Verification Email'</strong></p>
-            <p className="font-extralight text-xs lg:text-sm italic">If you don't receive the Verification Email, check your <strong className="font-bold">Spam</strong> folder</p>
+            <p className="font-semibold text-md lg:text-2xl ">
+              Your email ({session?.data?.user?.email}) is unverified.
+            </p>
+            <p className="font-extralight text-xs lg:text-sm">
+              To continue watching, please verify it now by going to{" "}
+              <strong className="font-bold">Resources</strong> &gt;{" "}
+              <strong className="font-bold">Account Settings</strong> &gt; click{" "}
+              <strong className="font-bold">'Resend Verification Email'</strong>
+            </p>
+            <p className="font-extralight text-xs lg:text-sm italic">
+              If you don't receive the Verification Email, check your{" "}
+              <strong className="font-bold">Spam</strong> folder
+            </p>
           </motion.div>
         )}
       </div>
@@ -201,31 +405,28 @@ const Video = ({ params }) => {
       </div>
 
       <hr />
-      <h1 className="font-roboto text-lg lg:text-4xl font-bold border-t-4 py-2 px-2 lg:px-4 mx-6 border-red-500 w-fit">
-        More like this
-      </h1>
-      <div className="grid grid-cols-4 lg:grid-cols-8 gap-3 lg:gap-5 px-3 lg:px-6">
-        {similarMovies.length === 0 ? (
-          <p className="text-[var(--primary-light)] italic w-full">
-            No Similar movies for this title
-          </p>
-        ) : (
-          similarMovies.map((movie) => (
-            <div
-              key={movie.id}
-              className="cursor-pointer"
-              onClick={() => handleSlideClick(movie)}
-            >
-              <img
-                className="card-shadow rounded-md"
-                loading="lazy"
-                src={`${IMG_PATH}${movie.poster_path}`}
-                alt={movie.title}
-              />
-            </div>
-          ))
-        )}
-      </div>
+      {/* TABS FOR WRITE A REVIEW AND SIMILAR MOVIES */}
+      <ThemeProvider value={theme}>
+        <Tabs value="More Like This">
+          <TabsHeader>
+            {tabs.map(({ label, value, icon }) => (
+              <Tab key={value} value={value}>
+                <div className="flex items-center gap-2">
+                  {React.createElement(icon, { className: "w-5 h-5" })}
+                  <p className="text-2xl">{label}</p>
+                </div>
+              </Tab>
+            ))}
+          </TabsHeader>
+          <TabsBody>
+            {tabs.map(({ value, component }) => (
+              <TabPanel key={value} value={value}>
+                {component}
+              </TabPanel>
+            ))}
+          </TabsBody>
+        </Tabs>
+      </ThemeProvider>
     </div>
   );
 };

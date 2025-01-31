@@ -31,6 +31,7 @@ model User {
   liked_posts Post[]    @relation("Liker")
   posts       Post[]
   comments    Comment[]
+  Review      Review[]
 }
 
 model Post {
@@ -55,6 +56,24 @@ model Comment {
   userId    String
   user      User     @relation(fields: [userId], references: [id])
   post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+}
+
+model Review {
+  id        String   @id @default(uuid())
+  content   String   @db.VarChar(300)
+  movie_id  String
+  rating    Rating   @default(GOOD)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum Rating {
+  POOR
+  AVERAGE
+  GOOD
+  EXCELLENT
 }
 
 enum Role {

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import prisma from "@/db/prismaClient";
 import { hash, compare } from "bcryptjs";
+import prisma from "@/db/prismaClient";
 
 export async function POST(request) {
   const { searchParams } = new URL(request.url);
