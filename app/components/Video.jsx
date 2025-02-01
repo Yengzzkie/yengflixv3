@@ -349,7 +349,7 @@ const Video = ({ params }) => {
         ></iframe>
 
         {/* overlay for unverified users */}
-        {!isVerified && showOverlay && (
+        {/* {!isVerified && showOverlay && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -372,7 +372,7 @@ const Video = ({ params }) => {
               <strong className="font-bold">Spam</strong> folder
             </p>
           </motion.div>
-        )}
+        )} */}
       </div>
 
       <h1 className="font-bold text-neutral-200 text-2xl px-3 lg:px-6 py-2">
