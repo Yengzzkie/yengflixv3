@@ -216,7 +216,6 @@ export default function Navigation({ session }) {
   const [searchValue, setSearchValue] = React.useState("");
   const { setSearchResult } = useSearchResult();
   const router = useRouter();
-  // const country = session.user.location.countryCode.toLowerCase();
 
   React.useEffect(() => {
     window.addEventListener(
@@ -329,11 +328,6 @@ export default function Navigation({ session }) {
                 ) : (
                   <NotVerifiedBadge />
                 )}
-                {/* <img
-                  src={`/flags/${country}.png`}
-                  alt="flag"
-                  className="w-6 h-4 ml-1"
-                /> */}
               </div>
               <p className="text-[11px] text-gray-400 ml-1">
                 {session?.user?.email}
@@ -373,11 +367,6 @@ export default function Navigation({ session }) {
               ) : (
                 <NotVerifiedBadge />
               )}
-              {/* <img
-                src={`/flags/${country}.png`}
-                alt="flag"
-                className="w-5 h-3 lg:w-6 lg:h-4 ml-1"
-              /> */}
             </div>
             <p className="text-[11px] text-gray-400 ml-1">
               {session?.user?.email}

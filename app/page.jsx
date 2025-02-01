@@ -105,21 +105,8 @@ const HomePage = () => {
       ) : (
         <>
           <NotificationAlert
-            status={"success"}
-            text={
-              <>
-                Browsing for Movies and TV Shows has been fixed! If you come
-                across any more issues, feel free to reach out to me on{" "}
-                <a
-                  href="https://www.facebook.com/yengzzkie/"
-                  target="_blank"
-                  className="font-semibold underline text-blue-400"
-                >
-                  Facebook
-                </a>
-                .
-              </>
-            }
+            status={"warning"}
+            text={"Login/Authentication is temporarily disabled for system update."}
           />
           {/* TOP 10 MOVIES */}
           {session?.user?.isVerified === false && (
