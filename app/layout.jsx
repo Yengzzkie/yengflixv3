@@ -5,7 +5,6 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/react";
 import { auth } from "./auth";
 import { Provider } from "./components/Provider";
-import Head from "next/head";
 
 export const metadata = {
   title: "Yengflix V3",
@@ -24,17 +23,11 @@ export default async function RootLayout({ children }) {
 
   return (
     <html lang="en">
-      <Head>
-        <script
-          async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6259607195377617"
-          crossorigin="anonymous"
-        ></script>
-      </Head>
       <link rel="icon" href="/favicon.png" />
       <body className="bg-[var(--background)]">
         <Provider>
-          {session ? <Navigation session={session} /> : <NavigationLogin />}
+          {/* {session ? <Navigation session={session} /> : <NavigationLogin />} */}
+          <Navigation session={session} />
           <main>{children}</main>
         </Provider>
         <SpeedInsights />

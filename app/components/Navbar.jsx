@@ -60,12 +60,12 @@ const navListMenuItems = [
     icon: BookmarkIcon,
     link: "/mylist",
   },
-  {
-    title: "Users",
-    description: "Manage user profiles and interact with other members.",
-    icon: UserGroupIcon,
-    link: "/users",
-  },
+  // {
+  //   title: "Users",
+  //   description: "Manage user profiles and interact with other members.",
+  //   icon: UserGroupIcon,
+  //   link: "/users",
+  // },
   {
     title: "Forum",
     description:
@@ -73,13 +73,13 @@ const navListMenuItems = [
     icon: ChatBubbleLeftRightIcon,
     link: "/forum",
   },
-  {
-    title: "Account Settings",
-    description:
-      "Update your personal information and adjust account preferences.",
-    icon: Cog6ToothIcon,
-    link: "/account-settings",
-  },
+  // {
+  //   title: "Account Settings",
+  //   description:
+  //     "Update your personal information and adjust account preferences.",
+  //   icon: Cog6ToothIcon,
+  //   link: "/account-settings",
+  // },
   // {
   //   title: "News",
   //   description: "Read insightful articles, tips, and expert opinions.",
@@ -216,7 +216,7 @@ export default function Navigation({ session }) {
   const [searchValue, setSearchValue] = React.useState("");
   const { setSearchResult } = useSearchResult();
   const router = useRouter();
-  const country = session.user.location.countryCode.toLowerCase();
+  // const country = session.user.location.countryCode.toLowerCase();
 
   React.useEffect(() => {
     window.addEventListener(
@@ -312,8 +312,8 @@ export default function Navigation({ session }) {
           {/* USER DISPLAY NAME */}
           <div className="flex items-center mr-2">
             <Avatar
-              src={generateAvatar(encodeURIComponent(session.user.name))}
-              alt={session.user.name}
+              src={generateAvatar(encodeURIComponent(session?.user?.name))}
+              alt={session?.user?.name}
               size="xs"
               className="avatar-shadow  bg-zinc-600 rounded-full h-8 w-8 p-1"
             />
@@ -321,10 +321,10 @@ export default function Navigation({ session }) {
               <div className="flex items-center">
                 <span className="text-sm text-gray-400 flex items-end">
                   <span className="font-semibold mx-1">
-                    {session.user.name}
+                    {session?.user?.name}
                   </span>
                 </span>
-                {session.user.isVerified ? (
+                {session?.user?.isVerified ? (
                   <VerifiedBadge />
                 ) : (
                   <NotVerifiedBadge />
@@ -336,7 +336,7 @@ export default function Navigation({ session }) {
                 /> */}
               </div>
               <p className="text-[11px] text-gray-400 ml-1">
-                {session.user.email}
+                {session?.user?.email}
               </p>
             </div>
           </div>
@@ -347,8 +347,8 @@ export default function Navigation({ session }) {
         {/* Mobile User Info */}
         <div className="flex items-center">
           <Avatar
-            src={generateAvatar(encodeURIComponent(session.user.name))}
-            alt={session.user.name}
+            src={generateAvatar(encodeURIComponent(session?.user?.name))}
+            alt={session?.user?.name}
             size="xs"
             className="avatar-shadow  bg-zinc-600 rounded-full h-7 w-7 p-1 lg:hidden"
           />
@@ -356,7 +356,7 @@ export default function Navigation({ session }) {
             <div className="flex items-center">
               <span className="text-xs text-gray-400 flex items-center max-w-[130px]">
                 <Tooltip // added tooltip for truncated display names
-                  content={session.user.name}
+                  content={session?.user?.name}
                   animate={{
                     mount: { scale: 1, y: 0 },
                     unmount: { scale: 0, y: 25 },
@@ -364,11 +364,11 @@ export default function Navigation({ session }) {
                   className="bg-[var(--primary-dark)] card-shadow"
                 >
                   <span className="font-semibold mx-1 truncate">
-                    {session.user.name}
+                    {session?.user?.name}
                   </span>
                 </Tooltip>
               </span>
-              {session.user.isVerified ? (
+              {session?.user?.isVerified ? (
                 <VerifiedBadge />
               ) : (
                 <NotVerifiedBadge />
@@ -380,7 +380,7 @@ export default function Navigation({ session }) {
               /> */}
             </div>
             <p className="text-[11px] text-gray-400 ml-1">
-              {session.user.email}
+              {session?.user?.email}
             </p>
           </div>
         </div>
