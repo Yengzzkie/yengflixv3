@@ -60,12 +60,12 @@ const navListMenuItems = [
     icon: BookmarkIcon,
     link: "/mylist",
   },
-  // {
-  //   title: "Users",
-  //   description: "Manage user profiles and interact with other members.",
-  //   icon: UserGroupIcon,
-  //   link: "/users",
-  // },
+  {
+    title: "Users",
+    description: "Manage user profiles and interact with other members.",
+    icon: UserGroupIcon,
+    link: "/users",
+  },
   {
     title: "Forum",
     description:
@@ -73,13 +73,13 @@ const navListMenuItems = [
     icon: ChatBubbleLeftRightIcon,
     link: "/forum",
   },
-  // {
-  //   title: "Account Settings",
-  //   description:
-  //     "Update your personal information and adjust account preferences.",
-  //   icon: Cog6ToothIcon,
-  //   link: "/account-settings",
-  // },
+  {
+    title: "Account Settings",
+    description:
+      "Update your personal information and adjust account preferences.",
+    icon: Cog6ToothIcon,
+    link: "/account-settings",
+  },
   // {
   //   title: "News",
   //   description: "Read insightful articles, tips, and expert opinions.",

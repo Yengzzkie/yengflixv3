@@ -1,19 +1,15 @@
 "use client";
 import { useEffect, useState } from "react";
-import {
-  MagnifyingGlassIcon,
-  XMarkIcon
-} from "@heroicons/react/24/outline";
+import { MagnifyingGlassIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import {
   Card,
   CardHeader,
   Typography,
   CardBody,
-  Chip,
-  CardFooter,
   Avatar,
 } from "@material-tailwind/react";
 import { generateAvatar } from "./ui/AvatarIcon";
+import CircleChart from "@/app/components/ui/DonutChart";
 import axios from "axios";
 
 const TABLE_HEAD = ["Name", "Location", "Email Verified", "Joined", ""];
@@ -44,8 +40,10 @@ export default function UsersTable() {
     setSearchValue(value);
 
     // filter users dynamically based on search input
-    const filtered = TABLE_ROWS.filter(user =>
-      user.name.toLowerCase().includes(value) || user.email.toLowerCase().includes(value)
+    const filtered = TABLE_ROWS.filter(
+      (user) =>
+        user.name.toLowerCase().includes(value) ||
+        user.email.toLowerCase().includes(value)
     );
 
     setFilteredUsers(filtered);
@@ -59,6 +57,9 @@ export default function UsersTable() {
 
   return (
     <Card className="h-full w-full rounded-none bg-[var(--primary-dark)]">
+      {/* DONUT CHART FOR VERIFIED : UNVERIFIED USERS */}
+      <CircleChart data={TABLE_ROWS} />
+      
       <CardHeader
         floated={false}
         shadow={false}
@@ -77,7 +78,9 @@ export default function UsersTable() {
         <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
           <div className="w-full md:w-72">
             {/* Search Bar */}
-            <div className={`flex relative h-8 mr-2 bg-[var(--primary-dark)] border`}>
+            <div
+              className={`flex relative h-8 mr-2 bg-[var(--primary-dark)] border`}
+            >
               <MagnifyingGlassIcon className="p-1 cursor-pointer" />
               <input
                 type="text"
@@ -87,7 +90,9 @@ export default function UsersTable() {
                 className={`w-full px-2 transition-all duration-1000 rounded-sm outline-none bg-[var(--primary-light)]`}
               />
               <XMarkIcon
-                className={`${searchValue === "" ? "invisible" : "block"} absolute w-5 right-1 top-1/2 -translate-y-1/2 cursor-pointer`}
+                className={`${
+                  searchValue === "" ? "invisible" : "block"
+                } absolute w-5 right-1 top-1/2 -translate-y-1/2 cursor-pointer`}
                 onClick={clearSearch}
               />
             </div>
@@ -95,7 +100,11 @@ export default function UsersTable() {
         </div>
       </CardHeader>
 
-      <Typography variant="small" color="blue-gray" className="font-normal pl-2">
+      <Typography
+        variant="small"
+        color="blue-gray"
+        className="font-normal pl-2"
+      >
         Showing {filteredUsers.length} user(s)
       </Typography>
 
@@ -122,11 +131,14 @@ export default function UsersTable() {
           <tbody>
             {filteredUsers.map(
               ({ id, name, email, location, isVerified, createdAt }) => {
-                const joinDate = new Date(createdAt).toLocaleDateString("en-US", {
-                  month: "short",
-                  day: "2-digit",
-                  year: "numeric",
-                });
+                const joinDate = new Date(createdAt).toLocaleDateString(
+                  "en-US",
+                  {
+                    month: "short",
+                    day: "2-digit",
+                    year: "numeric",
+                  }
+                );
                 return (
                   <tr key={id}>
                     <td className="p-4">
@@ -137,10 +149,17 @@ export default function UsersTable() {
                           size="sm"
                         />
                         <div className="flex flex-col">
-                          <Typography variant="small" color="blue-gray" className="font-bold">
+                          <Typography
+                            variant="small"
+                            color="blue-gray"
+                            className="font-bold"
+                          >
                             {name}
                           </Typography>
-                          <Typography color="blue-gray" className="font-normal text-sm opacity-70">
+                          <Typography
+                            color="blue-gray"
+                            className="font-normal text-sm opacity-70"
+                          >
                             {email}
                           </Typography>
                         </div>
@@ -148,7 +167,15 @@ export default function UsersTable() {
                     </td>
                     <td className="p-4">{location.countryName}</td>
                     <td className="p-4">
-                      {isVerified ? <span className="font-medium text-sm text-[var(--secondary-content)] bg-green-300 border border-[var(--secondary-content)] rounded-full py-1 px-2">Verified</span> : <span className="font-medium text-sm text-[var(--secondary-dark)] bg-red-300 border border-red-500 rounded-full py-1 px-2">Not Verified</span>}
+                      {isVerified ? (
+                        <span className="font-medium text-sm text-[var(--secondary-content)] bg-green-300 border border-[var(--secondary-content)] rounded-full py-1 px-2">
+                          Verified
+                        </span>
+                      ) : (
+                        <span className="font-medium text-sm text-[var(--secondary-dark)] bg-red-300 border border-red-500 rounded-full py-1 px-2">
+                          Not Verified
+                        </span>
+                      )}
                       {/* <Chip
                         variant="ghost"
                         size="sm"

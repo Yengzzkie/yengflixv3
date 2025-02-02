@@ -104,10 +104,10 @@ const HomePage = () => {
         />
       ) : (
         <>
-          <NotificationAlert
+          {/* <NotificationAlert
             status={"warning"}
             text={"Login/Authentication is temporarily disabled for system update."}
-          />
+          /> */}
           {/* TOP 10 MOVIES */}
           {session?.user?.isVerified === false && (
             <NotificationAlert

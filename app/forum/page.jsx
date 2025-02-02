@@ -16,9 +16,9 @@ export default function ForumPage() {
   const session = useSession();
   const userId = session?.data?.user?.id;
 
-  // if (session.status === "unauthenticated") {
-  //   redirect("/");
-  // }
+  if (session.status === "unauthenticated") {
+    redirect("/");
+  }
 
   async function fetchPosts() {
     setLoading(true)

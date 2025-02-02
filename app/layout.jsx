@@ -26,8 +26,7 @@ export default async function RootLayout({ children }) {
       <link rel="icon" href="/favicon.png" />
       <body className="bg-[var(--background)]">
         <Provider>
-          {/* {session ? <Navigation session={session} /> : <NavigationLogin />} */}
-          <Navigation session={session} />
+          {session ? <Navigation session={session} /> : <NavigationLogin />}
           <main>{children}</main>
         </Provider>
         <SpeedInsights />
