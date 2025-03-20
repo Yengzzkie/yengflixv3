@@ -24,6 +24,12 @@ export const useBrowseTv = create((set) => ({
     setAllTv: (data) => set({ allTv: data })
 }))
 
+// state for Editor's choice movies/tv shows
+export const useEditorsChoice = create((set) => ({
+    editorsChoice: [],
+    setEditorsChoice: (data) => set({ editorsChoice: data })
+}))
+
 // state for page navigation when browsing movies
 export const usePagination = create((set) => ({
     page: 1,

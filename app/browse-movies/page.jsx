@@ -12,6 +12,7 @@ const MoviesPage = () => {
   const [selectedSlide, setSelectedSlide] = useState(null);
   const [open, setOpen] = useState(false);
   const [totalPages, setTotalPages] = useState(null);
+  const [includeAdult, setIncludeAdult] = useState(false);
   const IMG_PATH = "https://image.tmdb.org/t/p/original/";
 
   async function fetchMovies() {
@@ -19,7 +20,7 @@ const MoviesPage = () => {
 
     try {
       const response = await axios.get(
-        `https://api.themoviedb.org/3/discover/movie?include_adult=true&include_video=false&language=en-US&page=${currentPage}&sort_by=popularity.desc`,
+        `https://api.themoviedb.org/3/discover/movie?include_adult=${includeAdult}&include_video=false&language=en-US&page=${currentPage}&sort_by=popularity.desc`,
         {
           headers: {
             accept: "application/json",
@@ -38,7 +39,7 @@ const MoviesPage = () => {
 
   useEffect(() => {
     fetchMovies();
-  }, [currentPage]);
+  }, [currentPage, includeAdult]);
 
   function pageChangeHandler(page) {
     setCurrentPage(page);
@@ -62,7 +63,17 @@ const MoviesPage = () => {
       ) : (
         <>
           <div className="pagination bg-transparent sticky top-0 flex flex-col lg:flex-row justify-between items-center mr-2 mb-2 px-4 py-2">
-            <h1 className="text-2xl font-bold ml-2 mb-2 text-shadow-dark">Browse Movies</h1>
+            <h1 className="text-2xl font-bold ml-2 mb-2 text-shadow-dark">
+              Browse Movies
+            </h1>
+            <label>
+              <input
+                type="checkbox"
+                checked={includeAdult}
+                onChange={() => setIncludeAdult(!includeAdult)}
+              />
+              <span className="italic text-red-400 ml-2">Include Adult (18+)</span>
+            </label>
             <Pagination
               totalPages={totalPages}
               onPageChange={pageChangeHandler}

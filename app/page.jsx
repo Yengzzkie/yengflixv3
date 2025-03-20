@@ -9,6 +9,7 @@ import {
   useBrowseMovies,
   useBrowseTv,
   useMyList,
+  // useEditorsChoice,
 } from "./stores/useDataStore";
 import EmblaCarousel from "./components/TopCarousel";
 import { getSession } from "next-auth/react";
@@ -24,6 +25,7 @@ const HomePage = () => {
   const { allTv, setAllTv } = useBrowseTv();
   const { page } = usePagination();
   const { myList, setMyList } = useMyList();
+  // const { editorsChoice, setEditorsChoice } = useEditorsChoice();
   const [loading, setLoading] = useState(true);
   const [session, setSession] = useState(null);
   const OPTIONS = { align: "start", dragFree: true, loop: true };
@@ -55,7 +57,7 @@ const HomePage = () => {
 
   async function fetchAllMovies() {
     const allMovies = await fetchData(
-      `https://api.themoviedb.org/3/discover/movie?include_adult=true&include_video=false&language=en-US&page=${page}&sort_by=popularity.desc`
+      `https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=${page}&sort_by=popularity.desc`
     );
     setAllMovies(allMovies);
   }
@@ -75,6 +77,14 @@ const HomePage = () => {
     setMyList(response.data.list);
   }
 
+  // async function fetchEditorsChoice() {
+  //   const response = await axios.get(
+  //     `/api/users/list?email=gatchalian.manuel@ymail.com`
+  //   );
+  //   console.log(response?.data?.list)
+  //   setEditorsChoice(response?.data?.list);
+  // }
+
   useEffect(() => {
     const fetchDataAll = async () => {
       setLoading(true);
@@ -85,6 +95,7 @@ const HomePage = () => {
           fetchTvData(),
           fetchAllTv(),
           fetchAllMovies(),
+          // fetchEditorsChoice(),
         ]);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -108,7 +119,6 @@ const HomePage = () => {
             status={"warning"}
             text={"Login/Authentication is temporarily disabled for system update."}
           /> */}
-          {/* TOP 10 MOVIES */}
           {session?.user?.isVerified === false && (
             <NotificationAlert
               status={"error"}
@@ -129,6 +139,7 @@ const HomePage = () => {
               }
             />
           )}
+          {/* TOP 10 MOVIES */}
           <EmblaCarousel
             slides={movieData}
             options={OPTIONS}
@@ -153,6 +164,12 @@ const HomePage = () => {
             options={OPTIONS}
             media_type={"TV Shows"}
           />
+
+          {/* <RecommendedCarousel
+            slides={editorsChoice}
+            options={OPTIONS}
+            media_type={"by Editor"}
+          /> */}
 
           {/* MY LIST SECTION */}
           <MyListCarousel
