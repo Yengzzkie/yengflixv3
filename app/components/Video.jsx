@@ -44,8 +44,8 @@ const Video = ({ params }) => {
   const [rating, setRating] = useState("");
   const [reviews, setReviews] = useState([]);
 
-  const movieSrc = `https://vidsrc.xyz/embed/movie/${id}`;
-  const tvSrc = `https://vidsrc.xyz/embed/tv/${id}`;
+  const movieSrc = `https://vidsrc.me/embed/movie/${id}`;
+  const tvSrc = `https://vidsrc.me/embed/tv/${id}`;
   const IMG_PATH = "https://image.tmdb.org/t/p/original/";
   const TMDB_API_KEY = process.env.NEXT_PUBLIC_TMDB_API_KEY;
   const movieDetailsEndpoint = `https://api.themoviedb.org/3/movie/${id}?language=en-US`;
