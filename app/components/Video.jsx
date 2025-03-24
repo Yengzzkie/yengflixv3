@@ -44,14 +44,26 @@ const Video = ({ params }) => {
   const [rating, setRating] = useState("");
   const [reviews, setReviews] = useState([]);
 
-  const movieSrc = `https://vidsrc.me/embed/movie/${id}`;
-  const tvSrc = `https://vidsrc.me/embed/tv/${id}`;
+  const servers = [
+    { server: `me` },
+    { server: `in` },
+    { server: `pm` },
+    { server: `net` },
+    { server: `io` },
+    { server: `vc` },
+  ]
+
+  const [server, setServer] = useState(servers[0].server);
+  const movieSrc = `https://vidsrc.${server}/embed/movie/${id}`;
+  const tvSrc = `https://vidsrc.${server}/embed/tv/${id}`;
   const IMG_PATH = "https://image.tmdb.org/t/p/original/";
   const TMDB_API_KEY = process.env.NEXT_PUBLIC_TMDB_API_KEY;
   const movieDetailsEndpoint = `https://api.themoviedb.org/3/movie/${id}?language=en-US`;
   const tvDetailsEndpoint = `https://api.themoviedb.org/3/tv/${id}?language=en-US`;
   const session = useSession();
   const isVerified = session?.data?.user?.isVerified;
+
+
 
   // custom theme for the tabs
   const theme = {
@@ -268,6 +280,7 @@ const Video = ({ params }) => {
     };
 
     fetchDataAll();
+    console.log(movieSrc, server)
 
     // display overlay after 3 seconds
     const timeout = setTimeout(() => {
@@ -275,7 +288,7 @@ const Video = ({ params }) => {
     }, 3000);
 
     return () => clearTimeout(timeout);
-  }, [comment]);
+  }, [comment, server, setServer]);
 
   const handleSlideClick = (slide) => {
     setSelectedSlide(slide);
@@ -373,6 +386,16 @@ const Video = ({ params }) => {
             </p>
           </motion.div>
         )}
+      </div>
+
+        {/* Server buttons */}
+      <div className="flex flex-col lg:flex-row items-center gap-4 p-6 border-b-[1px] mb-2">
+        <p className="text-neutral-200 text-sm">If the video doesn't load, try other servers:</p>
+        <div className="flex flex-wrap gap-3">
+          {servers.map((server, index) => (
+            <button key={index} className="border text-xs rounded-md p-1 w-16 lg:w-20 bg-red-600 hover:bg-red-500" onClick={() => setServer(server.server)}>Server {index + 1}</button>
+          ))}
+        </div>
       </div>
 
       <h1 className="font-bold text-neutral-200 text-2xl px-3 lg:px-6 py-2">
