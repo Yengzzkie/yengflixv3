@@ -5,7 +5,7 @@ import prisma from "@/db/prismaClient";
 export async function GET(request) {
     const { searchParams } = new URL(request.url);
     const movieId = searchParams.get("movieId");
-    console.log(movieId)
+
     try {
       const reviews = await prisma.review.findMany({
         where: { movie_id: movieId },

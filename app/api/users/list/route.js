@@ -73,7 +73,6 @@ export async function DELETE(request) {
     });
 
     const updatedList = user.list.filter((movie) => movie.id !== parseInt(id));
-    console.log(updatedList)
 
     await prisma.user.update({
       where: { email },

@@ -39,7 +39,7 @@ const MyListPage = () => {
     await axios.delete(`/api/users/list?email=${email}&id=${id}`);
     setTimeout(() => {
       callback();
-    }, 3000);
+    }, 2000);
   }
 
   const handleSlideClick = (slide) => {
@@ -67,16 +67,14 @@ const MyListPage = () => {
             <div
               key={list.id}
               className="relative cursor-pointer"
-              onClick={() => handleSlideClick(list)}
             >
               <img
+                onClick={() => handleSlideClick(list)}
                 src={
                   list.poster_path === null
                     ? multimedia
                     : `${IMG_PATH}${list.poster_path}`
                 }
-                // width={300}
-                // height={300}
                 className="card-shadow rounded-md"
                 alt={list.title || list.name}
               />

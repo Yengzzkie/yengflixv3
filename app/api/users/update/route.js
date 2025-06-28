@@ -50,10 +50,8 @@ export async function POST(request) {
   const updatedUser = await prisma.user.update({
     where: { email },
     data: dataToUpdate,
-    include: { list: false }, // Optional: adjust based on your data requirements
+    include: { list: false },
   });
-
-  console.log(updatedUser);
 
   // Return updated user data
   return NextResponse.json({ name: updatedUser.name, password: updatedUser.password });
