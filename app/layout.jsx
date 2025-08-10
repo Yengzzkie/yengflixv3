@@ -5,6 +5,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/react";
 import { auth } from "./auth";
 import { Provider } from "./components/Provider";
+import Head from "./components/Head";
 
 export const metadata = {
   title: "Yengflix V3",
@@ -12,6 +13,7 @@ export const metadata = {
     "A free movie-streaming app where you can browse and stream your favorite movies and TV shows",
   keywords: "yengflix, movie streaming, free watch, free streaming",
   referrer: "origin",
+  // monetag: "dc0684cd53ee11349c73cf9bcf7846ad",
   other: {
     "google-adsense-account": "ca-pub-6259607195377617",
   },
@@ -23,13 +25,7 @@ export default async function RootLayout({ children }) {
 
   return (
     <html lang="en">
-      <head>
-        <meta
-          name="monetag"
-          content="dc0684cd53ee11349c73cf9bcf7846ad"
-        />
-        <link rel="icon" href="/favicon.png" />
-      </head>
+      {/* <Head /> */}
       <body className="bg-[var(--background)]">
         <Provider>
           {session ? <Navigation session={session} /> : <NavigationLogin />}
@@ -38,6 +34,7 @@ export default async function RootLayout({ children }) {
         <SpeedInsights />
         <Analytics />
       </body>
+      
     </html>
   );
 }
