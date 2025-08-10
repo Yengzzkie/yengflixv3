@@ -19,7 +19,7 @@ export async function POST(request) {
       const isDuplicate = user.list.some((movie) => movie.id === newMovie.id)
       // check if movie is already in the list
       if (isDuplicate) {
-        return NextResponse.json({ message: "Movie is already in the list" })
+        return NextResponse.json({ message: "This movie is already in your list" })
       }
 
       const updatedUser = await prisma.user.update({
