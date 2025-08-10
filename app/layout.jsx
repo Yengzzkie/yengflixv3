@@ -23,7 +23,13 @@ export default async function RootLayout({ children }) {
 
   return (
     <html lang="en">
-      <link rel="icon" href="/favicon.png" />
+      <head>
+        <meta
+          name="monetag"
+          content="dc0684cd53ee11349c73cf9bcf7846ad"
+        />
+        <link rel="icon" href="/favicon.png" />
+      </head>
       <body className="bg-[var(--background)]">
         <Provider>
           {session ? <Navigation session={session} /> : <NavigationLogin />}

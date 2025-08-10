@@ -107,78 +107,68 @@ const HomePage = () => {
     fetchDataAll();
   }, [page, setMyList]);
 
+  if (loading) return (<Spinner customText={"If the page doesn't load, try reloading the page"}/>);
+
   return (
     <>
-      {loading ? (
-        <Spinner
-          customText={"If the page doesn't load, try reloading the page"}
-        />
-      ) : (
-        <>
-          {/* <NotificationAlert
+      {/* <NotificationAlert
             status={"warning"}
             text={"Login/Authentication is temporarily disabled for system update."}
           /> */}
-          {session?.user?.isVerified === false && (
-            <NotificationAlert
-              status={"error"}
-              text={
-                <>
-                  Your email is not verified. Please verify your email to
-                  continue full access to YENGFLIX v3's features including
-                  streaming. To verify click{" "}
-                  {
-                    <a
-                      className="text-blue-400 font-semibold"
-                      href="/account-settings"
-                    >
-                      here.
-                    </a>
-                  }
-                </>
+      {session?.user?.isVerified === false && (
+        <NotificationAlert
+          status={"error"}
+          text={
+            <>
+              Your email is not verified. Please verify your email to continue
+              full access to YENGFLIX v3's features including streaming. To
+              verify click{" "}
+              {
+                <a
+                  className="text-blue-400 font-semibold"
+                  href="/account-settings"
+                >
+                  here.
+                </a>
               }
-            />
-          )}
-          {/* TOP 10 MOVIES */}
-          <EmblaCarousel
-            slides={movieData}
-            options={OPTIONS}
-            media_type={"Movies"}
-          />
+            </>
+          }
+        />
+      )}
+      {/* TOP 10 MOVIES */}
+      <EmblaCarousel
+        slides={movieData}
+        options={OPTIONS}
+        media_type={"Movies"}
+      />
 
-          {/* TOP 10 TV */}
-          <EmblaCarousel
-            slides={tvData}
-            options={OPTIONS}
-            media_type={"TV Shows"}
-          />
+      {/* TOP 10 TV */}
+      <EmblaCarousel
+        slides={tvData}
+        options={OPTIONS}
+        media_type={"TV Shows"}
+      />
 
-          {/* RECOMMENDED SECTION */}
-          <RecommendedCarousel
-            slides={allMovies}
-            options={OPTIONS}
-            media_type={"Movies"}
-          />
-          <RecommendedCarousel
-            slides={allTv}
-            options={OPTIONS}
-            media_type={"TV Shows"}
-          />
+      {/* RECOMMENDED SECTION */}
+      <RecommendedCarousel
+        slides={allMovies}
+        options={OPTIONS}
+        media_type={"Movies"}
+      />
+      <RecommendedCarousel
+        slides={allTv}
+        options={OPTIONS}
+        media_type={"TV Shows"}
+      />
 
-          {/* <RecommendedCarousel
+      {/* <RecommendedCarousel
             slides={editorsChoice}
             options={OPTIONS}
             media_type={"by Editor"}
           /> */}
 
-          {/* MY LIST SECTION */}
-          <MyListCarousel
-            slides={myList}
-            options={OPTIONS}
-            media_type={"Movies"}
-          />
-        </>
-      )}
+      {/* MY LIST SECTION */}
+      <MyListCarousel slides={myList} options={OPTIONS} media_type={"Movies"} />
     </>
   );
 };
