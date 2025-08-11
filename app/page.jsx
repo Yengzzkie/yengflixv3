@@ -111,10 +111,10 @@ const HomePage = () => {
 
   return (
     <>
-      {/* <NotificationAlert
-            status={"warning"}
-            text={"Login/Authentication is temporarily disabled for system update."}
-          /> */}
+      <NotificationAlert
+            status={""}
+            text={<>To keep <span class='text-red-600 text-lg font-bold'>YENGFLIX</span><span class='text-yellow-600 text-md !font-[100]'>v3 </span>running smoothly and cover hosting costs, ads is enabled. Thank you for your support and understanding! Streaming is still completely free and it will always stay that way.</>}
+          />
       {session?.user?.isVerified === false && (
         <NotificationAlert
           status={"error"}
