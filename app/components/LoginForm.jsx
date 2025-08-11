@@ -8,10 +8,12 @@ import { IconBrandFacebook, IconBrandGoogle } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import Loader from "./Loader";
 import Link from "next/link";
+import ForgotPasswordForm from "./ForgotPasswordForm";
 
 export default function LoginForm() {
   const router = useRouter()
   const [error, setError] = useState(null)
+  const [isForgotPassword, setIsForgotPassword] = useState(false)
   const [loading, setLoading] = useState(false)
   const [formData, setFormData] = useState({
     email: "",
@@ -46,6 +48,8 @@ export default function LoginForm() {
     }));
   }
 
+  if (isForgotPassword) return <ForgotPasswordForm setIsForgotPassword={setIsForgotPassword} />;
+
   return (
     <div className="max-w-xl w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input lg:bg-black">
       <h2 className="text-center font-bold text-xl text-neutral-800">
@@ -73,6 +77,7 @@ export default function LoginForm() {
           <BottomGradient />
         </button>
         <p className="mt-4">Don't have an account? <Link href="/signup" className="font-semibold text-[var(--secondary-dark)] hover:text-[var(--secondary-light)]">Sign up!</Link></p>
+        Forgot your password? Click <span onClick={() => setIsForgotPassword(true)} className="font-semibold text-[var(--secondary-dark)] hover:text-[var(--secondary-light)] cursor-pointer">here</span>
         <p className="text-red-500 italic mt-2">{error}</p>
 
         <div className="bg-gradient-to-r from-transparent via-neutral-700 to-transparent my-8 h-[1px] w-full" />
