@@ -47,6 +47,7 @@ const Head = () => {
         data-cfasync="false"
         async
       ></script>
+      <script src="https://fpyf8.com/88/tag.min.js" data-zone="162626" async data-cfasync="false"></script>
     </head>
   );
 };
