@@ -25,7 +25,7 @@ export default async function RootLayout({ children }) {
 
   return (
     <html lang="en">
-      <Head />
+      {/* <Head /> */}
       <body className="bg-[var(--background)]">
         <Provider>
           {session ? <Navigation session={session} /> : <NavigationLogin />}
