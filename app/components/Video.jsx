@@ -324,7 +324,7 @@ const Video = ({ params }) => {
       movie_id: id,
       rating: rating,
     };
-    const review = await axios.post("/api/review", reviewPayload);
+    await axios.post("/api/review", reviewPayload);
     setComment("");
   }
 

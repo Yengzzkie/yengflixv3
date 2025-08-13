@@ -5,7 +5,6 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/react";
 import { auth } from "./auth";
 import { Provider } from "./components/Provider";
-import Head from "./components/Head";
 
 export const metadata = {
   title: "Yengflix V3",
@@ -21,11 +20,9 @@ export const metadata = {
 
 export default async function RootLayout({ children }) {
   const session = await auth();
-  // console.log(session)
 
   return (
     <html lang="en">
-      {/* <Head /> */}
       <body className="bg-[var(--background)]">
         <Provider>
           {session ? <Navigation session={session} /> : <NavigationLogin />}

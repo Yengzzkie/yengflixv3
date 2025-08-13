@@ -1,8 +1,8 @@
 import React from "react";
 
-const Head = () => {
+const PopunderAd = () => {
   return (
-    <head>
+    <div>
       {/* //////////// MULTITAG SCRIPT //////////// */}
       {/* <script src="https://fpyf8.com/88/tag.min.js" data-zone="162626" async data-cfasync="false"></script> */}
       {/* <script
@@ -32,8 +32,8 @@ const Head = () => {
           `,
         }}
       />
-    </head>
+    </div>
   );
 };
 
-export default Head;
+export default PopunderAd;

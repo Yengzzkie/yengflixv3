@@ -11,13 +11,13 @@ import {
   useMyList,
   // useEditorsChoice,
 } from "./stores/useDataStore";
-import EmblaCarousel from "./components/TopCarousel";
 import { getSession } from "next-auth/react";
+import { Spinner } from "./components/Spinner";
 import axios from "axios";
+import EmblaCarousel from "./components/TopCarousel";
 import MyListCarousel from "./components/MyListCarousel";
 import NotificationAlert from "./components/ui/NotificationAlert";
-import { Spinner } from "./components/Spinner";
-import Head from "./components/Head";
+import PopunderAd from "./components/PopunderAd";
 
 const HomePage = () => {
   const { movieData, setMovieData } = useMovieData();
@@ -112,7 +112,7 @@ const HomePage = () => {
 
   return (
     <>
-      <Head />
+      <PopunderAd />
       <NotificationAlert
             status={""}
             text={<>To keep <span class='text-red-600 text-lg font-bold'>YENGFLIX</span><span class='text-yellow-600 text-md !font-[100]'>v3 </span>running smoothly and cover hosting costs, ads is enabled. Thank you for your support and understanding! Streaming is still completely free and it will always stay that way.</>}
