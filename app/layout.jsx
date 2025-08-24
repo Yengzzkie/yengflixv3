@@ -16,7 +16,33 @@ export const metadata = {
   other: {
     "google-adsense-account": "ca-pub-6259607195377617",
   },
+  openGraph: {
+    title: "Yengflix V3",
+    description:
+      "A free movie-streaming app where you can browse and stream your favorite movies and TV shows",
+    url: "https://yengflix.com",
+    siteName: "Yengflix",
+    images: [
+      {
+        url: "https://image.tmdb.org/t/p/w500/rYC6UyML4CU4zYiZVbDMrwnGyWW.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Yengflix Movie Thumbnail",
+      },
+    ],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Yengflix V3",
+    description:
+      "A free movie-streaming app where you can browse and stream your favorite movies and TV shows",
+    images: [
+      "https://image.tmdb.org/t/p/w500/rYC6UyML4CU4zYiZVbDMrwnGyWW.jpg",
+    ],
+  },
 };
+
 
 export default async function RootLayout({ children }) {
   const session = await auth();
