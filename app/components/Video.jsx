@@ -28,6 +28,7 @@ import {
 import { Square3Stack3DIcon, PencilIcon } from "@heroicons/react/24/solid";
 import { generateAvatar } from "./ui/AvatarIcon";
 import { getTimeAgo } from "../utils/getTimeAgo";
+import Head from "next/head";
 
 const Video = ({ params }) => {
   const idParams = use(params);
@@ -327,9 +328,20 @@ const Video = ({ params }) => {
     await axios.post("/api/review", reviewPayload);
     setComment("");
   }
+  console.log({ details });
 
   return (
     <div>
+      <Head>
+        <title>{details.title} - Yengflix</title>
+        <meta property="og:title" content={`${details.title} - Yengflix`} />
+        <meta property="og:description" content={details.overview} />
+        <meta property="og:image" content={`https://image.tmdb.org/t/p/original/${details.poster_path}`} />
+        <meta property="og:url" content={`https://yengflix.com/movie/${details.slug}`} />
+        <meta property="og:type" content="video.movie" />
+      </Head>
+
+      {/* Notification Alert */}
       <NotificationAlert
         status={"success"}
         text={
@@ -354,6 +366,7 @@ const Video = ({ params }) => {
         media_type={mediaType}
       />
       <div className="relative w-screen h-[50vh] lg:h-screen">
+        {/* Video Player */}
         <iframe
           src={mediaType === "Movies" ? movieSrc : tvSrc}
           className={`video-player relative w-full h-full`}
