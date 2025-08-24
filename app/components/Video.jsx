@@ -10,7 +10,7 @@ import {
   HandThumbUpIcon,
   ShareIcon,
   CheckIcon,
-  ExclamationCircleIcon,
+  ExclamationCircleIcon, StarIcon, CalendarIcon, FilmIcon, ClockIcon
 } from "@heroicons/react/24/outline";
 import NotificationAlert from "./ui/NotificationAlert";
 import axios from "axios";
@@ -35,7 +35,7 @@ const Video = ({ params }) => {
   const id = idParams.id;
   const mediaType = useSearchParams().get("media_type");
   const [similarMovies, setSimilarMovies] = useState([]);
-  const [details, setDetails] = useState({});
+  const [movieDetails, setMovieDetails] = useState({});
   const [selectedSlide, setSelectedSlide] = useState(null);
   const [open, setOpen] = useState(false);
   const [added, setAdded] = useState(false);
@@ -250,7 +250,7 @@ const Video = ({ params }) => {
         }
       );
       // im using axios to fetch the details because for some reason the fetchData hook is returning undefined
-      setDetails(response?.data);
+      setMovieDetails(response?.data);
     } catch (error) {
       console.error({ error });
     }
@@ -328,142 +328,183 @@ const Video = ({ params }) => {
     await axios.post("/api/review", reviewPayload);
     setComment("");
   }
-  console.log({ details });
+  console.log(movieDetails);
 
   return (
-    <div>
+    <>
       <Head>
-        <title>{details.title} - Yengflix</title>
-        <meta property="og:title" content={`${details.title} - Yengflix`} />
-        <meta property="og:description" content={details.overview} />
-        <meta property="og:image" content={`https://image.tmdb.org/t/p/original/${details.poster_path}`} />
-        <meta property="og:url" content={`https://yengflix.com/movie/${details.slug}`} />
-        <meta property="og:type" content="video.movie" />
-      </Head>
-
-      {/* Notification Alert */}
-      <NotificationAlert
-        status={"success"}
-        text={
-          <>
-            It is recommended that you stream from 'Brave Browser' to disable
-            the pop-up ads when playing the video. The installer specific for
-            your device can be downloaded{" "}
-            <a
-              href="https://brave.com/download"
-              target="_blank"
-              className="font-semibold underline text-blue-400"
+          <title>{movieDetails.title} - Yengflix</title>
+          <meta property="og:title" content={`${movieDetails.title} - Yengflix`} />
+          <meta property="og:description" content={movieDetails.overview} />
+          <meta property="og:image" content={`https://image.tmdb.org/t/p/original/${movieDetails.poster_path}`} />
+          <meta property="og:url" content={`https://yengflix.com/movie/${movieDetails.slug}`} />
+        </Head>
+      <div>
+        
+        {/* Notification Alert */}
+        <NotificationAlert
+          status={"success"}
+          text={
+            <>
+              It is recommended that you stream from 'Brave Browser' to disable
+              the pop-up ads when playing the video. The installer specific for
+              your device can be downloaded{" "}
+              <a
+                href="https://brave.com/download"
+                target="_blank"
+                className="font-semibold underline text-blue-400"
+              >
+                here
+              </a>
+            </>
+          }
+        />
+        <TopExpandableCard
+          open={open}
+          setOpen={setOpen}
+          selectedSlide={selectedSlide}
+          media_type={mediaType}
+        />
+        <div className="relative w-screen h-[50vh] lg:h-screen">
+          {/* Video Player */}
+          <iframe
+            src={mediaType === "Movies" ? movieSrc : tvSrc}
+            className={`video-player relative w-full h-full`}
+            allowFullScreen={true}
+            referrerPolicy="origin"
+          ></iframe>
+          {/* overlay for unverified users */}
+          {!isVerified && showOverlay && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ type: "tween", duration: 0.5 }}
+              className="flex flex-col justify-center items-center gap-4 text-center text-zinc-200 absolute top-0 left-0 w-full h-full bg-zinc-800/80 backdrop-blur-md z-50"
             >
-              here
-            </a>
-          </>
-        }
-      />
-      <TopExpandableCard
-        open={open}
-        setOpen={setOpen}
-        selectedSlide={selectedSlide}
-        media_type={mediaType}
-      />
-      <div className="relative w-screen h-[50vh] lg:h-screen">
-        {/* Video Player */}
-        <iframe
-          src={mediaType === "Movies" ? movieSrc : tvSrc}
-          className={`video-player relative w-full h-full`}
-          allowFullScreen={true}
-          referrerPolicy="origin"
-        ></iframe>
-
-        {/* overlay for unverified users */}
-        {!isVerified && showOverlay && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ type: "tween", duration: 0.5 }}
-            className="flex flex-col justify-center items-center gap-4 text-center text-zinc-200 absolute top-0 left-0 w-full h-full bg-zinc-800/80 backdrop-blur-md z-50"
-          >
-            <ExclamationCircleIcon className="h-10 w-10 text-yellow-500" />
-            <p className="font-semibold text-md lg:text-2xl ">
-              Your email ({session?.data?.user?.email}) is unverified.
-            </p>
-            <p className="font-extralight text-xs lg:text-sm">
-              To continue watching, please verify it now by going to{" "}
-              <strong className="font-bold">Resources</strong> &gt;{" "}
-              <strong className="font-bold">Account Settings</strong> &gt; click{" "}
-              <strong className="font-bold">'Resend Verification Email'</strong>
-            </p>
-            <p className="font-extralight text-xs lg:text-sm italic">
-              If you don't receive the Verification Email, check your{" "}
-              <strong className="font-bold">Spam</strong> folder
-            </p>
-          </motion.div>
-        )}
-      </div>
-
-        {/* Server buttons */}
-      <div className="flex flex-col lg:flex-row items-center gap-4 p-6 border-b-[1px] mb-2">
-        <p className="text-neutral-200 text-sm">If the video doesn't load, try other servers:</p>
-        <div className="flex flex-wrap gap-3">
-          {servers.map((server, index) => (
-            <button key={index} className="border text-xs rounded-md p-1 w-16 lg:w-20 bg-red-600 hover:bg-red-500" onClick={() => setServer(server.server)}>Server {index + 1}</button>
-          ))}
-        </div>
-      </div>
-
-      <h1 className="font-bold text-neutral-200 text-2xl px-3 lg:px-6 py-2">
-        {details.title || details.name}
-      </h1>
-      <p className="px-3 lg:px-6 py-2 text-sm text-[var(--primary-content)]">
-        {details.overview}
-      </p>
-
-      <div className="flex justify-evenly p-6">
-        <div className="flex flex-col items-center">
-          {added ? (
-            <CheckIcon className="w-6 mb-2 cursor-pointer hover:text-[var(--secondary-dark)]" />
-          ) : (
-            <PlusIcon
-              onClick={() => handleAddToList()}
-              className="w-6 mb-2 cursor-pointer hover:text-[var(--secondary-dark)]"
-            />
+              <ExclamationCircleIcon className="h-10 w-10 text-yellow-500" />
+              <p className="font-semibold text-md lg:text-2xl ">
+                Your email ({session?.data?.user?.email}) is unverified.
+              </p>
+              <p className="font-extralight text-xs lg:text-sm">
+                To continue watching, please verify it now by going to{" "}
+                <strong className="font-bold">Resources</strong> &gt;{" "}
+                <strong className="font-bold">Account Settings</strong> &gt; click{" "}
+                <strong className="font-bold">'Resend Verification Email'</strong>
+              </p>
+              <p className="font-extralight text-xs lg:text-sm italic">
+                If you don't receive the Verification Email, check your{" "}
+                <strong className="font-bold">Spam</strong> folder
+              </p>
+            </motion.div>
           )}
-          <p className="text-xs">{added ? buttonText : "Add To List"}</p>
         </div>
-        <div className="flex flex-col items-center">
-          <HandThumbUpIcon className="w-6 mb-2 cursor-pointer hover:text-[var(--secondary-dark)]" />
-          <p className="text-xs">Rate</p>
-        </div>
-        <div className="flex flex-col items-center">
-          <ShareIcon className="w-6 mb-2 cursor-pointer hover:text-[var(--secondary-dark)]" />
-          <p className="text-xs">Share</p>
-        </div>
-      </div>
 
-      <hr />
-      {/* TABS FOR WRITE A REVIEW AND SIMILAR MOVIES */}
-      <ThemeProvider value={theme}>
-        <Tabs value="More Like This">
-          <TabsHeader>
-            {tabs.map(({ label, value, icon }) => (
-              <Tab key={value} value={value}>
-                <div className="flex items-center gap-2">
-                  {React.createElement(icon, { className: "w-5 h-5" })}
-                  <p className="text-md lg:text-2xl">{label}</p>
-                </div>
-              </Tab>
+          {/* Server buttons */}
+        <div className="flex flex-col lg:flex-row items-center gap-4 p-6 border-b-[1px] mb-2">
+          <p className="text-neutral-200 text-sm">If the video doesn't load, try other servers:</p>
+          <div className="flex flex-wrap gap-3">
+            {servers.map((server, index) => (
+              <button key={index} className="border text-xs rounded-md p-1 w-16 lg:w-20 bg-red-600 hover:bg-red-500" onClick={() => setServer(server.server)}>Server {index + 1}</button>
             ))}
-          </TabsHeader>
-          <TabsBody>
-            {tabs.map(({ value, component }) => (
-              <TabPanel key={value} value={value}>
-                {component}
-              </TabPanel>
-            ))}
-          </TabsBody>
-        </Tabs>
-      </ThemeProvider>
-    </div>
+          </div>
+        </div>
+
+        {/* Movie Title */}
+        <h1 className="font-bold text-zinc-300 text-2xl px-3 lg:px-6 py-2">
+          {movieDetails.title || movieDetails.name} <span className="text-sm text-zinc-400">( {movieDetails.original_title} )</span>
+        </h1>
+
+        {/* Movie Overview */}
+        <p className="px-3 lg:px-6 py-2 text-xs text-zinc-400">
+          <p className="text-zinc-500">Overview:</p>
+          {movieDetails.overview}
+        </p>
+
+        {/* Movie Rating */}
+        <div className="flex text-xs items-center gap-2 px-3 lg:px-6 py-0.5">
+          <StarIcon className="w-3.5 h-3.5 text-yellow-500" />
+          <p className="text-zinc-500">Rating:</p>
+          <p className="text-zinc-400">
+            {Math.round(movieDetails.vote_average * 10) / 10} / 10 based on {movieDetails.vote_count} reviews
+          </p>
+        </div>
+
+        {/* Movie Release Date */}
+        <div className="flex text-xs items-center gap-2 px-3 lg:px-6 py-0.5">
+          <CalendarIcon className="w-3.5 h-3.5 text-yellow-500" />
+          <p className="text-zinc-500">Release Date:</p>
+          <p className="text-zinc-400">
+            {movieDetails.release_date}
+          </p>
+        </div>
+
+        {/* Movie Genre */}
+        <div className="flex text-xs items-center gap-2 px-3 lg:px-6 py-0.5">
+          <FilmIcon className="w-3.5 h-3.5 text-yellow-500" />
+          <p className="text-zinc-500">Genre:</p>
+          <p className="text-zinc-400">
+            {movieDetails?.genres?.map((genre) => genre.name).join(", ")}
+          </p>
+        </div>
+
+        {/* Movie runtime */}
+        <div className="flex text-xs items-center gap-2 px-3 lg:px-6 py-0.5">
+          <ClockIcon className="w-3.5 h-3.5 text-yellow-500" />
+          <p className="text-zinc-500">Runtime:</p>
+          <p className="text-zinc-400">
+            {Math.floor(movieDetails.runtime / 60)} hour{Math.floor(movieDetails.runtime / 60) !== 1 ? "s" : ""} {movieDetails.runtime % 60} minute{movieDetails.runtime % 60 !== 1 ? "s" : ""}
+          </p>
+        </div>
+
+        {/* add to list / rate / share button */}
+        <div className="flex justify-evenly p-6">
+          <div className="flex flex-col items-center">
+            {added ? (
+              <CheckIcon className="w-6 mb-2 cursor-pointer hover:text-[var(--secondary-dark)]" />
+            ) : (
+              <PlusIcon
+                onClick={() => handleAddToList()}
+                className="w-6 mb-2 cursor-pointer hover:text-[var(--secondary-dark)]"
+              />
+            )}
+            <p className="text-xs">{added ? buttonText : "Add To List"}</p>
+          </div>
+          <div className="flex flex-col items-center">
+            <HandThumbUpIcon className="w-6 mb-2 cursor-pointer hover:text-[var(--secondary-dark)]" />
+            <p className="text-xs">Rate</p>
+          </div>
+          <div className="flex flex-col items-center">
+            <ShareIcon className="w-6 mb-2 cursor-pointer hover:text-[var(--secondary-dark)]" />
+            <p className="text-xs">Share</p>
+          </div>
+        </div>
+        <hr />
+
+        {/* TABS FOR WRITE A REVIEW AND SIMILAR MOVIES */}
+        <ThemeProvider value={theme}>
+          <Tabs value="More Like This">
+            <TabsHeader>
+              {tabs.map(({ label, value, icon }) => (
+                <Tab key={value} value={value}>
+                  <div className="flex items-center gap-2">
+                    {React.createElement(icon, { className: "w-5 h-5" })}
+                    <p className="text-md lg:text-xl">{label}</p>
+                  </div>
+                </Tab>
+              ))}
+            </TabsHeader>
+            <TabsBody>
+              {tabs.map(({ value, component }) => (
+                <TabPanel key={value} value={value}>
+                  {component}
+                </TabPanel>
+              ))}
+            </TabsBody>
+          </Tabs>
+        </ThemeProvider>
+      </div>
+    </>
   );
 };
 

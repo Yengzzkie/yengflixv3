@@ -15,34 +15,10 @@ export default function TopExpandableCard({
   const IMG_PATH = "https://image.tmdb.org/t/p/original/";
   const MonetagSmartlink = "https://otieu.com/4/9697241";
   const ref = useRef(null);
-  // const [credits, setCredits] = useState({});
-  // const NEXT_PUBLIC_API_KEY = process.env.NEXT_PUBLIC_API_KEY;
   const isMovie = media_type === "Movies";
   const [added, setAdded] = useState(false);
   const [buttonText, setButtonText] = useState(null);
   const [clickedOnce, setClickedOnce] = useState(false);
-
-  // async function getMovieCredits() {
-  //   try {
-  //     const response = await axios.get(
-  //       `https://api.themoviedb.org/3/movie/${id}/credits?language=en-US`,
-  //       {
-  //         headers: {
-  //           accept: "application/json",
-  //           Authorization: `Bearer ${NEXT_PUBLIC_API_KEY}`,
-  //         },
-  //       }
-  //     );
-  //     setCredits(response.data);
-  //     console.log(response.data);
-  //   } catch (error) {
-  //     console.error("Failed to fetch movie credits:", error);
-  //   }
-  // }
-
-  // useEffect(() => {
-  //   getMovieCredits();
-  // }, []);
 
   useEffect(() => {
     function onKeyDown(event) {
@@ -68,11 +44,11 @@ export default function TopExpandableCard({
     const newMovie = selectedSlide;
 
     try {
-      const response = await addToList(newMovie)
-      setButtonText(response)
+      const response = await addToList(newMovie);
+      setButtonText(response);
       setAdded(true);
     } catch (error) {
-      console.error({ error })
+      console.error({ error });
     }
 
     setTimeout(() => {
@@ -88,6 +64,8 @@ export default function TopExpandableCard({
     }
     // on subsequent clicks, normal href navigation will happen
   };
+
+  console.log({ selectedSlide });
 
   return (
     <AnimatePresence>
@@ -113,7 +91,7 @@ export default function TopExpandableCard({
           <motion.div
             layoutId={`card-${selectedSlide.title}`}
             ref={ref}
-            className="w-full max-w-[500px] h-full md:h-fit md:max-h-[90%] flex flex-col bg-neutral-900 sm:rounded-3xl overflow-hidden z-[101]"
+            className="w-full max-w-[500px] h-full md:h-fit md:max-h-[90%] flex flex-col bg-neutral-900 sm:rounded-3xl z-[101]"
           >
             <motion.button
               key={`button-${selectedSlide.title}`}
@@ -139,7 +117,7 @@ export default function TopExpandableCard({
               />
             </motion.div>
 
-            <div>
+            <div className="overflow-x-scroll">
               <div className="flex justify-between items-start p-4">
                 <div className="w-full">
                   {/* LOGO */}
@@ -151,7 +129,7 @@ export default function TopExpandableCard({
                       FILM
                     </span>
                   </div>
-                  
+
                   {/* TITLE */}
                   <motion.h3
                     layoutId={`title-${selectedSlide.title}`}
@@ -187,14 +165,22 @@ export default function TopExpandableCard({
                   {/* TOP 10 BADGE */}
                   {selectedSlide.topTenPosition && (
                     <div className="flex items-center">
-                    <TopTenBadge />
-                    {selectedSlide.topTenPosition && <span className="ml-2 text-sm font-semibold text-[var(--primary-content)]">#{selectedSlide.topTenPosition} in {media_type} Today</span>}
-                  </div>
+                      <TopTenBadge />
+                      {selectedSlide.topTenPosition && (
+                        <span className="ml-2 text-sm font-semibold text-[var(--primary-content)]">
+                          #{selectedSlide.topTenPosition} in {media_type} Today
+                        </span>
+                      )}
+                    </div>
                   )}
 
                   {/* PLAY BUTTON */}
                   <motion.a
-                    href={`/watch/${selectedSlide.id}?media_type=${media_type}&title=${selectedSlide?.title || selectedSlide?.name}`}
+                    href={`/watch/${
+                      selectedSlide.id
+                    }?media_type=${media_type}&title=${
+                      selectedSlide?.title || selectedSlide?.name
+                    }`}
                     onClick={handleClick}
                     className="flex justify-center items-center px-4 py-2 my-3 text-sm rounded-[3px] font-bold bg-white hover:bg-[var(--secondary-dark)] hover:text-white text-[var(--primary-dark)] w-full text-center"
                   >
@@ -221,25 +207,13 @@ export default function TopExpandableCard({
                   </motion.a>
 
                   {/* OVERVIEW */}
-                  <motion.p
-                    layoutId={`description-${selectedSlide.description}`}
-                    className="text-neutral-300 font-extralight mr-4 mt-2 text-sm overflow-y-scroll scrollbar-none"
-                  >
-                    {selectedSlide.overview === ""
-                      ? "No description"
-                      : selectedSlide.overview}
-                  </motion.p>
-                  {/* <motion.p
-                    layoutId={`description-${selectedSlide.description}`}
-                    className="text-neutral-400 font-extralight mr-4 mt-2 text-xs truncate"
-                  >
-                    Starring:{" "}
-                    {credits.cast.map((cast) => (
-                      <span key={cast.name}>{cast.name},</span>
-                    ))}
-                  </motion.p> */}
+                  <p className="px-1.5 lg:px-6 py-2 text-xs text-zinc-400">
+                    <p className="text-zinc-500">Overview:</p>
+                    {selectedSlide.overview}
+                  </p>
                 </div>
               </div>
+
               <div className="pt-4 relative px-4">
                 <motion.div
                   layout
@@ -253,6 +227,7 @@ export default function TopExpandableCard({
                     : selectedSlide.content}
                 </motion.div>
               </div>
+
             </div>
           </motion.div>
         </motion.div>
