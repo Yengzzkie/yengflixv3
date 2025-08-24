@@ -10,7 +10,7 @@ import {
   HandThumbUpIcon,
   ShareIcon,
   CheckIcon,
-  ExclamationCircleIcon, StarIcon, CalendarIcon, FilmIcon, ClockIcon
+  ExclamationCircleIcon, StarIcon, CalendarIcon, FilmIcon, ClockIcon, ListBulletIcon, TvIcon
 } from "@heroicons/react/24/outline";
 import NotificationAlert from "./ui/NotificationAlert";
 import axios from "axios";
@@ -405,7 +405,7 @@ const Video = ({ params }) => {
           <p className="text-neutral-200 text-sm">If the video doesn't load, try other servers:</p>
           <div className="flex flex-wrap gap-3">
             {servers.map((server, index) => (
-              <button key={index} className="border text-xs rounded-md p-1 w-16 lg:w-20 bg-red-600 hover:bg-red-500" onClick={() => setServer(server.server)}>Server {index + 1}</button>
+              <button key={index} className="text-xs rounded-md p-1 w-16 lg:w-20 bg-red-600 hover:bg-red-500" onClick={() => setServer(server.server)}>Server {index + 1}</button>
             ))}
           </div>
         </div>
@@ -435,7 +435,7 @@ const Video = ({ params }) => {
           <CalendarIcon className="w-3.5 h-3.5 text-yellow-500" />
           <p className="text-zinc-500">Release Date:</p>
           <p className="text-zinc-400">
-            {movieDetails.release_date}
+            {movieDetails.release_date || movieDetails.first_air_date}
           </p>
         </div>
 
@@ -449,13 +449,37 @@ const Video = ({ params }) => {
         </div>
 
         {/* Movie runtime */}
-        <div className="flex text-xs items-center gap-2 px-3 lg:px-6 py-0.5">
-          <ClockIcon className="w-3.5 h-3.5 text-yellow-500" />
-          <p className="text-zinc-500">Runtime:</p>
-          <p className="text-zinc-400">
-            {Math.floor(movieDetails.runtime / 60)} hour{Math.floor(movieDetails.runtime / 60) !== 1 ? "s" : ""} {movieDetails.runtime % 60} minute{movieDetails.runtime % 60 !== 1 ? "s" : ""}
-          </p>
+        {movieDetails?.runtime && (
+          <div className="flex text-xs items-center gap-2 px-3 lg:px-6 py-0.5">
+            <ClockIcon className="w-3.5 h-3.5 text-yellow-500" />
+            <p className="text-zinc-500">Runtime:</p>
+            <p className="text-zinc-400">
+              {Math.floor(movieDetails.runtime / 60)} hour{Math.floor(movieDetails.runtime / 60) !== 1 ? "s" : ""} {movieDetails.runtime % 60} minute{movieDetails.runtime % 60 !== 1 ? "s" : "" || movieDetails?.seasons?.length}
+            </p>
         </div>
+        )}
+
+        {/* TV Show Seasons */}
+        {movieDetails?.number_of_seasons && (
+          <div className="flex text-xs items-center gap-2 px-3 lg:px-6 py-0.5">
+            <ListBulletIcon className="w-3.5 h-3.5 text-yellow-500" />
+            <p className="text-zinc-500">Seasons:</p>
+            <p className="text-zinc-400">
+              {movieDetails?.number_of_seasons}
+            </p>
+        </div>
+        )}
+
+        {/* TV Show Episodes */}
+        {movieDetails?.number_of_episodes && (
+          <div className="flex text-xs items-center gap-2 px-3 lg:px-6 py-0.5">
+            <TvIcon className="w-3.5 h-3.5 text-yellow-500" />
+            <p className="text-zinc-500">Episodes:</p>
+            <p className="text-zinc-400">
+              {movieDetails?.number_of_episodes}
+            </p>
+        </div>
+        )}
 
         {/* add to list / rate / share button */}
         <div className="flex justify-evenly p-6">

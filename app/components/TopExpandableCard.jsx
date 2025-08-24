@@ -207,7 +207,7 @@ export default function TopExpandableCard({
                   </motion.a>
 
                   {/* OVERVIEW */}
-                  <p className="px-1.5 lg:px-6 py-2 text-xs text-zinc-400">
+                  <p className="px-1.5 py-2 text-xs text-zinc-400">
                     <p className="text-zinc-500">Overview:</p>
                     {selectedSlide.overview}
                   </p>
