@@ -65,8 +65,6 @@ export default function TopExpandableCard({
     // on subsequent clicks, normal href navigation will happen
   };
 
-  console.log({ selectedSlide });
-
   return (
     <AnimatePresence>
       {open && selectedSlide && (

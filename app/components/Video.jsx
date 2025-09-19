@@ -299,7 +299,7 @@ const Video = ({ params }) => {
   // add-to-list logic
   async function handleAddToList() {
     // assign the movie details from fetched data from fetchDetails()
-    const newMovie = details;
+    const newMovie = movieDetails;
 
     try {
       const response = await addToList(newMovie);
