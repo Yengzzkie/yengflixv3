@@ -64,8 +64,6 @@ const Video = ({ params }) => {
   const session = useSession();
   const isVerified = session?.data?.user?.isVerified;
 
-
-
   // custom theme for the tabs
   const theme = {
     tab: {

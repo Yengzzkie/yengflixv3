@@ -13,12 +13,11 @@ export default function TopExpandableCard({
   media_type,
 }) {
   const IMG_PATH = "https://image.tmdb.org/t/p/original/";
-  const MonetagSmartlink = "https://otieu.com/4/9697241";
+  // const MonetagSmartlink = "https://otieu.com/4/9697241";
   const ref = useRef(null);
   const isMovie = media_type === "Movies";
   const [added, setAdded] = useState(false);
   const [buttonText, setButtonText] = useState(null);
-  const [clickedOnce, setClickedOnce] = useState(false);
 
   useEffect(() => {
     function onKeyDown(event) {
@@ -55,15 +54,6 @@ export default function TopExpandableCard({
       setAdded(false);
     }, 2000);
   }
-
-  const handleClick = (e) => {
-    if (!clickedOnce) {
-      e.preventDefault(); // prevent default navigation on first click
-      window.open(MonetagSmartlink, "_blank", "noopener,noreferrer");
-      setClickedOnce(true);
-    }
-    // on subsequent clicks, normal href navigation will happen
-  };
 
   return (
     <AnimatePresence>
@@ -179,7 +169,6 @@ export default function TopExpandableCard({
                     }?media_type=${media_type}&title=${
                       selectedSlide?.title || selectedSlide?.name
                     }`}
-                    onClick={handleClick}
                     className="flex justify-center items-center px-4 py-2 my-3 text-sm rounded-[3px] font-bold bg-white hover:bg-[var(--secondary-dark)] hover:text-white text-[var(--primary-dark)] w-full text-center"
                   >
                     <PlayIcon className="w-4 mr-1" /> Play

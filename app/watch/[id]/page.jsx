@@ -9,11 +9,7 @@ const VideoPlayer = async ({ params }) => {
     redirect("/login")
   }
 
-  return (
-    <>
-      <Video params={params} />
-    </>
-  );
+  return (<Video params={params} />);
 };
 
 export default VideoPlayer;
