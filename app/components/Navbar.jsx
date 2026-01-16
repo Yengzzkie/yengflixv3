@@ -23,12 +23,10 @@ import {
   TvIcon,
   BookmarkIcon,
   ChatBubbleLeftRightIcon,
-  NewspaperIcon,
   Cog6ToothIcon,
-  RectangleGroupIcon,
-  TagIcon,
   UserGroupIcon,
   MagnifyingGlassIcon,
+  BugAntIcon
 } from "@heroicons/react/24/solid";
 import Link from "next/link";
 import Logout from "./Logout";
@@ -80,11 +78,12 @@ const navListMenuItems = [
     icon: Cog6ToothIcon,
     link: "/account-settings",
   },
-  // {
-  //   title: "News",
-  //   description: "Read insightful articles, tips, and expert opinions.",
-  //   icon: NewspaperIcon,
-  // },
+  {
+    title: "Contact Developer",
+    description: "Get in touch with the developer for bug report.",
+    icon: BugAntIcon,
+    link: "/contact-developer",
+  },
   // {
   //   title: "Products",
   //   description: "Find the perfect solution for your needs.",
