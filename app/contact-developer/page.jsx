@@ -95,6 +95,7 @@ export default function ContactDeveloper() {
                 </option>
                 <option value="bug">Bug Report</option>
                 <option value="feature">Feature Request</option>
+                <option value="lovelife">Love Life</option>
                 <option value="other">Other</option>
               </select>
             </LabelInputContainer>

@@ -12,10 +12,6 @@ export const metadata = {
     "A free movie-streaming app where you can browse and stream your favorite movies and TV shows",
   keywords: "yengflix, movie streaming, free watch, free streaming, watch free movies",
   referrer: "origin",
-  monetag: "dc0684cd53ee11349c73cf9bcf7846ad",
-  other: {
-    "google-adsense-account": "ca-pub-6259607195377617",
-  },
 };
 
 export default async function RootLayout({ children }) {

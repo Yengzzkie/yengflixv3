@@ -4,8 +4,7 @@ import { redirect } from "next/navigation";
 
 const UsersTablePage = async () => {
   const session = await auth();
-
-  // console.log(session);
+  
   if (!session) {
     redirect("/login");
   } else if (session.user.role !== "ADMIN") {
